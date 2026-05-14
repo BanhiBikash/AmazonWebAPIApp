@@ -1,7 +1,8 @@
 {
   "openapi": "3.0.4",
   "info": {
-    "title": "Amazon Api Version 1.0",
+    "title": "Amazon API",
+    "description": "A Amazon Web API with multiple versions",
     "version": "1.0"
   },
   "paths": {

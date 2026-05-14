@@ -1,5 +1,9 @@
+using AmazonWeb.API.ServiceConfigurations;
 using Asp.Versioning;
+using Asp.Versioning.ApiExplorer;
+using Microsoft.Extensions.Options;
 using Microsoft.OpenApi;
+using Swashbuckle.AspNetCore.SwaggerGen;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -8,11 +12,8 @@ builder.Services.AddControllers();
 
 //swagger
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen(options =>
-{
-    options.SwaggerDoc("v1", new OpenApiInfo() {Title="Amazon Api Version 1.0", Version="1.0" });
-    options.SwaggerDoc("v2", new OpenApiInfo() {Title="Amazon Api Version 2.0", Version="2.0" });
-});
+builder.Services.AddTransient<IConfigureOptions<SwaggerGenOptions>,ConfigureSwaggerOptions>();  //for automated swagger api versioning
+builder.Services.AddSwaggerGen();
 
 //api versioning
 builder.Services.AddApiVersioning(options =>
@@ -40,8 +41,12 @@ app.UseAuthorization();
 app.UseSwagger();
 app.UseSwaggerUI(options =>
 {
-    options.SwaggerEndpoint("/swagger/v1/swagger.json","1.0");
-    options.SwaggerEndpoint("/swagger/v2/swagger.json","2.0");
+    var provider = app.Services.GetRequiredService<IApiVersionDescriptionProvider>();
+
+    foreach(var description in provider.ApiVersionDescriptions)
+    {
+        options.SwaggerEndpoint($"/swagger/{description.GroupName}/swagger.json",description.GroupName.ToUpperInvariant());
+    }
 });
 
 app.MapControllers();
