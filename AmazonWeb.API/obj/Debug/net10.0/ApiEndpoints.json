@@ -1,0 +1,12 @@
+[
+  {
+    "ContainingType": "AmazonWeb.API.Controllers.Shopping",
+    "Method": "Get",
+    "RelativePath": "api/Shopping/Get",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  }
+]

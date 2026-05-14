@@ -1,3 +1,5 @@
 <Solution>
   <Project Path="AmazonWeb.API/AmazonWeb.API.csproj" />
+  <Project Path="AmazonWeb.Core/AmazonWeb.Core.csproj" />
+  <Project Path="AmazonWeb.Infrastructure/AmazonWeb.Infrastructure.csproj" />
 </Solution>
