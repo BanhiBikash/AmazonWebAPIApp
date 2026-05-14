@@ -36,3 +36,7 @@ C:\Users\Banhi\source\repos\aspnetcore\AmazonWebAPIProject\AmazonWeb.API\obj\Deb
 C:\Users\Banhi\source\repos\aspnetcore\AmazonWebAPIProject\AmazonWeb.API\obj\Debug\net10.0\AmazonWeb.API.pdb
 C:\Users\Banhi\source\repos\aspnetcore\AmazonWebAPIProject\AmazonWeb.API\obj\Debug\net10.0\AmazonWeb.API.genruntimeconfig.cache
 C:\Users\Banhi\source\repos\aspnetcore\AmazonWebAPIProject\AmazonWeb.API\obj\Debug\net10.0\ref\AmazonWeb.API.dll
+C:\Users\Banhi\source\repos\aspnetcore\AmazonWebAPIProject\AmazonWeb.API\bin\Debug\net10.0\Asp.Versioning.Abstractions.dll
+C:\Users\Banhi\source\repos\aspnetcore\AmazonWebAPIProject\AmazonWeb.API\bin\Debug\net10.0\Asp.Versioning.Http.dll
+C:\Users\Banhi\source\repos\aspnetcore\AmazonWebAPIProject\AmazonWeb.API\bin\Debug\net10.0\Asp.Versioning.Mvc.dll
+C:\Users\Banhi\source\repos\aspnetcore\AmazonWebAPIProject\AmazonWeb.API\bin\Debug\net10.0\Asp.Versioning.Mvc.ApiExplorer.dll

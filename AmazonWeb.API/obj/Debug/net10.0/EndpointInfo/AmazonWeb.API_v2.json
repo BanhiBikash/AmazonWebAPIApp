@@ -1,11 +1,11 @@
 {
   "openapi": "3.0.4",
   "info": {
-    "title": "Amazon Api Version 1.0",
-    "version": "1.0"
+    "title": "Amazon Api Version 2.0",
+    "version": "2.0"
   },
   "paths": {
-    "/api/v1/Shopping/Get": {
+    "/api/v2/Shopping/Get": {
       "get": {
         "tags": [
           "Shopping"
