@@ -1,11 +1,9 @@
-﻿using AmazonWeb.Core.Domain.Entities;
-using AmazonWeb.Core.DTO.AddDTO;
-using Microsoft.AspNetCore.Identity;
+﻿using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace AmazonWeb.Core.Domain.Identities
+namespace AmazonWeb.Core.DTO.AddDTO
 {
-    public class ApplicationUser : IdentityUser<Guid>
+    public class UserAddRequest
     {
         [Required(ErrorMessage = "First name is required")]
         [StringLength(50, ErrorMessage = "First name cannot exceed 50 characters")]
@@ -17,9 +15,6 @@ namespace AmazonWeb.Core.Domain.Identities
 
         [DataType(DataType.Date)]
         public DateOnly? DateOfBirth { get; set; }
-
-        [Required(ErrorMessage = "Gender is required")]
-        public Gender Gender { get; set; }
 
         [StringLength(200, ErrorMessage = "Address cannot exceed 200 characters")]
         public string? Address { get; set; }
@@ -36,10 +31,24 @@ namespace AmazonWeb.Core.Domain.Identities
         [StringLength(100, ErrorMessage = "Country cannot exceed 100 characters")]
         public string? Country { get; set; }
 
-        [Url(ErrorMessage = "Invalid profile image URL")]
-        public string? ProfileImageUrl { get; set; }
+        [Required(ErrorMessage = "Password is required")]
+        [StringLength(100, MinimumLength = 6, ErrorMessage = "Password must be at least 6 characters long")]
+        [DataType(DataType.Password)]
+        public string Password { get; set; }
 
-        // Example: link to orders
-        public List<Order>? Orders { get; set; }
+        [Required(ErrorMessage = "Confirm Password is required")]
+        [Compare("Password", ErrorMessage = "Passwords do not match")]
+        [DataType(DataType.Password)]
+        public string ConfirmPassword { get; set; }
+
+        [Required(ErrorMessage = "Gender is required")]
+        public Gender Gender { get; set; }
+    }
+
+    public enum Gender
+    {
+        Male,
+        Female,
+        Other
     }
 }
