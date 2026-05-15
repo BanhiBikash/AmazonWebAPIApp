@@ -1,10 +1,16 @@
-﻿using System;
+﻿using AmazonWeb.Core.Domain.Identities;
+using System;
 using System.ComponentModel.DataAnnotations;
 
 namespace AmazonWeb.Core.DTO.AddDTO
 {
     public class UserAddRequest
     {
+
+        [Required(ErrorMessage = "Email is required")]
+        [EmailAddress(ErrorMessage = "Invalid email format")]
+        public string Email { get; set; }
+
         [Required(ErrorMessage = "First name is required")]
         [StringLength(50, ErrorMessage = "First name cannot exceed 50 characters")]
         public string FirstName { get; set; }
@@ -15,21 +21,6 @@ namespace AmazonWeb.Core.DTO.AddDTO
 
         [DataType(DataType.Date)]
         public DateOnly? DateOfBirth { get; set; }
-
-        [StringLength(200, ErrorMessage = "Address cannot exceed 200 characters")]
-        public string? Address { get; set; }
-
-        [StringLength(100, ErrorMessage = "City cannot exceed 100 characters")]
-        public string? City { get; set; }
-
-        [StringLength(100, ErrorMessage = "State cannot exceed 100 characters")]
-        public string? State { get; set; }
-
-        [StringLength(20, ErrorMessage = "Postal code cannot exceed 20 characters")]
-        public string? PostalCode { get; set; }
-
-        [StringLength(100, ErrorMessage = "Country cannot exceed 100 characters")]
-        public string? Country { get; set; }
 
         [Required(ErrorMessage = "Password is required")]
         [StringLength(100, MinimumLength = 6, ErrorMessage = "Password must be at least 6 characters long")]
@@ -43,6 +34,19 @@ namespace AmazonWeb.Core.DTO.AddDTO
 
         [Required(ErrorMessage = "Gender is required")]
         public Gender Gender { get; set; }
+
+        public ApplicationUser ToApplicationUser(UserAddRequest userAddRequest)
+        {
+            return new ApplicationUser()
+            {
+                UserName = userAddRequest.Email,
+                Email = userAddRequest.Email,
+                FirstName = userAddRequest.FirstName,
+                LastName = userAddRequest.LastName,
+                DateOfBirth = userAddRequest.DateOfBirth,
+                Gender = userAddRequest.Gender
+            };
+        }
     }
 
     public enum Gender
