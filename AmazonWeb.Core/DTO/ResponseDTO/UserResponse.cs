@@ -1,0 +1,69 @@
+﻿using AmazonWeb.Core.Domain.Identities;
+using AmazonWeb.Core.DTO.AddDTO;
+using System;
+using System.ComponentModel.DataAnnotations;
+
+namespace AmazonWeb.Core.DTO.ResponseDTO
+{
+    public class UserResponse
+    {
+        [Required]
+        public Guid Id { get; set; }
+
+        [Required(ErrorMessage = "Email is required")]
+        [EmailAddress(ErrorMessage = "Invalid email format")]
+        public string Email { get; set; }
+
+        [Required(ErrorMessage = "First name is required")]
+        [StringLength(50, ErrorMessage = "First name cannot exceed 50 characters")]
+        public string FirstName { get; set; }
+
+        [Required(ErrorMessage = "Last name is required")]
+        [StringLength(50, ErrorMessage = "Last name cannot exceed 50 characters")]
+        public string LastName { get; set; }
+
+        [DataType(DataType.Date)]
+        public DateOnly? DateOfBirth { get; set; }
+
+        [Required(ErrorMessage = "Gender is required")]
+        public Gender Gender { get; set; }
+
+        [StringLength(200, ErrorMessage = "Address cannot exceed 200 characters")]
+        public string? Address { get; set; }
+
+        [StringLength(100, ErrorMessage = "City cannot exceed 100 characters")]
+        public string? City { get; set; }
+
+        [StringLength(100, ErrorMessage = "State cannot exceed 100 characters")]
+        public string? State { get; set; }
+
+        [StringLength(20, ErrorMessage = "Postal code cannot exceed 20 characters")]
+        public string? PostalCode { get; set; }
+
+        [StringLength(100, ErrorMessage = "Country cannot exceed 100 characters")]
+        public string? Country { get; set; }
+
+        [Url(ErrorMessage = "Invalid profile image URL")]
+        public string? ProfileImageUrl { get; set; }
+
+        // Constructor that maps ApplicationUser → UserResponse
+        public UserResponse(ApplicationUser user)
+        {
+            Id = user.Id;
+            Email = user.Email;
+            FirstName = user.FirstName;
+            LastName = user.LastName;
+            DateOfBirth = user.DateOfBirth;
+            Gender = user.Gender;
+            Address = user.Address;
+            City = user.City;
+            State = user.State;
+            PostalCode = user.PostalCode;
+            Country = user.Country;
+            ProfileImageUrl = user.ProfileImageUrl;
+        }
+
+        // Parameterless constructor for serialization
+        public UserResponse() { }
+    }
+}
