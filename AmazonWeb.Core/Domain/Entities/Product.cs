@@ -14,6 +14,12 @@ namespace AmazonWeb.Core.Domain.Entities
         public int Price { get; set; }
 
         [Required]
+        public bool InStock { get; set; }
+
+        [Required]
+        public int Stock { get; set; }
+
+        [Required]
         public string? Description { get; set; }
 
         [Required]
