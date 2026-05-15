@@ -35,7 +35,7 @@ namespace AmazonWeb.Core.DTO.AddDTO
         [Required(ErrorMessage = "Gender is required")]
         public Gender Gender { get; set; }
 
-        public ApplicationUser ToApplicationUser(UserAddRequest userAddRequest)
+        public static ApplicationUser ToApplicationUser(UserAddRequest userAddRequest)
         {
             return new ApplicationUser()
             {

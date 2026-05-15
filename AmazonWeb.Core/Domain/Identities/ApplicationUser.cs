@@ -1,5 +1,6 @@
 ﻿using AmazonWeb.Core.Domain.Entities;
 using AmazonWeb.Core.DTO.AddDTO;
+using AmazonWeb.Core.DTO.ResponseDTO;
 using Microsoft.AspNetCore.Identity;
 using System.ComponentModel.DataAnnotations;
 
@@ -41,5 +42,28 @@ namespace AmazonWeb.Core.Domain.Identities
 
         // Example: link to orders
         public List<Order>? Orders { get; set; }
+
+        public bool isDeleted { get; set; } = false;
+
+        //to convert into user response
+        public static UserResponse ToUserResponse(ApplicationUser user)
+        {
+            return new UserResponse()
+            {
+                Id = user.Id,
+                Email = user.Email,
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                DateOfBirth = user.DateOfBirth,
+                Gender = user.Gender,
+                Address = user.Address,
+                City = user.City,
+                State = user.State,
+                PostalCode = user.PostalCode,
+                Country = user.Country,
+                ProfileImageUrl = user.ProfileImageUrl,
+                isDeleted = user.isDeleted
+            };
+        }
     }
 }

@@ -1,4 +1,5 @@
-﻿using AmazonWeb.Core.Domain.Identities;
+﻿using AmazonWeb.Core.Domain.Entities;
+using AmazonWeb.Core.Domain.Identities;
 using AmazonWeb.Core.DTO.AddDTO;
 using System;
 using System.ComponentModel.DataAnnotations;
@@ -46,22 +47,8 @@ namespace AmazonWeb.Core.DTO.ResponseDTO
         [Url(ErrorMessage = "Invalid profile image URL")]
         public string? ProfileImageUrl { get; set; }
 
-        // Constructor that maps ApplicationUser → UserResponse
-        public UserResponse(ApplicationUser user)
-        {
-            Id = user.Id;
-            Email = user.Email;
-            FirstName = user.FirstName;
-            LastName = user.LastName;
-            DateOfBirth = user.DateOfBirth;
-            Gender = user.Gender;
-            Address = user.Address;
-            City = user.City;
-            State = user.State;
-            PostalCode = user.PostalCode;
-            Country = user.Country;
-            ProfileImageUrl = user.ProfileImageUrl;
-        }
+        [Required]
+        public bool isDeleted { get; set; } = false;
 
         // Parameterless constructor for serialization
         public UserResponse() { }
