@@ -41,9 +41,10 @@ app.UseAuthorization();
 app.UseSwagger();
 app.UseSwaggerUI(options =>
 {
-    var provider = app.Services.GetRequiredService<IApiVersionDescriptionProvider>();
+    var service = app.Services.GetRequiredService<IApiVersionDescriptionProvider>();
 
-    foreach(var description in provider.ApiVersionDescriptions)
+    //Api-version-Description is a list of descriptions of all versions of api
+    foreach(var description in service.ApiVersionDescriptions)
     {
         options.SwaggerEndpoint($"/swagger/{description.GroupName}/swagger.json",description.GroupName.ToUpperInvariant());
     }
