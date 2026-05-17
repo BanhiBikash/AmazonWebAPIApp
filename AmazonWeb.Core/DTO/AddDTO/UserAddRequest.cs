@@ -35,6 +35,9 @@ namespace AmazonWeb.Core.DTO.AddDTO
         [Required(ErrorMessage = "Gender is required")]
         public Gender Gender { get; set; }
 
+        [Required]
+        public Role UserRole { get; set; } = Role.User; // default role
+
         public static ApplicationUser ToApplicationUser(UserAddRequest userAddRequest)
         {
             return new ApplicationUser()
@@ -44,7 +47,8 @@ namespace AmazonWeb.Core.DTO.AddDTO
                 FirstName = userAddRequest.FirstName,
                 LastName = userAddRequest.LastName,
                 DateOfBirth = userAddRequest.DateOfBirth,
-                Gender = userAddRequest.Gender
+                Gender = userAddRequest.Gender,
+                UserRole = userAddRequest.UserRole
             };
         }
     }

@@ -52,6 +52,9 @@ namespace AmazonWeb.Core.DTO.ResponseDTO
         public string? ProfileImageUrl { get; set; }
 
         [Required]
+        public string UserRole { get; set; } // default role
+
+        [Required]
         public bool isDeleted { get; set; } = false;
 
         // Parameterless constructor for serialization

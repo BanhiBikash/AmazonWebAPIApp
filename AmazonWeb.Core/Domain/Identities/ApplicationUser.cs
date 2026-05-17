@@ -40,6 +40,9 @@ namespace AmazonWeb.Core.Domain.Identities
         [Url(ErrorMessage = "Invalid profile image URL")]
         public string? ProfileImageUrl { get; set; }
 
+        [Required]
+        public Role UserRole { get; set; } = Role.User; // default role
+
         // Example: link to orders
         public List<Order>? Orders { get; set; }
 
@@ -62,8 +65,14 @@ namespace AmazonWeb.Core.Domain.Identities
                 PostalCode = user.PostalCode,
                 Country = user.Country,
                 ProfileImageUrl = user.ProfileImageUrl,
-                isDeleted = user.isDeleted
+                isDeleted = user.isDeleted,
+                UserRole = user.UserRole.ToString()
             };
         }
+    }
+    public enum Role
+    {
+        User,
+        Admin
     }
 }
