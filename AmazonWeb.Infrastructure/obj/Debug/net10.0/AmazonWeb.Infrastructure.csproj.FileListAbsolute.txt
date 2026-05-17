@@ -14,3 +14,5 @@ C:\Users\Banhi\source\repos\aspnetcore\AmazonWebAPIProject\AmazonWeb.Infrastruct
 C:\Users\Banhi\source\repos\aspnetcore\AmazonWebAPIProject\AmazonWeb.Infrastructure\obj\Debug\net10.0\refint\AmazonWeb.Infrastructure.dll
 C:\Users\Banhi\source\repos\aspnetcore\AmazonWebAPIProject\AmazonWeb.Infrastructure\obj\Debug\net10.0\AmazonWeb.Infrastructure.pdb
 C:\Users\Banhi\source\repos\aspnetcore\AmazonWebAPIProject\AmazonWeb.Infrastructure\obj\Debug\net10.0\ref\AmazonWeb.Infrastructure.dll
+C:\Users\Banhi\source\repos\aspnetcore\AmazonWebAPIProject\AmazonWeb.Infrastructure\bin\Debug\net10.0\AmazonWeb.Infrastructure.runtimeconfig.json
+C:\Users\Banhi\source\repos\aspnetcore\AmazonWebAPIProject\AmazonWeb.Infrastructure\obj\Debug\net10.0\AmazonWeb.Infrastructure.genruntimeconfig.cache

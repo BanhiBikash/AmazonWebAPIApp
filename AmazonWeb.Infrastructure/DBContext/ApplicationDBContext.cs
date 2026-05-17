@@ -28,10 +28,16 @@ namespace AmazonWeb.Infrastructure.DBContext
                 .WithMany(u => u.Orders)
                 .HasForeignKey(o => o.UserId);
 
-            modelBuilder.Entity<OrderItem>()
-                .HasOne(i => i.Order)
-                .WithMany(o => o.Items)
-                .HasForeignKey(i => i.OrderId);
+            modelBuilder.Entity<OrderItem>(entity =>
+            {
+                // Composite primary key (OrderId + ProductId)
+                entity.HasKey(oi => new { oi.OrderId, oi.ProductId });
+
+                // Relationship: Order → OrderItems
+                entity.HasOne(oi => oi.Order)
+                      .WithMany(o => o.Items)
+                      .HasForeignKey(oi => oi.OrderId);
+            });
 
             // Optional: global query filter for soft delete
             modelBuilder.Entity<ApplicationUser>()
