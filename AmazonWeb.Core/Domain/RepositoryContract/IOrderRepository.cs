@@ -15,13 +15,12 @@ namespace AmazonWeb.Core.Domain.RepositoryContract
         Task<IEnumerable<Order>> GetAllAsync();
 
         Task<Order> AddAsync(Order order);
-        Task UpdateAsync(Order order);
-        Task DeleteAsync(Guid id);
+        Task<Order> UpdateAsync(Order order);
+        Task<bool> DeleteAsync(Guid id);
 
         // Domain-specific queries
         Task<IEnumerable<Order>> GetByUserIdAsync(Guid userId);
         Task<IEnumerable<Order>> GetByStatusAsync(OrderStatus status);
-        Task<IEnumerable<Order>> GetOrdersWithinDateRangeAsync(DateTime startDate, DateTime endDate);
 
         // DIP: Services depend on this abstraction, not EF Core
     }

@@ -1,6 +1,7 @@
 ﻿using AmazonWeb.Core.Domain.Entities;
 using AmazonWeb.Core.Domain.RepositoryContract;
 using AmazonWeb.Infrastructure.DBContext;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -24,12 +25,6 @@ namespace AmazonWeb.Infrastructure.RepositoryContract
 
         public async Task<Order> AddAsync(Order order)
         {
-            //if the property is null
-            if (order == null)
-            {
-                throw new ArgumentNullException("Order is null, can't be added.");
-            }
-
             await _dbContext.Orders.AddAsync(order);
             int result = await _dbContext.SaveChangesAsync();
 
@@ -43,39 +38,62 @@ namespace AmazonWeb.Infrastructure.RepositoryContract
             return savedOrder;
         }
 
-        public Task DeleteAsync(Guid id)
+        public async Task<bool> DeleteAsync(Guid id)
         {
-            throw new NotImplementedException();
+            var order = await _dbContext.Orders.FindAsync(id);
+            if (order == null)
+                return false;
+
+            _dbContext.Orders.Remove(order);
+            var result = await _dbContext.SaveChangesAsync();
+
+            return result > 0;  //if result is 1 or more, it means the delete operation was successful
         }
 
-        public Task<IEnumerable<Order>> GetAllAsync()
+        public async Task<IEnumerable<Order>> GetAllAsync()
         {
-            throw new NotImplementedException();
+            //egaer return so that items are not left behind, otherwise it will return orders without items
+            return await _dbContext.Orders.Include(order=>order.Items).ToListAsync();
         }
 
         public Task<Order?> GetByIdAsync(Guid id)
         {
-            throw new NotImplementedException();
+            if (id==Guid.Empty)
+            {
+                throw new ArgumentNullException("Id is empty, can't be retrieved.");
+            }
+
+            return _dbContext.Orders.Include(order => order.Items).FirstOrDefaultAsync(order => order.Id == id);
         }
 
-        public Task<IEnumerable<Order>> GetByStatusAsync(OrderStatus status)
+        public async Task<IEnumerable<Order>> GetByStatusAsync(OrderStatus status)
         {
-            throw new NotImplementedException();
+            return await _dbContext.Orders.Include(o=>o.Items).Where(order => order.Status == status).ToListAsync();
         }
 
-        public Task<IEnumerable<Order>> GetByUserIdAsync(Guid userId)
+        public async Task<IEnumerable<Order>> GetByUserIdAsync(Guid userId)
         {
-            throw new NotImplementedException();
+            if(userId == Guid.Empty)
+            {
+                throw new ArgumentNullException("UserId is null, can't be retrieved.");
+            }
+
+            return await _dbContext.Orders.Include(order => order.Items).Where(order => order.UserId == userId).ToListAsync();
         }
 
-        public Task<IEnumerable<Order>> GetOrdersWithinDateRangeAsync(DateTime startDate, DateTime endDate)
+        public async Task<Order> UpdateAsync(Order order)
         {
-            throw new NotImplementedException();
-        }
+            Order? orderDB = await _dbContext.Orders.Where(o=>o.Id==order.Id).FirstOrDefaultAsync();
 
-        public Task UpdateAsync(Order order)
-        {
-            throw new NotImplementedException();
+            if(orderDB == null)
+            {
+                throw new InvalidOperationException("Order not found, can't be updated.");
+            }
+
+            _dbContext.Entry(order).State = EntityState.Modified;
+            var result = await _dbContext.SaveChangesAsync();
+
+            return result>0? orderDB : null;
         }
     }
 }
