@@ -31,9 +31,16 @@ namespace AmazonWeb.Infrastructure.RepositoryContract
             }
 
             await _dbContext.Orders.AddAsync(order);
-            await _dbContext.SaveChangesAsync();
+            int result = await _dbContext.SaveChangesAsync();
 
-            return order;
+            if (result == 0)
+                throw new InvalidOperationException("Order wasn't placed");
+
+            var savedOrder = await _dbContext.Orders.FindAsync(order.Id);
+            if (savedOrder == null)
+                throw new InvalidOperationException("Order not found after save.");
+
+            return savedOrder;
         }
 
         public Task DeleteAsync(Guid id)
