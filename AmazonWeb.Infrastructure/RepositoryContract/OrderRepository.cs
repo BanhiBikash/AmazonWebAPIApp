@@ -75,7 +75,7 @@ namespace AmazonWeb.Infrastructure.RepositoryContract
         {
             if(userId == Guid.Empty)
             {
-                throw new ArgumentNullException("UserId is null, can't be retrieved.");
+                throw new ArgumentNullException("UserId is empty, can't be retrieved.");
             }
 
             return await _dbContext.Orders.Include(order => order.Items).Where(order => order.UserId == userId).ToListAsync();
@@ -93,7 +93,7 @@ namespace AmazonWeb.Infrastructure.RepositoryContract
             _dbContext.Entry(order).State = EntityState.Modified;
             var result = await _dbContext.SaveChangesAsync();
 
-            return result>0? orderDB : null;
+            return result>0? order : null;
         }
     }
 }

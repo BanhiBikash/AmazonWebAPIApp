@@ -17,11 +17,12 @@ namespace AmazonWeb.Core.Domain.RepositoryContract
         Task<Product?> GetByIdAsync(Guid id);
         Task<IEnumerable<Product>> GetAllAsync();
 
-        Task AddAsync(Product product);
-        Task UpdateAsync(Product product);
-        Task DeleteAsync(Guid id);
+        Task<Product> AddAsync(Product product);
+        Task<Product> UpdateAsync(Product product);
+        Task<bool> DeleteAsync(Guid id);
 
         // Domain-specific queries
+        Task<IEnumerable<Product>> GetByPriceRangeAsync(decimal minPrice, decimal maxPrice);
         Task<IEnumerable<Product>> GetByCategoryAsync(ProductCategory category);
         Task<IEnumerable<Product>> GetBySubCategoryAsync(ProductSubCategory subCategory);
         Task<IEnumerable<Product>> SearchByNameAsync(string name);
