@@ -11,6 +11,10 @@ namespace AmazonWeb.Core.DTO.ResponseDTO
         [Required]
         public Guid Id { get; set; }
 
+        [Required(ErrorMessage = "Username is required")]
+        [StringLength(50, ErrorMessage = "Username cannot exceed 50 characters")]
+        public string UserName { get; set; }
+
         [Required(ErrorMessage = "Email is required")]
         [EmailAddress(ErrorMessage = "Invalid email format")]
         public string Email { get; set; }

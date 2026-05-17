@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using AmazonWeb.Core.Domain.Enums;
+using System.ComponentModel.DataAnnotations;
 
 namespace AmazonWeb.Core.Domain.Entities
 {
