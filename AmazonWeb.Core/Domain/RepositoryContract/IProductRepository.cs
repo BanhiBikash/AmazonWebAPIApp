@@ -1,0 +1,32 @@
+﻿using AmazonWeb.Core.Domain.Entities;
+using AmazonWeb.Core.Domain.Enums;
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+
+namespace AmazonWeb.Core.Domain.RepositoryContract
+{
+    /// <summary>
+    /// Contract for Product repository following SOLID principles.
+    /// </summary>
+    public interface IProductRepository
+    {
+        // SRP: Each method has a single responsibility
+        // ISP: Only product-specific operations are exposed
+
+        Task<Product?> GetByIdAsync(Guid id);
+        Task<IEnumerable<Product>> GetAllAsync();
+
+        Task AddAsync(Product product);
+        Task UpdateAsync(Product product);
+        Task DeleteAsync(Guid id);
+
+        // Domain-specific queries
+        Task<IEnumerable<Product>> GetByCategoryAsync(ProductCategory category);
+        Task<IEnumerable<Product>> GetBySubCategoryAsync(ProductSubCategory subCategory);
+        Task<IEnumerable<Product>> SearchByNameAsync(string name);
+
+        // Liskov Substitution Principle: Any implementation should respect contract
+        // Dependency Inversion Principle: High-level modules depend on this abstraction, not EF Core
+    }
+}

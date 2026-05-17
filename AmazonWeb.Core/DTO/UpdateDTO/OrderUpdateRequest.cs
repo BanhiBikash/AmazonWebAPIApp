@@ -1,8 +1,5 @@
 ﻿using AmazonWeb.Core.Domain.Entities;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Text;
 
 namespace AmazonWeb.Core.DTO.UpdateDTO
 {
