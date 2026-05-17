@@ -7,9 +7,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Domain\RepositoryContract\" />
-    <Folder Include="DTO\ResponseDTO\" />
-    <Folder Include="ServiceContracts\" />
+    <Folder Include="ServiceContracts\OrderContracts\" />
+    <Folder Include="ServiceContracts\ProductContracts\" />
+    <Folder Include="ServiceContracts\UserContracts\" />
     <Folder Include="Services\" />
   </ItemGroup>
 

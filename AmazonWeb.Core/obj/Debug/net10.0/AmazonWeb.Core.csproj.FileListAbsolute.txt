@@ -1,0 +1,13 @@
+C:\Users\Banhi\source\repos\aspnetcore\AmazonWebAPIProject\AmazonWeb.Core\obj\Debug\net10.0\AmazonWeb.Core.csproj.AssemblyReference.cache
+C:\Users\Banhi\source\repos\aspnetcore\AmazonWebAPIProject\AmazonWeb.Core\obj\Debug\net10.0\AmazonWeb.Core.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Banhi\source\repos\aspnetcore\AmazonWebAPIProject\AmazonWeb.Core\obj\Debug\net10.0\AmazonWeb.Core.AssemblyInfoInputs.cache
+C:\Users\Banhi\source\repos\aspnetcore\AmazonWebAPIProject\AmazonWeb.Core\obj\Debug\net10.0\AmazonWeb.Core.AssemblyInfo.cs
+C:\Users\Banhi\source\repos\aspnetcore\AmazonWebAPIProject\AmazonWeb.Core\obj\Debug\net10.0\AmazonWeb.Core.csproj.CoreCompileInputs.cache
+C:\Users\Banhi\source\repos\aspnetcore\AmazonWebAPIProject\AmazonWeb.Core\obj\Debug\net10.0\AmazonWeb.Core.sourcelink.json
+C:\Users\Banhi\source\repos\aspnetcore\AmazonWebAPIProject\AmazonWeb.Core\bin\Debug\net10.0\AmazonWeb.Core.deps.json
+C:\Users\Banhi\source\repos\aspnetcore\AmazonWebAPIProject\AmazonWeb.Core\bin\Debug\net10.0\AmazonWeb.Core.dll
+C:\Users\Banhi\source\repos\aspnetcore\AmazonWebAPIProject\AmazonWeb.Core\bin\Debug\net10.0\AmazonWeb.Core.pdb
+C:\Users\Banhi\source\repos\aspnetcore\AmazonWebAPIProject\AmazonWeb.Core\obj\Debug\net10.0\AmazonWeb.Core.dll
+C:\Users\Banhi\source\repos\aspnetcore\AmazonWebAPIProject\AmazonWeb.Core\obj\Debug\net10.0\refint\AmazonWeb.Core.dll
+C:\Users\Banhi\source\repos\aspnetcore\AmazonWebAPIProject\AmazonWeb.Core\obj\Debug\net10.0\AmazonWeb.Core.pdb
+C:\Users\Banhi\source\repos\aspnetcore\AmazonWebAPIProject\AmazonWeb.Core\obj\Debug\net10.0\ref\AmazonWeb.Core.dll

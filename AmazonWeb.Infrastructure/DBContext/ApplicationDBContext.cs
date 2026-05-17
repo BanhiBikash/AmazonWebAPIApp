@@ -7,10 +7,10 @@ using System.Reflection.Emit;
 
 namespace AmazonWeb.Infrastructure.DBContext
 {
-    public class ApplicationDbContext
+    public class ApplicationDBContext
         : IdentityDbContext<ApplicationUser, ApplicationRole, Guid>
     {
-        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
+        public ApplicationDBContext(DbContextOptions<ApplicationDBContext> options)
             : base(options) { }
 
         // DbSets for your aggregates

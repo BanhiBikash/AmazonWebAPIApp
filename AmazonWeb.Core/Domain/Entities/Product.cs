@@ -33,7 +33,7 @@ namespace AmazonWeb.Core.Domain.Entities
         public ProductCategory Category { get; set; }
 
         [Required]
-        public ProductSubCategory SubCategory { get; set; }
+        public ProductSubCategory? SubCategory { get; set; }
 
         public bool IsDeleted { get; set; } = false;
 

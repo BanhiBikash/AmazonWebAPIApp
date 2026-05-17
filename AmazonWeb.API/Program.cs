@@ -2,8 +2,10 @@ using AmazonWeb.API.ServiceConfigurations;
 using Asp.Versioning;
 using Asp.Versioning.ApiExplorer;
 using Microsoft.Extensions.Options;
-using Microsoft.OpenApi;
 using Swashbuckle.AspNetCore.SwaggerGen;
+using AmazonWeb.Infrastructure.DBContext;
+using Microsoft.EntityFrameworkCore;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,6 +13,8 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 
 //database
+builder.Services.AddDbContext<ApplicationDBContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));  
 
 //swagger
 builder.Services.AddEndpointsApiExplorer();

@@ -1,0 +1,16 @@
+C:\Users\Banhi\source\repos\aspnetcore\AmazonWebAPIProject\AmazonWeb.Infrastructure\obj\Debug\net10.0\AmazonWeb.Infrastructure.csproj.AssemblyReference.cache
+C:\Users\Banhi\source\repos\aspnetcore\AmazonWebAPIProject\AmazonWeb.Infrastructure\obj\Debug\net10.0\AmazonWeb.Infrastructure.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Banhi\source\repos\aspnetcore\AmazonWebAPIProject\AmazonWeb.Infrastructure\obj\Debug\net10.0\AmazonWeb.Infrastructure.AssemblyInfoInputs.cache
+C:\Users\Banhi\source\repos\aspnetcore\AmazonWebAPIProject\AmazonWeb.Infrastructure\obj\Debug\net10.0\AmazonWeb.Infrastructure.AssemblyInfo.cs
+C:\Users\Banhi\source\repos\aspnetcore\AmazonWebAPIProject\AmazonWeb.Infrastructure\obj\Debug\net10.0\AmazonWeb.Infrastructure.csproj.CoreCompileInputs.cache
+C:\Users\Banhi\source\repos\aspnetcore\AmazonWebAPIProject\AmazonWeb.Infrastructure\obj\Debug\net10.0\AmazonWeb.Infrastructure.sourcelink.json
+C:\Users\Banhi\source\repos\aspnetcore\AmazonWebAPIProject\AmazonWeb.Infrastructure\bin\Debug\net10.0\AmazonWeb.Infrastructure.deps.json
+C:\Users\Banhi\source\repos\aspnetcore\AmazonWebAPIProject\AmazonWeb.Infrastructure\bin\Debug\net10.0\AmazonWeb.Infrastructure.dll
+C:\Users\Banhi\source\repos\aspnetcore\AmazonWebAPIProject\AmazonWeb.Infrastructure\bin\Debug\net10.0\AmazonWeb.Infrastructure.pdb
+C:\Users\Banhi\source\repos\aspnetcore\AmazonWebAPIProject\AmazonWeb.Infrastructure\bin\Debug\net10.0\AmazonWeb.Core.dll
+C:\Users\Banhi\source\repos\aspnetcore\AmazonWebAPIProject\AmazonWeb.Infrastructure\bin\Debug\net10.0\AmazonWeb.Core.pdb
+C:\Users\Banhi\source\repos\aspnetcore\AmazonWebAPIProject\AmazonWeb.Infrastructure\obj\Debug\net10.0\AmazonWe.CBC6ABBB.Up2Date
+C:\Users\Banhi\source\repos\aspnetcore\AmazonWebAPIProject\AmazonWeb.Infrastructure\obj\Debug\net10.0\AmazonWeb.Infrastructure.dll
+C:\Users\Banhi\source\repos\aspnetcore\AmazonWebAPIProject\AmazonWeb.Infrastructure\obj\Debug\net10.0\refint\AmazonWeb.Infrastructure.dll
+C:\Users\Banhi\source\repos\aspnetcore\AmazonWebAPIProject\AmazonWeb.Infrastructure\obj\Debug\net10.0\AmazonWeb.Infrastructure.pdb
+C:\Users\Banhi\source\repos\aspnetcore\AmazonWebAPIProject\AmazonWeb.Infrastructure\obj\Debug\net10.0\ref\AmazonWeb.Infrastructure.dll
