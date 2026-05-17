@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace AmazonWeb.Core.Domain.Entities
 {
@@ -11,6 +12,7 @@ namespace AmazonWeb.Core.Domain.Entities
         public Guid Id { get; set; }
 
         [Required]
+        [ForeignKey("ApplicationUser")]
         public Guid UserId { get; set; }   // FK to ApplicationUser
 
         [Required]

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AmazonWeb.Core.Domain.Entities;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
@@ -10,7 +11,7 @@ namespace AmazonWeb.Core.DTO.AddDTO
         public Guid UserId { get; set; }
 
         [Required(ErrorMessage = "At least one item is required")]
-        public List<OrderItemAddRequest> Items { get; set; } = new();
+        public List<OrderItem> Items { get; set; }
 
         [Required(ErrorMessage = "Shipping address is required")]
         [StringLength(200)]
@@ -24,19 +25,5 @@ namespace AmazonWeb.Core.DTO.AddDTO
 
         [StringLength(100)]
         public string? Country { get; set; }
-    }
-
-    public class OrderItemAddRequest
-    {
-        [Required(ErrorMessage = "Product ID is required")]
-        public Guid ProductId { get; set; }
-
-        [Required(ErrorMessage = "Quantity is required")]
-        [Range(1, 100)]
-        public int Quantity { get; set; }
-
-        [Required(ErrorMessage = "Unit price is required")]
-        [Range(0, double.MaxValue)]
-        public decimal UnitPrice { get; set; }
     }
 }

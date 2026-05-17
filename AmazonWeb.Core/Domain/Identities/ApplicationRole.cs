@@ -5,7 +5,7 @@ using System.Text;
 
 namespace AmazonWeb.Core.Domain.Identities
 {
-    public class AppliationRole:IdentityRole<Guid>
+    public class ApplicationRole:IdentityRole<Guid>
     {
     }
 }

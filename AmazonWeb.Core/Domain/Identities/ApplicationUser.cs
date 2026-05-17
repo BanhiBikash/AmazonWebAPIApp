@@ -46,7 +46,7 @@ namespace AmazonWeb.Core.Domain.Identities
         // Example: link to orders
         public List<Order>? Orders { get; set; }
 
-        public bool isDeleted { get; set; } = false;
+        public bool IsDeleted { get; set; } = false;
 
         //to convert into user response
         public static UserResponse ToUserResponse(ApplicationUser user)
@@ -65,7 +65,7 @@ namespace AmazonWeb.Core.Domain.Identities
                 PostalCode = user.PostalCode,
                 Country = user.Country,
                 ProfileImageUrl = user.ProfileImageUrl,
-                isDeleted = user.isDeleted,
+                isDeleted = user.IsDeleted,
                 UserRole = user.UserRole.ToString()
             };
         }
