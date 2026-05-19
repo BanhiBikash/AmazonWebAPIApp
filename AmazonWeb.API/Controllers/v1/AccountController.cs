@@ -75,12 +75,8 @@ namespace AmazonWeb.API.Controllers.v1
                 // Assign role (default User role from DTO)
                 await _userManager.AddToRoleAsync(user, registerDTO.UserRole.ToString());
 
-
                 // Optionally sign in immediately if stayLoggedIn is true
-                if (registerDTO.stayLoggedIn)
-                {
-                    await _signInManager.SignInAsync(user, isPersistent: true);
-                }
+                await _signInManager.SignInAsync(user, isPersistent: registerDTO.stayLoggedIn);
 
                 //create sign in dto to send back to client
                 return Ok(new SignInDTO() { Email=user.Email,FirstName=user.FirstName,LastName=user.LastName,DateOfBirth=user.DateOfBirth, Gender=user.Gender, UserRole = user.UserRole, stayLoggedIn=registerDTO.stayLoggedIn});
@@ -88,6 +84,7 @@ namespace AmazonWeb.API.Controllers.v1
             else
             {
                 ModelState.AddModelError("UserRole","Choose a correct user role.");
+                return BadRequest(new ValidationProblemDetails(ModelState));
             }
         }
 
