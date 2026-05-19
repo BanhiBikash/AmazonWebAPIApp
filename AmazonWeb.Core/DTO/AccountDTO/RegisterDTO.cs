@@ -38,6 +38,8 @@ namespace AmazonWeb.Core.DTO.AccountDTO
         [Required]
         public Role UserRole { get; set; } = Role.User; // default role
 
+        public bool stayLoggedIn { get; set; } = false;
+
         public static ApplicationUser ToApplicationUser(RegisterDTO userAddRequest)
         {
             return new ApplicationUser()
