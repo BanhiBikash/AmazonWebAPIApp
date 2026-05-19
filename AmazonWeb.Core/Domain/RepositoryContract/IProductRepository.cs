@@ -10,7 +10,7 @@ namespace AmazonWeb.Core.Domain.RepositoryContract
     {
         // SRP: Each method has a single responsibility
         // ISP: Only product-specific operations are exposed
-
+        Task<bool> IsDatabaseAliveAsync();
         Task<Product?> GetByIdAsync(Guid id);
         Task<IEnumerable<Product>> GetAllAsync();
 

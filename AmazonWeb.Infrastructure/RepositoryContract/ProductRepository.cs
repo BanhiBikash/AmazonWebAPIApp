@@ -19,7 +19,6 @@ namespace AmazonWeb.Infrastructure.RepositoryContract
             _dbContext = dbContext;
         }
 
-        // Check if the database connection is alive
         public async Task<bool> IsDatabaseAliveAsync()
         {
             return await _dbContext.Database.CanConnectAsync();
@@ -27,9 +26,8 @@ namespace AmazonWeb.Infrastructure.RepositoryContract
 
         public async Task<Product?> GetByIdAsync(Guid id)
         {
-            if (id == Guid.Empty)
-                throw new ArgumentException("Id is empty, can't retrieve.");
-
+            // Simple retrieval. If it's not found, returns null. 
+            // The Service Layer will handle the null check.
             return await _dbContext.Products.FirstOrDefaultAsync(p => p.Id == id);
         }
 
@@ -40,52 +38,29 @@ namespace AmazonWeb.Infrastructure.RepositoryContract
 
         public async Task<Product> AddAsync(Product product)
         {
-            if (product == null)
-                throw new ArgumentNullException(nameof(product));
-
             await _dbContext.Products.AddAsync(product);
-            var result = await _dbContext.SaveChangesAsync();
+            await _dbContext.SaveChangesAsync();
 
-            if (result == 0)
-                throw new InvalidOperationException("Product wasn't added.");
-
-            var savedProduct = await _dbContext.Products.FindAsync(product.Id);
-            if (savedProduct == null)
-                throw new InvalidOperationException("Product not found after save.");
-
-            return savedProduct;
+            return product; // EF Core automatically populates generated fields (like tracking or timestamps) directly onto the object
         }
 
         public async Task<Product> UpdateAsync(Product product)
         {
-            if (product == null)
-                throw new ArgumentNullException(nameof(product));
-
-            var exists = await _dbContext.Products.AnyAsync(p => p.Id == product.Id);
-            if (!exists)
-                throw new InvalidOperationException("Product not found, can't be updated.");
-
+            // Let EF Core attach and track the modified state. 
+            // If the product doesn't exist, SaveChangesAsync will throw a DbUpdateConcurrencyException naturally.
             _dbContext.Entry(product).State = EntityState.Modified;
-            var result = await _dbContext.SaveChangesAsync();
-
-            if (result == 0)
-                throw new InvalidOperationException("Product wasn't updated.");
+            await _dbContext.SaveChangesAsync();
 
             return product;
         }
 
         public async Task<bool> DeleteAsync(Guid id)
         {
-            if (id == Guid.Empty)
-                throw new ArgumentException("Id is empty, can't delete.");
+            // Fast deletion: Create a stub entity with the ID so we don't have to query the database first.
+            var productStub = new Product { Id = id };
+            _dbContext.Products.Remove(productStub);
 
-            var product = await _dbContext.Products.FindAsync(id);
-            if (product == null)
-                return false;
-
-            _dbContext.Products.Remove(product);
             var result = await _dbContext.SaveChangesAsync();
-
             return result > 0;
         }
 
@@ -112,8 +87,9 @@ namespace AmazonWeb.Infrastructure.RepositoryContract
 
         public async Task<IEnumerable<Product>> SearchByNameAsync(string name)
         {
+            // If name is empty, we just return an empty collection rather than crashing the app
             if (string.IsNullOrWhiteSpace(name))
-                throw new ArgumentException("Search term is empty, can't search.");
+                return Enumerable.Empty<Product>();
 
             return await _dbContext.Products
                                    .Where(p => p.Name.Contains(name))
