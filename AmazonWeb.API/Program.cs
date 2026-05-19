@@ -1,4 +1,4 @@
-using AmazonWeb.API.ServiceConfigurations;
+﻿using AmazonWeb.API.ServiceConfigurations;
 using Asp.Versioning;
 using Asp.Versioning.ApiExplorer;
 using Microsoft.Extensions.Options;
@@ -7,6 +7,9 @@ using AmazonWeb.Infrastructure.DBContext;
 using Microsoft.EntityFrameworkCore;
 using AmazonWeb.Core.Domain.Identities;
 using Microsoft.AspNetCore.Identity;
+using AmazonWeb.Core.Domain.RepositoryContract;
+using AmazonWeb.Core.Services;
+using AmazonWeb.Infrastructure.RepositoryContract; // 👈 ADD THIS LINE HERE
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -16,7 +19,10 @@ builder.Services.AddControllers();
 
 //database
 builder.Services.AddDbContext<ApplicationDBContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));  
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+//services
+builder.Services.AddScoped<IProductRepository, ProductRepository>();
 
 //swagger
 builder.Services.AddEndpointsApiExplorer();

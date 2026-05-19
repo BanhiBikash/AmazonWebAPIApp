@@ -96,6 +96,10 @@
         Stationary_Pens,
         Stationary_Notebooks,
         Stationary_ArtSupplies,
-        Stationary_OfficeSupplies
+        Stationary_OfficeSupplies,
+
+
+        //common
+        Common
     }
 }

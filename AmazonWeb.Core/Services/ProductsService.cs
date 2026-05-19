@@ -4,19 +4,16 @@ using AmazonWeb.Core.Domain.RepositoryContract;
 using AmazonWeb.Core.DTO.AddDTO;
 using AmazonWeb.Core.DTO.ResponseDTO;
 using AmazonWeb.Core.DTO.UpdateDTO;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace AmazonWeb.Core.Services
 {
-    public class ProductsService
+    public class ProductService
     {
         private readonly IProductRepository _productRepository;
 
-        public ProductsService(ProductsService productsService) 
+        public ProductService(IProductRepository productRepository) 
         {
-            _productRepository = productsService._productRepository;
+            _productRepository = productRepository;
         }
         
         // Check DB health
@@ -28,10 +25,19 @@ namespace AmazonWeb.Core.Services
         // Get product by Id
         public async Task<ProductResponse?> GetProductByIdAsync(Guid id)
         {
+            // Validate input
             if (id == Guid.Empty)
                 throw new ArgumentException("Product Id cannot be empty.");
 
+            // Check if database is alive before attempting to retrieve product
+            if (!(await IsDatabaseAliveAsync()))
+            {
+                return null;
+            }
+
             Product? product =  await _productRepository.GetByIdAsync(id);
+
+            product = product != null && !product.IsDeleted ? product : null;
 
             return product != null ? Product.ToProductResponse(product) : null;
         }
@@ -39,12 +45,18 @@ namespace AmazonWeb.Core.Services
         // Get all products
         public async Task<IEnumerable<ProductResponse>?> GetAllProductsAsync()
         {
+            // Check if database is alive before attempting to retrieve product
+            if (!(await IsDatabaseAliveAsync()))
+            {
+                return null;
+            }
+
             IEnumerable<Product>? products = await _productRepository.GetAllAsync();
 
-            return products != null ? products.Select(Product.ToProductResponse) : null;
+            return products != null ? products.Select(Product.ToProductResponse).Where(products=>products.IsDeleted==false) : null;
         }
 
-        // Add product
+        // Add product-work continue
         public async Task<Product> AddProductAsync(ProductAddRequest productAddRequest)
         {
             if (productAddRequest == null)
@@ -63,7 +75,19 @@ namespace AmazonWeb.Core.Services
             if (productUpdateRequest == null)
                 throw new ArgumentNullException(nameof(productUpdateRequest));
 
+            // Check if database is alive before attempting to retrieve product
+            if (!(await IsDatabaseAliveAsync()))
+            {
+                return null;
+            }
+
             ProductResponse? product = await GetProductByIdAsync(productUpdateRequest.Id);
+
+            //product does not exist or is deleted
+            if (product == null)
+            {
+                return null;
+            }
 
             product = ProductUpdateRequest.ApplyUpdate(product, productUpdateRequest);
 
@@ -92,7 +116,45 @@ namespace AmazonWeb.Core.Services
             if (id == Guid.Empty)
                 throw new ArgumentException("Product Id cannot be empty.");
 
-            return await _productRepository.DeleteAsync(id);
+            // Check if database is alive before attempting to retrieve product
+            if (!(await IsDatabaseAliveAsync()))
+                return false;
+
+            ProductResponse? product = await GetProductByIdAsync(id);
+            if (product == null)
+                return false;
+
+            // Soft delete by setting IsDeleted to true
+            product.IsDeleted = true;
+
+            // Safely parse Category and SubCategory from string → enum
+            var productToDelete = new Product
+            {
+                Id = product.Id,
+                Name = product.Name,
+                Price = product.Price,
+                InStock = product.InStock,
+                Stock = product.Stock,
+                Description = product.Description,
+                ImageUrl = product.ImageUrl,
+                IsDeleted = product.IsDeleted,
+
+                Category = Enum.TryParse<ProductCategory>(product.Category, true, out var parsedCategory)
+                                ? parsedCategory
+                                : ProductCategory.Common, // fallback
+
+                SubCategory = string.IsNullOrWhiteSpace(product.SubCategory)
+                                ? ProductSubCategory.Common   // fallback
+                                : Enum.TryParse<ProductSubCategory>(product.SubCategory, true, out var parsedSubCategory)
+                                    ? parsedSubCategory
+                                    : ProductSubCategory.Common // fallback
+            };
+
+            await _productRepository.UpdateAsync(productToDelete);
+            return true;
         }
+
+
+
     }
 }

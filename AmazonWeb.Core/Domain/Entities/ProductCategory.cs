@@ -21,6 +21,7 @@ namespace AmazonWeb.Core.Domain.Entities
         Automotive,
         Jewelry,
         Shoes,
-        Stationary
+        Stationary,
+        Common
     }
 }
