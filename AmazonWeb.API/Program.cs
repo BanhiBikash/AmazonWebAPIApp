@@ -5,6 +5,8 @@ using Microsoft.Extensions.Options;
 using Swashbuckle.AspNetCore.SwaggerGen;
 using AmazonWeb.Infrastructure.DBContext;
 using Microsoft.EntityFrameworkCore;
+using AmazonWeb.Core.Domain.Identities;
+using Microsoft.AspNetCore.Identity;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -34,14 +36,16 @@ builder.Services.AddApiVersioning(options =>
     options.SubstituteApiVersionInUrl = true;       //sets the api version in url
 });
 
+//Add Identity
+builder.Services.AddIdentity<ApplicationUser, ApplicationRole>()
+    .AddEntityFrameworkStores<ApplicationDBContext>()
+    .AddDefaultTokenProviders();
 
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
 app.UseHsts();
 app.UseHttpsRedirection();
-
-app.UseAuthorization();
 
 //swagger
 app.UseSwagger();
@@ -58,5 +62,10 @@ app.UseSwaggerUI(options =>
 
 app.MapControllers();
 app.UseStaticFiles();
+
+//checks
+app.UseCors();
+app.UseAuthentication();
+app.UseAuthorization();
 app.MapControllers();
 app.Run();
