@@ -1,6 +1,6 @@
 ﻿using Asp.Versioning;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
+using AmazonWeb.Core.DTO.AccountDTO;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AmazonWeb.API.Controllers.v1
@@ -9,6 +9,11 @@ namespace AmazonWeb.API.Controllers.v1
     [ApiVersion("1.0")]
     public class AccountController : CustomControllerBase
     {
-        //private readonly 
+        [HttpPost] 
+        [Route("[Action]")]
+        public IActionResult Register(RegisterDTO registerDTO )
+        {
+            return Ok("Registration successful");
+        }
     }
 }

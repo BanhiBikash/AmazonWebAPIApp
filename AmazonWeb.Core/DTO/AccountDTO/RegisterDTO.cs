@@ -2,9 +2,9 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace AmazonWeb.Core.DTO.AddDTO
+namespace AmazonWeb.Core.DTO.AccountDTO
 {
-    public class UserAddRequest
+    public class RegisterDTO
     {
 
         [Required(ErrorMessage = "Email is required")]
@@ -38,7 +38,7 @@ namespace AmazonWeb.Core.DTO.AddDTO
         [Required]
         public Role UserRole { get; set; } = Role.User; // default role
 
-        public static ApplicationUser ToApplicationUser(UserAddRequest userAddRequest)
+        public static ApplicationUser ToApplicationUser(RegisterDTO userAddRequest)
         {
             return new ApplicationUser()
             {

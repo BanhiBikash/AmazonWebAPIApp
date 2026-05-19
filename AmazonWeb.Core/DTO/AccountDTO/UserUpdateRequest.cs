@@ -3,7 +3,7 @@ using AmazonWeb.Core.DTO.AddDTO;
 using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace AmazonWeb.Core.DTO.UpdateDTO
+namespace AmazonWeb.Core.DTO.AccountDTO
 {
     public class UserUpdateRequest
     {

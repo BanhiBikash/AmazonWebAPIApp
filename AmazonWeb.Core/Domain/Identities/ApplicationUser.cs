@@ -1,6 +1,5 @@
 ﻿using AmazonWeb.Core.Domain.Entities;
-using AmazonWeb.Core.DTO.AddDTO;
-using AmazonWeb.Core.DTO.ResponseDTO;
+using AmazonWeb.Core.DTO.AccountDTO;
 using Microsoft.AspNetCore.Identity;
 using System.ComponentModel.DataAnnotations;
 

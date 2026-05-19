@@ -1,10 +1,9 @@
 ﻿using AmazonWeb.Core.Domain.Entities;
 using AmazonWeb.Core.Domain.Identities;
-using AmazonWeb.Core.DTO.AddDTO;
 using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace AmazonWeb.Core.DTO.ResponseDTO
+namespace AmazonWeb.Core.DTO.AccountDTO
 {
     public class UserResponse
     {

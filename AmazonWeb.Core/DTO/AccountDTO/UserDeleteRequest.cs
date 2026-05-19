@@ -1,7 +1,7 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace AmazonWeb.Core.DTO.DeleteDTO
+namespace AmazonWeb.Core.DTO.AccountDTO
 {
     public class UserDeleteRequest
     {
