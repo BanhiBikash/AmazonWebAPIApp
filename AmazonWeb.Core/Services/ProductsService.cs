@@ -154,7 +154,48 @@ namespace AmazonWeb.Core.Services
             return true;
         }
 
+        // Get products by price range
+        public async Task<IEnumerable<ProductResponse>?> GetProductsByPriceRangeAsync(decimal minPrice, decimal maxPrice)
+        {
+            if (minPrice < 0 || maxPrice < 0)
+                throw new ArgumentException("Price range cannot be negative.");
+            if (minPrice > maxPrice)
+                throw new ArgumentException("Min price cannot be greater than max price.");
 
+            var products = await _productRepository.GetByPriceRangeAsync(minPrice, maxPrice);
+            return products?
+                .Where(p => !p.IsDeleted)
+                .Select(Product.ToProductResponse);
+        }
 
+        // Get products by category
+        public async Task<IEnumerable<ProductResponse>?> GetProductsByCategoryAsync(ProductCategory category)
+        {
+            var products = await _productRepository.GetByCategoryAsync(category);
+            return products?
+                .Where(p => !p.IsDeleted)
+                .Select(Product.ToProductResponse);
+        }
+
+        // Get products by subcategory
+        public async Task<IEnumerable<ProductResponse>?> GetProductsBySubCategoryAsync(ProductSubCategory subCategory)
+        {
+            var products = await _productRepository.GetBySubCategoryAsync(subCategory);
+            return products?
+                .Where(p => !p.IsDeleted)
+                .Select(Product.ToProductResponse);
+        }
+
+        // Search products by name
+        public async Task<IEnumerable<ProductResponse>?> SearchProductsByNameAsync(string name)
+        {
+            if (string.IsNullOrWhiteSpace(name))
+                throw new ArgumentException("Search term cannot be empty.");
+
+            var products = await _productRepository.SearchByNameAsync(name);
+            return products?
+                .Where(p => !p.IsDeleted)
+                .Select(Product.ToProductResponse);
+        }
     }
 }
