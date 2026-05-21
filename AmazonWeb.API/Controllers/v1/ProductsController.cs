@@ -3,6 +3,7 @@ using AmazonWeb.Core.Domain.Enums;
 using AmazonWeb.Core.DTO.AddDTO;
 using AmazonWeb.Core.DTO.ResponseDTO;
 using AmazonWeb.Core.DTO.UpdateDTO;
+using AmazonWeb.Core.ServiceContracts.ProductContracts;
 using AmazonWeb.Core.Services;
 using Asp.Versioning;
 using Microsoft.AspNetCore.Authorization;
@@ -13,9 +14,9 @@ namespace AmazonWeb.API.Controllers.v1
     [ApiVersion("1.0")]
     public class ProductsController : CustomControllerBase
     {
-        private readonly ProductService _productService;
+        private readonly IProductService _productService;
 
-        public ProductsController(ProductService productService)
+        public ProductsController(IProductService productService)
         {
             _productService = productService;
         }
