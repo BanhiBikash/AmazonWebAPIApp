@@ -1,5 +1,6 @@
 ﻿using AmazonWeb.Core.Domain.Identities;
 using AmazonWeb.Core.DTO.AddDTO;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.ComponentModel.DataAnnotations;
 
@@ -22,7 +23,7 @@ namespace AmazonWeb.Core.DTO.AccountDTO
         [StringLength(100, ErrorMessage = "Country cannot exceed 100 characters")]
         public string? Country { get; set; }
 
-        [Url(ErrorMessage = "Invalid profile image URL")]
-        public string? ProfileImageUrl { get; set; }
+        [Required(ErrorMessage = "Product thumbnail is required")]
+        public IFormFile ProfileImage { get; set; }
     }
 }

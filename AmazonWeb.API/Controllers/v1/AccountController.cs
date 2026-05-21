@@ -11,23 +11,25 @@ using System.Threading.Tasks;
 
 namespace AmazonWeb.API.Controllers.v1
 {
-    [AllowAnonymous]
     [ApiVersion("1.0")]
     public class AccountController : CustomControllerBase
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly RoleManager<ApplicationRole> _roleManager;
+        private readonly IFileService _fileService;
 
-        public AccountController(SignInManager<ApplicationUser> signInManager, RoleManager<ApplicationRole> roleManager, UserManager<ApplicationUser> userManager)
+        public AccountController(SignInManager<ApplicationUser> signInManager, RoleManager<ApplicationRole> roleManager, UserManager<ApplicationUser> userManager, IFileService fileService)
         {
             _signInManager = signInManager;
             _roleManager = roleManager;
             _userManager = userManager;
+            _fileService = fileService;
         }
 
         [HttpPost]
         [Route("[Action]")]
+        [AllowAnonymous]
         public async Task<ActionResult> Register(RegisterDTO registerDTO)
         {
             if (!ModelState.IsValid)
@@ -96,6 +98,7 @@ namespace AmazonWeb.API.Controllers.v1
         // 🔐 1. USER LOGIN METHOD
         [HttpPost]
         [Route("[Action]")]
+        [AllowAnonymous]
         public async Task<ActionResult> Login(LoginDTO loginDTO)
         {
             if (!ModelState.IsValid)
@@ -190,6 +193,9 @@ namespace AmazonWeb.API.Controllers.v1
             return Ok(new { Message = "Password updated successfully." });
         }
 
+        [HttpPost]
+        [Authorize] // 👈 Requires an active authentication token/cookie session
+        [Route("[Action]")]
         public async Task<ActionResult> UpdateProfile([FromForm] UserUpdateRequest request)
         {
             // Note: We use [FromForm] so .NET can read both string fields and files simultaneously
