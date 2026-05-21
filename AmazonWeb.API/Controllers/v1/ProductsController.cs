@@ -1,6 +1,149 @@
-﻿namespace AmazonWeb.API.Controllers.v1
+﻿using AmazonWeb.Core.Domain.Entities;
+using AmazonWeb.Core.Domain.Enums;
+using AmazonWeb.Core.DTO.AddDTO;
+using AmazonWeb.Core.DTO.ResponseDTO;
+using AmazonWeb.Core.DTO.UpdateDTO;
+using AmazonWeb.Core.Services;
+using Asp.Versioning;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+
+namespace AmazonWeb.API.Controllers.v1
 {
-    public class ProductsController
+    [ApiVersion("1.0")]
+    public class ProductsController : CustomControllerBase
     {
+        private readonly ProductService _productService;
+
+        public ProductsController(ProductService productService)
+        {
+            _productService = productService;
+        }
+
+        // 🌐 PUBLIC READ OPERATIONS
+
+        // GET: api/v1/Products
+        [HttpGet]
+        [AllowAnonymous]
+        public async Task<ActionResult<IEnumerable<ProductResponse>>> GetAllProducts()
+        {
+            var products = await _productService.GetAllProductsAsync();
+            if (products == null)
+            {
+                return StatusCode(503, "Database service is temporarily unavailable.");
+            }
+            return Ok(products);
+        }
+
+        // GET: api/v1/Products/{id}
+        [HttpGet("{id:guid}")]
+        [AllowAnonymous]
+        public async Task<ActionResult<ProductResponse>> GetProductById(Guid id)
+        {
+            var product = await _productService.GetProductByIdAsync(id);
+            if (product == null)
+            {
+                return NotFound($"Product with ID {id} was not found or has been removed.");
+            }
+            return Ok(product);
+        }
+
+        // GET: api/v1/Products/search?name=puzzle
+        [HttpGet("search")]
+        [AllowAnonymous]
+        public async Task<ActionResult<IEnumerable<ProductResponse>>> SearchProductsByName([FromQuery] string name)
+        {
+            if (string.IsNullOrWhiteSpace(name))
+                return BadRequest("Search query parameter cannot be empty.");
+
+            var products = await _productService.SearchProductsByNameAsync(name);
+            return Ok(products ?? new List<ProductResponse>());
+        }
+
+        // GET: api/v1/Products/filter-price?minPrice=10&maxPrice=100
+        [HttpGet("filter-price")]
+        [AllowAnonymous]
+        public async Task<ActionResult<IEnumerable<ProductResponse>>> GetProductsByPrice([FromQuery] decimal minPrice, [FromQuery] decimal maxPrice)
+        {
+            if (minPrice < 0 || maxPrice < 0 || minPrice > maxPrice)
+                return BadRequest("Invalid price range arguments provided.");
+
+            var products = await _productService.GetProductsByPriceRangeAsync(minPrice, maxPrice);
+            return Ok(products ?? new List<ProductResponse>());
+        }
+
+        // GET: api/v1/Products/category/Toys
+        [HttpGet("category/{category}")]
+        [AllowAnonymous]
+        public async Task<ActionResult<IEnumerable<ProductResponse>>> GetProductsByCategory(ProductCategory category)
+        {
+            var products = await _productService.GetProductsByCategoryAsync(category);
+            return Ok(products ?? new List<ProductResponse>());
+        }
+
+        // GET: api/v1/Products/subcategory/Toy_Puzzles
+        [HttpGet("subcategory/{subCategory}")]
+        [AllowAnonymous]
+        public async Task<ActionResult<IEnumerable<ProductResponse>>> GetProductsBySubCategory(ProductSubCategory subCategory)
+        {
+            var products = await _productService.GetProductsBySubCategoryAsync(subCategory);
+            return Ok(products ?? new List<ProductResponse>());
+        }
+
+        // 🛡️ LOCKED ADMIN OPERATIONS
+
+        // POST: api/v1/Products
+        [HttpPost]
+        [Authorize(Roles = "Admin")]
+        public async Task<ActionResult<ProductResponse>> AddProduct([FromForm] ProductAddRequest request)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(new ValidationProblemDetails(ModelState));
+
+            // Note: Uses [FromForm] so your React client can upload the binary Thumbnail file smoothly
+            var createdProduct = await _productService.AddProductAsync(request);
+
+            // Map the domain entity cleanly to a response object for serialization
+            var response = AmazonWeb.Core.Domain.Entities.Product.ToProductResponse(createdProduct);
+
+            return CreatedAtAction(nameof(GetProductById), new { id = response.Id }, response);
+        }
+
+        // PUT: api/v1/Products
+        [HttpPut]
+        [Authorize(Roles = "Admin")]
+        public async Task<ActionResult<ProductResponse>> UpdateProduct([FromForm] ProductUpdateRequest request)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(new ValidationProblemDetails(ModelState));
+
+            var updatedProduct = await _productService.UpdateProductAsync(request);
+            if (updatedProduct == null)
+            {
+                return NotFound($"Failed to update. Product with ID {request.Id} does not exist or database is offline.");
+            }
+
+            return Ok(updatedProduct);
+        }
+
+        // DELETE: api/v1/Products/{id}
+        [HttpDelete("{id:guid}")]
+        [Authorize(Roles = "Admin")]
+        public async Task<ActionResult> DeleteProduct(Guid id)
+        {
+            if (id == Guid.Empty)
+                return BadRequest("A valid product GUID must be supplied.");
+
+            var deleted = await _productService.DeleteProductAsync(id);
+            if (!deleted)
+            {
+                return NotFound($"Product with ID {id} was not found or could not be removed.");
+            }
+
+            return NoContent(); // Return standard HTTP 204 for successful deletions
+        }
     }
 }
