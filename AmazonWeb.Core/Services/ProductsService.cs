@@ -5,10 +5,11 @@ using AmazonWeb.Core.DTO.AddDTO;
 using AmazonWeb.Core.DTO.ResponseDTO;
 using AmazonWeb.Core.DTO.UpdateDTO;
 using AmazonWeb.Core.ServiceContracts;
+using AmazonWeb.Core.ServiceContracts.ProductContracts;
 
 namespace AmazonWeb.Core.Services
 {
-    public class ProductService
+    public class ProductService:IProductService
     {
         private readonly IProductRepository _productRepository;
         private readonly IFileService _fileService;

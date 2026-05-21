@@ -2,6 +2,8 @@
 using AmazonWeb.Core.Domain.Identities;
 using AmazonWeb.Core.Domain.RepositoryContract;
 using AmazonWeb.Core.ServiceContracts; // 👈 ADD THIS LINE HERE
+using AmazonWeb.Core.ServiceContracts.P;
+using AmazonWeb.Core.ServiceContracts.ProductContracts;
 using AmazonWeb.Core.Services;
 using AmazonWeb.Infrastructure.DBContext;
 using AmazonWeb.Infrastructure.RepositoryContract;
@@ -30,6 +32,7 @@ builder.Services.AddDbContext<ApplicationDBContext>(options =>
 //services
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
 builder.Services.AddSingleton<IFileService,LocalFileService>();
+builder.Services.AddScoped<IProductService,ProductService>();
 
 //swagger
 builder.Services.AddEndpointsApiExplorer();
