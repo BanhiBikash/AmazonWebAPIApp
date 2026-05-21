@@ -9,7 +9,8 @@ using AmazonWeb.Core.Domain.Identities;
 using Microsoft.AspNetCore.Identity;
 using AmazonWeb.Core.Domain.RepositoryContract;
 using AmazonWeb.Core.Services;
-using AmazonWeb.Infrastructure.RepositoryContract; // 👈 ADD THIS LINE HERE
+using AmazonWeb.Infrastructure.RepositoryContract;
+using AmazonWeb.Core.ServiceContracts; // 👈 ADD THIS LINE HERE
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -23,6 +24,7 @@ builder.Services.AddDbContext<ApplicationDBContext>(options =>
 
 //services
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
+builder.Services.AddSingleton<IFileService,LocalFileService>();
 
 //swagger
 builder.Services.AddEndpointsApiExplorer();

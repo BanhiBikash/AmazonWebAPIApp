@@ -1,6 +1,7 @@
 ﻿using AmazonWeb.Core.Domain.Entities;
 using AmazonWeb.Core.Domain.Enums;
 using AmazonWeb.Core.DTO.ResponseDTO;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.ComponentModel.DataAnnotations;
 
@@ -20,9 +21,9 @@ namespace AmazonWeb.Core.DTO.UpdateDTO
 
         public string? Description { get; set; }
 
-        [Url(ErrorMessage = "Invalid image URL format")]
-        public string? ImageUrl { get; set; }
-
+        // File upload for thumbnail replacement
+        public IFormFile? Thumbnail { get; set; }
+        public string ImageUrl { get; set; }
         public ProductCategory? Category { get; set; }
         public ProductSubCategory? SubCategory { get; set; }
 

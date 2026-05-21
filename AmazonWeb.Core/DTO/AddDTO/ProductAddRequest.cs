@@ -1,5 +1,6 @@
 ﻿using AmazonWeb.Core.Domain.Entities;
 using AmazonWeb.Core.Domain.Enums;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.ComponentModel.DataAnnotations;
 
@@ -23,9 +24,8 @@ namespace AmazonWeb.Core.DTO.AddDTO
         [Required(ErrorMessage = "Description is required")]
         public string Description { get; set; }
 
-        [Required(ErrorMessage = "Image URL is required")]
-        [Url(ErrorMessage = "Invalid image URL format")]
-        public string ImageUrl { get; set; }
+        [Required(ErrorMessage = "Product thumbnail is required")]
+        public IFormFile Thumbnail{ get; set; }
 
         [Required(ErrorMessage = "Category is required")]
         public ProductCategory Category { get; set; }
@@ -44,7 +44,6 @@ namespace AmazonWeb.Core.DTO.AddDTO
                 InStock = request.InStock,
                 Stock = request.Stock,
                 Description = request.Description,
-                ImageUrl = request.ImageUrl,
                 Category = request.Category,
                 SubCategory = request.SubCategory
             };

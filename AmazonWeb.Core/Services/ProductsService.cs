@@ -4,16 +4,19 @@ using AmazonWeb.Core.Domain.RepositoryContract;
 using AmazonWeb.Core.DTO.AddDTO;
 using AmazonWeb.Core.DTO.ResponseDTO;
 using AmazonWeb.Core.DTO.UpdateDTO;
+using AmazonWeb.Core.ServiceContracts;
 
 namespace AmazonWeb.Core.Services
 {
     public class ProductService
     {
         private readonly IProductRepository _productRepository;
+        private readonly IFileService _fileService;
 
-        public ProductService(IProductRepository productRepository) 
+        public ProductService(IProductRepository productRepository, IFileService fileService) 
         {
             _productRepository = productRepository;
+            _fileService = fileService;
         }
         
         // Check DB health
@@ -62,11 +65,28 @@ namespace AmazonWeb.Core.Services
             if (productAddRequest == null)
                 throw new ArgumentNullException(nameof(productAddRequest));
 
-            Product product = ProductAddRequest.ToProduct(productAddRequest);
+            //create product id
+            Guid productId = Guid.NewGuid();
 
-            Product? productAdded = await _productRepository.AddAsync(product);
+            //Takes the file and name and saves it also Build relative URL for client access
+            var relativeUrl = await _fileService.UploadThumbnailAsync(productAddRequest.Thumbnail,productId);
 
-            return productAdded;
+            // Map to Product entity
+            var product = new Product
+            {
+                Id = productId,
+                Name = productAddRequest.Name,
+                Price = productAddRequest.Price,
+                InStock = productAddRequest.InStock,
+                Stock = productAddRequest.Stock,
+                Description = productAddRequest.Description,
+                ImageUrl = relativeUrl,
+                Category = productAddRequest.Category !=null?productAddRequest.Category:ProductCategory.Common,
+                SubCategory = productAddRequest.SubCategory!=null?productAddRequest.SubCategory:ProductSubCategory.Common,
+                IsDeleted = false
+            }; ;
+
+            return await _productRepository.AddAsync(product);
         }
 
         // Update product
@@ -83,13 +103,22 @@ namespace AmazonWeb.Core.Services
 
             ProductResponse? product = await GetProductByIdAsync(productUpdateRequest.Id);
 
-            //product does not exist or is deleted
+            // product does not exist or is deleted
             if (product == null)
             {
                 return null;
             }
 
             product = ProductUpdateRequest.ApplyUpdate(product, productUpdateRequest);
+
+            // Handle thumbnail logic ---
+            string finalImageUrl = product.ImageUrl; // Keep original by default
+
+            if (productUpdateRequest.Thumbnail != null && productUpdateRequest.Thumbnail.Length > 0)
+            {
+                // Upload new file and retrieve relative URL path
+                finalImageUrl = await _fileService.UploadThumbnailAsync(productUpdateRequest.Thumbnail, product.Id);
+            }
 
             Product? productToUpdate = new Product()
             {
@@ -99,13 +128,13 @@ namespace AmazonWeb.Core.Services
                 InStock = product.InStock,
                 Stock = product.Stock,
                 Description = product.Description,
-                ImageUrl = product.ImageUrl,
+                ImageUrl = finalImageUrl,
                 Category = Enum.Parse<ProductCategory>(product.Category),
                 SubCategory = string.IsNullOrEmpty(product.SubCategory) ? ProductSubCategory.Toy_Puzzles : Enum.Parse<ProductSubCategory>(product.SubCategory),
                 IsDeleted = product.IsDeleted
-            } ;
+            };
 
-            Product ? UpdatedProduct = await _productRepository.UpdateAsync(productToUpdate);
+            Product? UpdatedProduct = await _productRepository.UpdateAsync(productToUpdate);
 
             return UpdatedProduct != null ? Product.ToProductResponse(UpdatedProduct) : null;
         }
