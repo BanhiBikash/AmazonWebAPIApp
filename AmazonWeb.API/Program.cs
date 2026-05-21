@@ -49,6 +49,16 @@ builder.Services.AddIdentity<ApplicationUser, ApplicationRole>()
     .AddEntityFrameworkStores<ApplicationDBContext>()
     .AddDefaultTokenProviders();
 
+//CORS
+builder.Services.AddCors(options =>
+{
+    options.AddDefaultPolicy(builder =>
+    {
+        builder.AllowAnyOrigin()
+               .AllowAnyMethod()
+               .AllowAnyHeader();
+    });
+});
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -56,17 +66,21 @@ app.UseHsts();
 app.UseHttpsRedirection();
 
 //swagger
-app.UseSwagger();
-app.UseSwaggerUI(options =>
+// ✅ Only show Swagger UI when running in the Development environment
+if (app.Environment.IsDevelopment())
 {
-    var service = app.Services.GetRequiredService<IApiVersionDescriptionProvider>();
-
-    //Api-version-Description is a list of descriptions of all versions of api
-    foreach(var description in service.ApiVersionDescriptions)
+    app.UseSwagger();
+    app.UseSwaggerUI(options =>
     {
-        options.SwaggerEndpoint($"/swagger/{description.GroupName}/swagger.json",description.GroupName.ToUpperInvariant());
-    }
-});
+        var service = app.Services.GetRequiredService<IApiVersionDescriptionProvider>();
+
+        // Api-version-Description is a list of descriptions of all versions of api
+        foreach (var description in service.ApiVersionDescriptions)
+        {
+            options.SwaggerEndpoint($"/swagger/{description.GroupName}/swagger.json", description.GroupName.ToUpperInvariant());
+        }
+    });
+}
 
 app.MapControllers();
 app.UseStaticFiles();
