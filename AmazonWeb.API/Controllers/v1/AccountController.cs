@@ -4,6 +4,8 @@ using AmazonWeb.Core.DTO.AccountDTO;
 using Microsoft.AspNetCore.Mvc;
 using AmazonWeb.Core.Domain.Identities;
 using Microsoft.AspNetCore.Identity;
+using System.Threading.Tasks;
+using System;
 
 namespace AmazonWeb.API.Controllers.v1
 {
@@ -22,17 +24,30 @@ namespace AmazonWeb.API.Controllers.v1
             _userManager = userManager;
         }
 
-        [HttpPost] 
+        [HttpPost]
         [Route("[Action]")]
         public async Task<ActionResult> Register(RegisterDTO registerDTO)
         {
-            // Validate DTO
             if (!ModelState.IsValid)
             {
                 return BadRequest(new ValidationProblemDetails(ModelState));
             }
 
-            // Create ApplicationUser object
+            // FIX 1: Enforce security validation BEFORE altering database state
+            // Prevent public endpoints from self-assigning Admin roles
+            if (registerDTO.UserRole == Role.Admin)
+            {
+                ModelState.AddModelError("UserRole", "Administrative accounts cannot be self-registered publicly.");
+                return BadRequest(new ValidationProblemDetails(ModelState));
+            }
+
+            // Fallback assertion check for enums
+            if (registerDTO.UserRole != Role.User)
+            {
+                ModelState.AddModelError("UserRole", "Please select a valid user role.");
+                return BadRequest(new ValidationProblemDetails(ModelState));
+            }
+
             var user = new ApplicationUser
             {
                 Id = Guid.NewGuid(),
@@ -44,49 +59,48 @@ namespace AmazonWeb.API.Controllers.v1
                 DateOfBirth = registerDTO.DateOfBirth
             };
 
-            // Check if email already exists
-            var existingUser = await _userManager.FindByEmailAsync(user.Email);
-            if (existingUser != null)
-            {
-                ModelState.AddModelError("Email", "Email address is already registered.");
-                return BadRequest(new ValidationProblemDetails(ModelState));
-            }
-
-            // Create user with password
+            // Create user with password (automatic duplicate email handling happens here)
             var result = await _userManager.CreateAsync(user, registerDTO.Password);
 
-            //registration failed, return errors
             if (!result.Succeeded)
             {
                 foreach (var error in result.Errors)
                 {
-                    ModelState.AddModelError(string.Empty, error.Description);
+                    // Check for Identity's native duplicate email error code to append custom error location
+                    if (error.Code == "DuplicateEmail" || error.Code == "DuplicateUserName")
+                        ModelState.AddModelError("Email", "Email address is already registered.");
+                    else
+                        ModelState.AddModelError(string.Empty, error.Description);
                 }
                 return BadRequest(new ValidationProblemDetails(ModelState));
             }
 
-            if(registerDTO.UserRole == Role.User || registerDTO.UserRole == Role.Admin)
+            // FIX 2: Ensure default base role exists in DB safely
+            string targetRole = Role.User.ToString();
+            if (await _roleManager.FindByNameAsync(targetRole) == null)
             {
-                //create role if it doesn't exist
-                if (( await _roleManager.FindByNameAsync(registerDTO.UserRole.ToString()))==null)
-                {
-                    await _roleManager.CreateAsync(new ApplicationRole { Name = registerDTO.UserRole.ToString() });
-                }
-                // Assign role (default User role from DTO)
-                await _userManager.AddToRoleAsync(user, registerDTO.UserRole.ToString());
-
-                // Optionally sign in immediately if stayLoggedIn is true
-                await _signInManager.SignInAsync(user, isPersistent: registerDTO.stayLoggedIn);
-
-                //create sign in dto to send back to client
-                return Ok(new SignInDTO() { Email=user.Email,FirstName=user.FirstName,LastName=user.LastName,DateOfBirth=user.DateOfBirth, Gender=user.Gender, UserRole = user.UserRole, stayLoggedIn=registerDTO.stayLoggedIn});
+                await _roleManager.CreateAsync(new ApplicationRole { Name = targetRole });
             }
-            else
+
+            // Assign standard role safely
+            await _userManager.AddToRoleAsync(user, targetRole);
+
+            // Establish sign-in persistence securely
+            await _signInManager.SignInAsync(user, isPersistent: registerDTO.stayLoggedIn);
+
+            // Construct response DTO
+            var response = new SignInDTO()
             {
-                ModelState.AddModelError("UserRole","Choose a correct user role.");
-                return BadRequest(new ValidationProblemDetails(ModelState));
-            }
+                Email = user.Email,
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                DateOfBirth = user.DateOfBirth,
+                Gender = user.Gender,
+                UserRole = Role.User, // Explicitly safe assignment
+                stayLoggedIn = registerDTO.stayLoggedIn
+            };
+
+            return Ok(response);
         }
-
     }
 }

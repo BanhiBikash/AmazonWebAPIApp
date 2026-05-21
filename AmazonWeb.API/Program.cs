@@ -59,6 +59,8 @@ builder.Services.AddCors(options =>
                .AllowAnyHeader();
     });
 });
+
+//build the app
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
