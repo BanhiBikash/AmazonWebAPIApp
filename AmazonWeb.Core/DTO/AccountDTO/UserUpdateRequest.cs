@@ -7,13 +7,6 @@ namespace AmazonWeb.Core.DTO.AccountDTO
 {
     public class UserUpdateRequest
     {
-        [Required(ErrorMessage = "User ID is required")]
-        public Guid Id { get; set; }   // Primary key for identifying the user
-
-        [Required(ErrorMessage = "Username is required")]
-        [StringLength(50, ErrorMessage = "Username cannot exceed 50 characters")]
-        public string UserName { get; set; }
-
         [StringLength(200, ErrorMessage = "Address cannot exceed 200 characters")]
         public string? Address { get; set; }
 
