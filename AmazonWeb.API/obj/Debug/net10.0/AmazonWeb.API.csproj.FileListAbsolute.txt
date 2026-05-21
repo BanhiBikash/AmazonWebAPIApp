@@ -169,3 +169,4 @@ C:\Users\Banhi\source\repos\aspnetcore\AmazonWebAPIProject\AmazonWeb.API\bin\Deb
 C:\Users\Banhi\source\repos\aspnetcore\AmazonWebAPIProject\AmazonWeb.API\bin\Debug\net10.0\AmazonWeb.Infrastructure.dll
 C:\Users\Banhi\source\repos\aspnetcore\AmazonWebAPIProject\AmazonWeb.API\bin\Debug\net10.0\AmazonWeb.Core.pdb
 C:\Users\Banhi\source\repos\aspnetcore\AmazonWebAPIProject\AmazonWeb.API\bin\Debug\net10.0\AmazonWeb.Infrastructure.pdb
+C:\Users\Banhi\source\repos\aspnetcore\AmazonWebAPIProject\AmazonWeb.API\obj\Debug\net10.0\AmazonWeb.API.MvcApplicationPartsAssemblyInfo.cs

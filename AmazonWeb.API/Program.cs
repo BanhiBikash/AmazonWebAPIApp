@@ -1,22 +1,27 @@
 ﻿using AmazonWeb.API.ServiceConfigurations;
+using AmazonWeb.Core.Domain.Identities;
+using AmazonWeb.Core.Domain.RepositoryContract;
+using AmazonWeb.Core.ServiceContracts; // 👈 ADD THIS LINE HERE
+using AmazonWeb.Core.Services;
+using AmazonWeb.Infrastructure.DBContext;
+using AmazonWeb.Infrastructure.RepositoryContract;
 using Asp.Versioning;
 using Asp.Versioning.ApiExplorer;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Swashbuckle.AspNetCore.SwaggerGen;
-using AmazonWeb.Infrastructure.DBContext;
-using Microsoft.EntityFrameworkCore;
-using AmazonWeb.Core.Domain.Identities;
-using Microsoft.AspNetCore.Identity;
-using AmazonWeb.Core.Domain.RepositoryContract;
-using AmazonWeb.Core.Services;
-using AmazonWeb.Infrastructure.RepositoryContract;
-using AmazonWeb.Core.ServiceContracts; // 👈 ADD THIS LINE HERE
+using System.Text.Json.Serialization;
 
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddControllers();
+builder.Services.AddControllers().AddJsonOptions(options =>
+{
+    //allows strings to be serialized as enums in swagger and api responses
+    options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+});
 
 //database
 builder.Services.AddDbContext<ApplicationDBContext>(options =>

@@ -7,9 +7,6 @@ using AmazonWeb.Core.Services;
 using Asp.Versioning;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace AmazonWeb.API.Controllers.v1
 {
