@@ -341,6 +341,16 @@
   },
   {
     "ContainingType": "AmazonWeb.API.Controllers.v1.ProductsController",
+    "Method": "GetCategories",
+    "RelativePath": "api/v1/Products/GetCategories",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "AmazonWeb.API.Controllers.v1.ProductsController",
     "Method": "SearchProductsByName",
     "RelativePath": "api/v1/Products/search",
     "HttpMethod": "GET",

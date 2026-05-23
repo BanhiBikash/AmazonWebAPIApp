@@ -144,7 +144,7 @@ namespace AmazonWeb.API.Controllers.v1
             return NoContent(); // Return standard HTTP 204 for successful deletions
         }
 
-        [Route("[Action]")]
+        [Route("[action]")]
         [HttpGet]
         public IActionResult GetCategories()
         {

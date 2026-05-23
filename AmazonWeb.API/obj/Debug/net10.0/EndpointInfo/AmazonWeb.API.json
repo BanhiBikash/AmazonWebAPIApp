@@ -684,6 +684,18 @@
         }
       }
     },
+    "/api/v1/Products/GetCategories": {
+      "get": {
+        "tags": [
+          "Products"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/api/v1/Shopping/Get": {
       "get": {
         "tags": [
