@@ -48,6 +48,10 @@ namespace AmazonWeb.Core.DTO.AccountDTO
         [Url(ErrorMessage = "Invalid profile image URL")]
         public string? ProfileImageUrl { get; set; }
 
+        //tokens
+        public string? JWTToken { get; set; }
+        public string? RefreshToken { get; set; }
+
         // Example: link to orders
         public List<Order>? Orders { get; set; }
     }

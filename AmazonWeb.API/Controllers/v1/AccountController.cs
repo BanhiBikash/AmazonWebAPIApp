@@ -92,6 +92,8 @@ namespace AmazonWeb.API.Controllers.v1
                 stayLoggedIn = registerDTO.stayLoggedIn
             };
 
+
+
             return Ok(response);
         }
 

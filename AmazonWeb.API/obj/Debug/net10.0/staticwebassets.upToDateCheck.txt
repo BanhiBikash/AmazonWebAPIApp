@@ -1,1 +1,2 @@
+wwwroot\resources\product-thumbnail\672cded7-e978-4065-a96e-86f570bc4a6f.webp
 wwwroot\resources\product-thumbnail\bdb8cda5-010f-4d32-99de-2260dbb16eb7.webp

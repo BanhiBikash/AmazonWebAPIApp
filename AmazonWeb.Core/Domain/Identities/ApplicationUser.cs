@@ -47,6 +47,10 @@ namespace AmazonWeb.Core.Domain.Identities
 
         public bool IsDeleted { get; set; } = false;
 
+        //refresh token properties for token management
+        public string? RefreshToken { get; set; }
+        public DateTime? RefreshTokenExpiryTime { get; set; }
+
         //to convert into user response
         public static UserResponse ToUserResponse(ApplicationUser user)
         {
