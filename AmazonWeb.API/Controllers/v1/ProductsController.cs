@@ -143,5 +143,33 @@ namespace AmazonWeb.API.Controllers.v1
 
             return NoContent(); // Return standard HTTP 204 for successful deletions
         }
+
+        [Route("[Action]")]
+        [HttpGet]
+        public IActionResult GetCategories()
+        {
+            // 1. Extract all values from the ProductCategory Enum
+            var categories = Enum.GetValues(typeof(ProductCategory))
+                .Cast<ProductCategory>()
+                .Select(c => new
+                {
+                    Id = (int)c,
+                    Name = c.ToString() // e.g., "Electronics"
+                })
+                .ToList();
+
+            // 2. Extract all values from the ProductSubCategory Enum
+            var subCategories = Enum.GetValues(typeof(ProductSubCategory))
+                .Cast<ProductSubCategory>()
+                .Select(s => new
+                {
+                    Id = (int)s,
+                    Name = s.ToString() // e.g., "Electronics_Mouse" or "Clothing_Shirts"
+                })
+                .ToList();
+
+            // 3. Return both together so the frontend only needs to make a single API trip
+            return Ok(new { categories, subCategories });
+        }
     }
 }
