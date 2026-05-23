@@ -3,6 +3,7 @@ using AmazonWeb.Core.Domain.Identities;
 using AmazonWeb.Core.Domain.RepositoryContract;
 using AmazonWeb.Core.ServiceContracts;
 using AmazonWeb.Core.ServiceContracts.ProductContracts;
+using AmazonWeb.Core.ServiceContracts.TokenContracts;
 using AmazonWeb.Core.Services;
 using AmazonWeb.Infrastructure.DBContext;
 using AmazonWeb.Infrastructure.RepositoryContract;
@@ -32,6 +33,7 @@ builder.Services.AddDbContext<ApplicationDBContext>(options =>
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
 builder.Services.AddSingleton<IFileService,LocalFileService>();
 builder.Services.AddScoped<IProductService,ProductService>();
+builder.Services.AddScoped<IJWTTokenservice, JWTTokenService>();
 
 //swagger
 builder.Services.AddEndpointsApiExplorer();
