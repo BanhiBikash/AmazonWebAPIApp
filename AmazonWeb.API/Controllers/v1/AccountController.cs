@@ -1,6 +1,7 @@
 ﻿using AmazonWeb.Core.Domain.Identities;
 using AmazonWeb.Core.DTO.AccountDTO;
 using AmazonWeb.Core.ServiceContracts;
+using AmazonWeb.Core.ServiceContracts.TokenContracts;
 using Asp.Versioning;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -18,13 +19,17 @@ namespace AmazonWeb.API.Controllers.v1
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly RoleManager<ApplicationRole> _roleManager;
         private readonly IFileService _fileService;
+        private readonly IJWTTokenservice _jwtTokenService;
+        private readonly IConfiguration _configuration;
 
-        public AccountController(SignInManager<ApplicationUser> signInManager, RoleManager<ApplicationRole> roleManager, UserManager<ApplicationUser> userManager, IFileService fileService)
+        public AccountController(IConfiguration configuration,SignInManager<ApplicationUser> signInManager, RoleManager<ApplicationRole> roleManager, UserManager<ApplicationUser> userManager, IFileService fileService, IJWTTokenservice jWTTokenservice)
         {
             _signInManager = signInManager;
             _roleManager = roleManager;
             _userManager = userManager;
             _fileService = fileService;
+            _jwtTokenService = jWTTokenservice;
+            _configuration = configuration;
         }
 
         [HttpPost]
@@ -81,6 +86,16 @@ namespace AmazonWeb.API.Controllers.v1
             await _userManager.AddToRoleAsync(user, targetRole);
             await _signInManager.SignInAsync(user, isPersistent: registerDTO.stayLoggedIn);
 
+            //create jwt and refresh token  
+            string userID = Convert.ToString(user.Id);
+            string jwtToken = _jwtTokenService.CreateJWTToken(user.Email,$"{user.FirstName}{user.LastName}",userID,user.UserRole.ToString());
+            string refreshToken = _jwtTokenService.CreateRefreshToken();
+
+            //storing the refresh token in the database
+            int daysToExpire = int.Parse(_configuration["JwtSettings:RefreshTokenExpirationDays"] ?? "7");
+            user.RefreshToken = refreshToken;
+            user.RefreshTokenExpiryTime = DateTime.UtcNow.AddDays(daysToExpire);
+
             var response = new SignInDTO()
             {
                 Email = user.Email,
@@ -88,11 +103,11 @@ namespace AmazonWeb.API.Controllers.v1
                 LastName = user.LastName,
                 DateOfBirth = user.DateOfBirth,
                 Gender = user.Gender,
-                UserRole = Role.User,
-                stayLoggedIn = registerDTO.stayLoggedIn
+                UserRole = user.UserRole,
+                stayLoggedIn = registerDTO.stayLoggedIn,
+                JWTToken = jwtToken,
+                RefreshToken = refreshToken
             };
-
-
 
             return Ok(response);
         }

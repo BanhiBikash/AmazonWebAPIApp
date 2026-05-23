@@ -20,7 +20,7 @@ namespace AmazonWeb.Core.Services
         /// <summary>
         /// Generates a short-lived JSON Web Token containing identity claims signed with HS256.
         /// </summary>
-        public string CreateJWTToken(string email, string name, string userId, IEnumerable<string> roles)
+        public string CreateJWTToken(string email, string name, string userId, string role)
         {
             var secretKey = _configuration["JwtSettings:SecretKey"];
             if (string.IsNullOrEmpty(secretKey) || secretKey.Length < 32)
@@ -40,11 +40,9 @@ namespace AmazonWeb.Core.Services
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
             };
 
-            // Dynamically append your authorization role collections
-            foreach (var role in roles)
-            {
-                claims.Add(new Claim(ClaimTypes.Role, role));
-            }
+            // Dynamically append your authorization role
+            claims.Add(new Claim(ClaimTypes.Role, role));
+            
 
             var expirationMinutes = double.Parse(_configuration["JwtSettings:AccessTokenExpirationMinutes"] ?? "15");
 
