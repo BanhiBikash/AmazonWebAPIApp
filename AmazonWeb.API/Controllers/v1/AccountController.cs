@@ -36,7 +36,7 @@ namespace AmazonWeb.API.Controllers.v1
         [HttpPost]
         [Route("[Action]")]
         [AllowAnonymous]
-        public async Task<ActionResult> Register(RegisterDTO registerDTO)
+        public async Task<ActionResult> Register([FromForm] RegisterDTO registerDTO)
         {
             if (!ModelState.IsValid)
                 return BadRequest(new ValidationProblemDetails(ModelState));
@@ -85,6 +85,7 @@ namespace AmazonWeb.API.Controllers.v1
             }
 
             await _userManager.AddToRoleAsync(user, targetRole);
+            //remove this if the sync causes issues , but it should be fine since we are not doing any other operations after this that would require the user to be fully signed in
             await _signInManager.SignInAsync(user, isPersistent: registerDTO.stayLoggedIn);
 
             //create jwt and refresh token  
@@ -141,6 +142,7 @@ namespace AmazonWeb.API.Controllers.v1
                 string primaryRole = roles.Count > 0 ? roles[0] : Role.User.ToString();
                 Enum.TryParse<Role>(primaryRole, out Role userRoleEnum);
 
+                //remove this if the sync causes issues , but it should be fine since we are not doing any other operations after this that would require the user to be fully signed in
                 await _signInManager.SignInAsync(user, isPersistent: loginDTO.RememberMe);
 
                 //create jwt and refresh token  
@@ -281,7 +283,8 @@ namespace AmazonWeb.API.Controllers.v1
             });
         }
 
-        [HttpPost("refresh")]
+        [HttpPost]
+        [Route("[Action]")]
         public async Task<ActionResult> Refresh(TokenRequestDTO tokenRequestDTO)
         {
             if (tokenRequestDTO == null || string.IsNullOrEmpty(tokenRequestDTO.Token) || string.IsNullOrEmpty(tokenRequestDTO.RefreshToken))
@@ -326,7 +329,7 @@ namespace AmazonWeb.API.Controllers.v1
                 // 6. Return them back to the caller
                 return Ok(new
                 {
-                    JwtToken = newAccessToken,
+                    jwtToken = newAccessToken,
                     RefreshToken = newRefreshToken
                 });
             }
