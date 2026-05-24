@@ -2,6 +2,7 @@
 using AmazonWeb.Core.DTO.AccountDTO;
 using AmazonWeb.Core.ServiceContracts;
 using AmazonWeb.Core.ServiceContracts.TokenContracts;
+using AmazonWeb.Infrastructure.Migrations;
 using Asp.Versioning;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -316,8 +317,10 @@ namespace AmazonWeb.API.Controllers.v1
                 string newAccessToken = _jwtTokenService.CreateJWTToken(user.Email!, fullName, user.Id.ToString(), role.ToString());
                 string newRefreshToken = _jwtTokenService.CreateRefreshToken();
 
-                // 5. Update the user's database entry with the new refresh token details (Rotation pattern)
+                //storing the refresh token in the database
+                int daysToExpire = int.Parse(_configuration["JwtSettings:RefreshTokenExpirationDays"] ?? "7");
                 user.RefreshToken = newRefreshToken;
+                user.RefreshTokenExpiryTime = DateTime.UtcNow.AddDays(daysToExpire);
                 await _userManager.UpdateAsync(user);
 
                 // 6. Return them back to the caller
