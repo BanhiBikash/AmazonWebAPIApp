@@ -140,15 +140,30 @@ namespace AmazonWeb.API.Controllers.v1
                 string primaryRole = roles.Count > 0 ? roles[0] : Role.User.ToString();
                 Enum.TryParse<Role>(primaryRole, out Role userRoleEnum);
 
+                await _signInManager.SignInAsync(user, isPersistent: loginDTO.RememberMe);
+
+                //create jwt and refresh token  
+                string userID = Convert.ToString(user.Id);
+                string jwtToken = _jwtTokenService.CreateJWTToken(user.Email, $"{user.FirstName}{user.LastName}", userID, user.UserRole.ToString());
+                string refreshToken = _jwtTokenService.CreateRefreshToken();
+
+                //storing the refresh token in the database
+                int daysToExpire = int.Parse(_configuration["JwtSettings:RefreshTokenExpirationDays"] ?? "7");
+                user.RefreshToken = refreshToken;
+                user.RefreshTokenExpiryTime = DateTime.UtcNow.AddDays(daysToExpire);
+                await _userManager.UpdateAsync(user);
+
                 var response = new SignInDTO()
                 {
-                    Email = user!.Email,
+                    Email = user.Email,
                     FirstName = user.FirstName,
                     LastName = user.LastName,
                     DateOfBirth = user.DateOfBirth,
                     Gender = user.Gender,
-                    UserRole = userRoleEnum,
-                    stayLoggedIn = loginDTO.RememberMe
+                    UserRole = user.UserRole,
+                    stayLoggedIn = loginDTO.RememberMe,
+                    JWTToken = jwtToken,
+                    RefreshToken = refreshToken
                 };
 
                 return Ok(response);
