@@ -279,5 +279,58 @@ namespace AmazonWeb.API.Controllers.v1
                 City = user.City
             });
         }
+
+        [HttpPost("refresh")]
+        public async Task<ActionResult> Refresh(TokenRequestDTO tokenRequestDTO)
+        {
+            if (tokenRequestDTO == null || string.IsNullOrEmpty(tokenRequestDTO.Token) || string.IsNullOrEmpty(tokenRequestDTO.RefreshToken))
+            {
+                return BadRequest("Invalid client request token parameters.");
+            }
+
+            try
+            {
+                // 1. Decode the expired token to find out who this user claims to be
+                var principal = _jwtTokenService.GetPrincipalFromExpiredToken(tokenRequestDTO.Token);
+                var email = principal.FindFirst(System.Security.Claims.ClaimTypes.Email)?.Value;
+
+                if (string.IsNullOrEmpty(email))
+                    return Unauthorized("Token context claims mapping missing basic identifiers.");
+
+                // 2. Look up the user record in your SQL Database
+                var user = await _userManager.FindByEmailAsync(email);
+                if (user == null)
+                    return Unauthorized("User record corresponding to token context not found.");
+
+                // 3. 🛡️ CRITICAL SECURITY CHECK: Verify the Refresh Token match and lifecycle expiration dates
+                if (user.RefreshToken != tokenRequestDTO.RefreshToken || user.RefreshTokenExpiryTime <= DateTime.UtcNow)
+                {
+                    // Token is either completely invalid, tampered with, or expired in DB. Kick them out!
+                    return Unauthorized("Refresh token has expired or is invalid. Please sign in again.");
+                }
+
+                // 4. Generate a fresh new pair of tokens
+                var role = user.UserRole;
+                var fullName = $"{user.FirstName} {user.LastName}".Trim();
+
+                string newAccessToken = _jwtTokenService.CreateJWTToken(user.Email!, fullName, user.Id.ToString(), role.ToString());
+                string newRefreshToken = _jwtTokenService.CreateRefreshToken();
+
+                // 5. Update the user's database entry with the new refresh token details (Rotation pattern)
+                user.RefreshToken = newRefreshToken;
+                await _userManager.UpdateAsync(user);
+
+                // 6. Return them back to the caller
+                return Ok(new
+                {
+                    JwtToken = newAccessToken,
+                    RefreshToken = newRefreshToken
+                });
+            }
+            catch (Exception ex)
+            {
+                return Unauthorized("Token parsing failure state: " + ex.Message);
+            }
+        }
     }
 }
