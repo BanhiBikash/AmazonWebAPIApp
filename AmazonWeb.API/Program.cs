@@ -9,10 +9,13 @@ using AmazonWeb.Infrastructure.DBContext;
 using AmazonWeb.Infrastructure.RepositoryContract;
 using Asp.Versioning;
 using Asp.Versioning.ApiExplorer;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
 using Swashbuckle.AspNetCore.SwaggerGen;
+using System.Text;
 using System.Text.Json.Serialization;
 
 
@@ -67,6 +70,38 @@ builder.Services.AddCors(options =>
                .AllowAnyMethod()
                .AllowAnyHeader();
     });
+});
+
+//Add authentication
+var jwtSettings = builder.Configuration.GetSection("JwtSettings");
+
+if (string.IsNullOrEmpty(jwtSettings["SecretKey"]))
+{
+    throw new InvalidOperationException("JWT secret key is not configured. Please set");
+}
+
+builder.Services.AddAuthentication(options =>
+{
+    //set the deafult authentication and challenge scheme
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+}).AddJwtBearer(options =>
+{
+    //validate parameters
+    options.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidateIssuer = true,
+        ValidateAudience = true,
+        ValidateLifetime = true, // Strictly rejects expired access tokens
+        ValidateIssuerSigningKey = true,
+
+        ValidIssuer = jwtSettings["Issuer"],
+        ValidAudience = jwtSettings["Audience"],
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings["SecretKey"])),
+
+        // Reduces default token expiration tolerance gap from 5 minutes to zero
+        ClockSkew = TimeSpan.Zero
+    };
 });
 
 //build the app
