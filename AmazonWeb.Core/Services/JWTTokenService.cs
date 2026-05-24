@@ -73,5 +73,32 @@ namespace AmazonWeb.Core.Services
             // Converts raw security bits cleanly into a secure URL-safe Base64 string
             return Convert.ToBase64String(randomNumber);
         }
+
+        public ClaimsPrincipal GetPrincipalFromExpiredToken(string token)
+        {
+            var secretKey = _configuration["JwtSettings:SecretKey"];
+            var tokenValidationParameters = new TokenValidationParameters
+            {
+                ValidateIssuer = true,
+                ValidateAudience = true,
+                ValidateIssuerSigningKey = true,
+                ValidIssuer = _configuration["JwtSettings:Issuer"],
+                ValidAudience = _configuration["JwtSettings:Audience"],
+                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey!)),
+                ValidateLifetime = false // 👈 CRITICAL: We explicitly turn this off because the token IS expired!
+            };
+
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var principal = tokenHandler.ValidateToken(token, tokenValidationParameters, out SecurityToken securityToken);
+
+            // Safety check: Ensure the token was signed with the HmacSha256 algorithm
+            if (securityToken is not JwtSecurityToken jwtSecurityToken ||
+                !jwtSecurityToken.Header.Alg.Equals(SecurityAlgorithms.HmacSha256, StringComparison.InvariantCultureIgnoreCase))
+            {
+                throw new SecurityTokenException("Invalid token signing algorithm.");
+            }
+
+            return principal;
+        }
     }
 }

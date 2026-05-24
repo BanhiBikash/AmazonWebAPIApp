@@ -88,7 +88,7 @@ namespace AmazonWeb.API.Controllers.v1
 
             //create jwt and refresh token  
             string userID = Convert.ToString(user.Id);
-            string jwtToken = _jwtTokenService.CreateJWTToken(user.Email,$"{user.FirstName}{user.LastName}",userID,user.UserRole.ToString());
+            string jwtToken = _jwtTokenService.CreateJWTToken(user.Email,$"{user.FirstName}{user.LastName}".Trim(),userID,user.UserRole.ToString());
             string refreshToken = _jwtTokenService.CreateRefreshToken();
 
             //storing the refresh token in the database
@@ -144,7 +144,7 @@ namespace AmazonWeb.API.Controllers.v1
 
                 //create jwt and refresh token  
                 string userID = Convert.ToString(user.Id);
-                string jwtToken = _jwtTokenService.CreateJWTToken(user.Email, $"{user.FirstName}{user.LastName}", userID, user.UserRole.ToString());
+                string jwtToken = _jwtTokenService.CreateJWTToken(user.Email, $"{user.FirstName}{user.LastName}".Trim(), userID, user.UserRole.ToString());
                 string refreshToken = _jwtTokenService.CreateRefreshToken();
 
                 //storing the refresh token in the database
