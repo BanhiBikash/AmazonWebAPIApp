@@ -95,7 +95,8 @@ namespace AmazonWeb.API.Controllers.v1
             int daysToExpire = int.Parse(_configuration["JwtSettings:RefreshTokenExpirationDays"] ?? "7");
             user.RefreshToken = refreshToken;
             user.RefreshTokenExpiryTime = DateTime.UtcNow.AddDays(daysToExpire);
-
+            await _userManager.UpdateAsync(user);
+            
             var response = new SignInDTO()
             {
                 Email = user.Email,
