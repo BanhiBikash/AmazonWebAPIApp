@@ -20,38 +20,37 @@ using Swashbuckle.AspNetCore.SwaggerGen;
 using System.Text;
 using System.Text.Json.Serialization;
 
-
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllers(options =>
 {
-    //add global authorization filter
+    // Add global authorization filter
     var policy = new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build();
     options.Filters.Add(new AuthorizeFilter(policy));
 })
 .AddJsonOptions(options =>
 {
-    //allows strings to be serialized as enums in swagger and api responses
+    // Allows strings to be serialized as enums in swagger and api responses
     options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
 });
 
-//database
+// Database
 builder.Services.AddDbContext<ApplicationDBContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-//services
+// Services
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
-builder.Services.AddSingleton<IFileService,LocalFileService>();
-builder.Services.AddScoped<IProductService,ProductService>();
+builder.Services.AddSingleton<IFileService, LocalFileService>();
+builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddScoped<IJWTTokenservice, JWTTokenService>();
 
-//swagger
+// Swagger
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddTransient<IConfigureOptions<SwaggerGenOptions>,ConfigureSwaggerOptions>();  //for automated swagger api versioning
+builder.Services.AddTransient<IConfigureOptions<SwaggerGenOptions>, ConfigureSwaggerOptions>(); // For automated swagger api versioning
 builder.Services.AddSwaggerGen();
 
-//api versioning
+// API Versioning
 builder.Services.AddApiVersioning(options =>
 {
     options.AssumeDefaultVersionWhenUnspecified = true;
@@ -61,41 +60,40 @@ builder.Services.AddApiVersioning(options =>
 }).AddApiExplorer(options =>
 {
     options.GroupNameFormat = "'v'VVV";
-    options.SubstituteApiVersionInUrl = true;       //sets the api version in url
+    options.SubstituteApiVersionInUrl = true; // Sets the api version in url
 });
 
-//Add Identity
+// Add Identity
 builder.Services.AddIdentity<ApplicationUser, ApplicationRole>()
     .AddEntityFrameworkStores<ApplicationDBContext>()
     .AddDefaultTokenProviders();
 
-//CORS
+// CORS
 builder.Services.AddCors(options =>
 {
-    options.AddDefaultPolicy(builder =>
+    options.AddDefaultPolicy(policyBuilder =>
     {
-        builder.AllowAnyOrigin()
-               .AllowAnyMethod()
-               .AllowAnyHeader();
+        policyBuilder.AllowAnyOrigin()
+                     .AllowAnyMethod()
+                     .AllowAnyHeader();
     });
 });
 
-//Add authentication
+// Add Authentication
 var jwtSettings = builder.Configuration.GetSection("JwtSettings");
 
 if (string.IsNullOrEmpty(jwtSettings["SecretKey"]))
 {
-    throw new InvalidOperationException("JWT secret key is not configured. Please set");
+    throw new InvalidOperationException("JWT secret key is not configured.");
 }
 
 builder.Services.AddAuthentication(options =>
 {
-    //set the deafult authentication and challenge scheme
     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
     options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-}).AddJwtBearer(options =>
+})
+.AddJwtBearer(options =>
 {
-    //validate parameters
     options.TokenValidationParameters = new TokenValidationParameters
     {
         ValidateIssuer = true,
@@ -110,25 +108,35 @@ builder.Services.AddAuthentication(options =>
         // Reduces default token expiration tolerance gap from 5 minutes to zero
         ClockSkew = TimeSpan.Zero
     };
+
+    // ✨ Added: Explicitly force a clean 401 response header context when token expires
+    options.Events = new JwtBearerEvents
+    {
+        OnAuthenticationFailed = context =>
+        {
+            if (context.Exception is SecurityTokenExpiredException)
+            {
+                context.Response.Headers.Append("Token-Expired", "true");
+            }
+            return Task.CompletedTask;
+        }
+    };
 });
 
-//build the app
+// Build the app
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
 app.UseHsts();
 app.UseHttpsRedirection();
 
-//swagger
-// ✅ Only show Swagger UI when running in the Development environment
+// Swagger (Only show Swagger UI when running in Development)
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI(options =>
     {
         var service = app.Services.GetRequiredService<IApiVersionDescriptionProvider>();
-
-        // Api-version-Description is a list of descriptions of all versions of api
         foreach (var description in service.ApiVersionDescriptions)
         {
             options.SwaggerEndpoint($"/swagger/{description.GroupName}/swagger.json", description.GroupName.ToUpperInvariant());
@@ -136,12 +144,16 @@ if (app.Environment.IsDevelopment())
     });
 }
 
-app.MapControllers();
 app.UseStaticFiles();
 
-//checks
-app.UseCors();
-app.UseAuthentication();
+//Sequence: Routing -> CORS -> Auth -> Controllers
+app.UseRouting();
+
+app.UseCors(); //AFTER UseRouting and BEFORE UseAuthentication
+
+app.UseAuthentication(); //BEFORE UseAuthorization
 app.UseAuthorization();
-app.MapControllers();
+
+app.MapControllers(); //Single, clean registration call at the very end
+
 app.Run();
