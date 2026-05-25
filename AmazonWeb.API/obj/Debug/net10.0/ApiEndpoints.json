@@ -17,6 +17,22 @@
   },
   {
     "ContainingType": "AmazonWeb.API.Controllers.v1.AccountController",
+    "Method": "Refresh",
+    "RelativePath": "api/v1/Account/Refresh",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "tokenRequestDTO",
+        "Type": "AmazonWeb.Core.DTO.AccountDTO.TokenRequestDTO",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "AmazonWeb.API.Controllers.v1.AccountController",
     "Method": "Register",
     "RelativePath": "api/v1/Account/Register",
     "HttpMethod": "POST",

@@ -36,18 +36,18 @@ namespace AmazonWeb.API.Controllers.v1
         [HttpPost]
         [Route("[Action]")]
         [AllowAnonymous]
-        public async Task<ActionResult> Register([FromForm] RegisterDTO registerDTO)
+        public async Task<ActionResult> Register(RegisterDTO registerDTO)
         {
             if (!ModelState.IsValid)
                 return BadRequest(new ValidationProblemDetails(ModelState));
 
-            if (registerDTO.UserRole == Role.Admin)
-            {
-                ModelState.AddModelError("UserRole", "Administrative accounts cannot be self-registered publicly.");
-                return BadRequest(new ValidationProblemDetails(ModelState));
-            }
+            //if (registerDTO.UserRole == Role.Admin)
+            //{
+            //    ModelState.AddModelError("UserRole", "Administrative accounts cannot be self-registered publicly.");
+            //    return BadRequest(new ValidationProblemDetails(ModelState));
+            //}
 
-            if (registerDTO.UserRole != Role.User)
+            if (registerDTO.UserRole != Role.User && registerDTO.UserRole != Role.Admin)
             {
                 ModelState.AddModelError("UserRole", "Please select a valid user role.");
                 return BadRequest(new ValidationProblemDetails(ModelState));
@@ -61,7 +61,8 @@ namespace AmazonWeb.API.Controllers.v1
                 FirstName = registerDTO.FirstName,
                 LastName = registerDTO.LastName,
                 Gender = registerDTO.Gender,
-                DateOfBirth = registerDTO.DateOfBirth
+                DateOfBirth = registerDTO.DateOfBirth,
+                UserRole = registerDTO.UserRole
             };
 
             var result = await _userManager.CreateAsync(user, registerDTO.Password);
@@ -78,7 +79,7 @@ namespace AmazonWeb.API.Controllers.v1
                 return BadRequest(new ValidationProblemDetails(ModelState));
             }
 
-            string targetRole = Role.User.ToString();
+            string targetRole = user.UserRole.ToString();
             if (await _roleManager.FindByNameAsync(targetRole) == null)
             {
                 await _roleManager.CreateAsync(new ApplicationRole { Name = targetRole });
@@ -90,7 +91,7 @@ namespace AmazonWeb.API.Controllers.v1
 
             //create jwt and refresh token  
             string userID = Convert.ToString(user.Id);
-            string jwtToken = _jwtTokenService.CreateJWTToken(user.Email,$"{user.FirstName}{user.LastName}".Trim(),userID,user.UserRole.ToString());
+            string jwtToken = _jwtTokenService.CreateJWTToken(user.Email,$"{user.FirstName}{user.LastName}".Trim(),userID,targetRole);
             string refreshToken = _jwtTokenService.CreateRefreshToken();
 
             //storing the refresh token in the database
