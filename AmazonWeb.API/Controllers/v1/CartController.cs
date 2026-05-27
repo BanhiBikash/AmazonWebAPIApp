@@ -9,12 +9,12 @@ using Microsoft.AspNetCore.Mvc;
 namespace AmazonWeb.API.Controllers.v1
 {
     [ApiVersion("1.0")]
-    public class CartController: CustomControllerBase
+    public class CartController : CustomControllerBase
     {
         private readonly ICartService _cartService;
 
-        public CartController(ICartService cartService) 
-        { 
+        public CartController(ICartService cartService)
+        {
             _cartService = cartService;
         }
 
@@ -35,6 +35,28 @@ namespace AmazonWeb.API.Controllers.v1
             }
 
             return Ok(updatedCart); // Returns 200 OK along with your fresh CartResponse payload instantly!
+        }
+
+        [HttpDelete("[Action]")]
+        public async Task<ActionResult> RemoveItem(Guid userId, Guid productId)
+        {
+            var result = await _cartService.RemoveItemAsync(userId, productId);
+            if (!result)
+            {
+                return BadRequest("Failed to remove item from cart. Verify user and product identifiers.");
+            }
+            return NoContent(); // 204 No Content is ideal for successful deletions without a response body
+        }
+
+        [HttpDelete("[Action]")]
+        public async Task<ActionResult> ClearCart(Guid userId)
+        {
+            var result = await _cartService.ClearCartAsync(userId);
+            if (!result)
+            {
+                return BadRequest("Failed to clear cart. Verify user identifier.");
+            }
+            return NoContent(); // 204 No Content is ideal for successful deletions without a response body
         }
     }
 }
