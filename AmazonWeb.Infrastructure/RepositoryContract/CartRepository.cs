@@ -33,6 +33,11 @@ namespace AmazonWeb.Infrastructure.RepositoryContract
         /// </summary>
         public async Task<IEnumerable<CartItem>> GetCartByUserIdAsync(Guid userId)
         {
+            if (!await IsDatabaseAliveAsync())
+            {
+                throw new InvalidOperationException("Database connectivity check failed. Unable to fetch cart data.");
+            }
+
             return await _context.CartItems
                 .Include(ci => ci.Product) // 🎯 Crucial: Loads Product data (Name, Price, Image) for React
                 .Where(ci => ci.UserId == userId)
@@ -45,6 +50,11 @@ namespace AmazonWeb.Infrastructure.RepositoryContract
         /// </summary>
         public async Task<bool> UpdateQuantityAsync(Guid userId, Guid productId, int quantity)
         {
+            if (!await IsDatabaseAliveAsync())
+            {
+                throw new InvalidOperationException("Database connectivity check failed. Unable to update cart quantity.");
+            }
+
             if (quantity <= 0)
             {
                 // Defensively fallback to item removal if quantity parameters slide below 1
@@ -83,6 +93,11 @@ namespace AmazonWeb.Infrastructure.RepositoryContract
         /// </summary>
         public async Task<bool> RemoveItemAsync(Guid userId, Guid productId)
         {
+            if (!await IsDatabaseAliveAsync())
+            {
+                throw new InvalidOperationException("Database connectivity check failed. Unable to remove item from cart.");
+            }
+
             var targetItem = await _context.CartItems
                 .FirstOrDefaultAsync(ci => ci.UserId == userId && ci.ProductId == productId);
 
@@ -98,6 +113,11 @@ namespace AmazonWeb.Infrastructure.RepositoryContract
         /// </summary>
         public async Task<bool> ClearCartAsync(Guid userId)
         {
+            if (!await IsDatabaseAliveAsync())
+            {
+                throw new InvalidOperationException("Database connectivity check failed. Unable to clear shopping cart.");
+            }
+
             var userItems = await _context.CartItems
                 .Where(ci => ci.UserId == userId)
                 .ToListAsync();

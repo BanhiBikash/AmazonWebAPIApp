@@ -24,6 +24,18 @@ namespace AmazonWeb.Core.Domain.Entities
         public DateTime DateAdded { get; set; } = DateTime.UtcNow;
 
         // ==========================================
+        // Dynamic In-Memory Computations (Not Saved in Database)
+        // ==========================================
+
+        // 🎯 Safely reads the live currency price directly from your catalog product properties
+        [NotMapped]
+        public int UnitPrice => Product != null ? Product.Price : 0;
+
+        // 🎯 Safely calculates dynamic row totals instantly using the live price mapping
+        [NotMapped]
+        public int TotalPrice => Quantity * UnitPrice;
+
+        // ==========================================
         // Navigation Properties
         // ==========================================
 
@@ -32,5 +44,7 @@ namespace AmazonWeb.Core.Domain.Entities
 
         [ForeignKey(nameof(ProductId))]
         public Product Product { get; set; } = null!;
+        public string? ProductName { get; set; }
+        public string ImageUrl { get; internal set; }
     }
 }
