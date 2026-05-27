@@ -1,4 +1,5 @@
 ﻿using AmazonWeb.Core.Domain.RepositoryContract;
+using AmazonWeb.Core.DTO.AddDTO;
 using AmazonWeb.Core.DTO.ResponseDTO;
 using AmazonWeb.Core.ServiceContracts.CartContracts;
 using Asp.Versioning;
@@ -23,7 +24,17 @@ namespace AmazonWeb.API.Controllers.v1
             return await _cartService.GetCartByUserIdAsync(userId);
         }
 
-        [HttpGet]
-        public async Task<> 
+        [HttpPost("[Action]")]
+        public async Task<ActionResult<CartResponse>> UpdateCart(Guid userId, CartRequest cartRequest)
+        {
+            var updatedCart = await _cartService.AddOrUpdateItemAsync(userId, cartRequest);
+
+            if (updatedCart == null)
+            {
+                return BadRequest("Unable to update cart. Verify input parameters or user context.");
+            }
+
+            return Ok(updatedCart); // Returns 200 OK along with your fresh CartResponse payload instantly!
+        }
     }
 }

@@ -45,24 +45,29 @@ namespace AmazonWeb.Core.Services
         /// <summary>
         /// Adds an item or updates its quantity in the user's cart.
         /// </summary>
-        public async Task<bool> AddOrUpdateItemAsync(Guid userId, CartRequest cartRequest)
+        public async Task<CartResponse?> AddOrUpdateItemAsync(Guid userId, CartRequest cartRequest)
         {
-            if (cartRequest == null) return false;
+            if (cartRequest == null) return null;
 
-            ApplicationUser? user = await _userManager.FindByIdAsync(userId.ToString());
+            // 🔍 Single user validation check
+            var user = await _userManager.FindByIdAsync(userId.ToString());
+            if (user == null) return null;
 
-            //check if user exists and cart retrieval is successful before proceeding
-            if (user==null)
-            {
-                return false; // User not found or cart retrieval failed
-            }
-
-            // Forward parameters directly down to your repository layer logic
-            return await _cartRepository.UpdateQuantityAsync(
+            // The repo executes the logic and returns the raw collection in one trip
+            var updatedItems = await _cartRepository.UpdateQuantityAsync(
                 userId,
                 cartRequest.ProductId,
                 cartRequest.Quantity
             );
+
+            // Map the database rows directly to your DTO response envelope
+            var response = new CartResponse();
+            if (updatedItems != null)
+            {
+                response.Items = updatedItems.ToList();
+            }
+
+            return response;
         }
 
         /// <summary>

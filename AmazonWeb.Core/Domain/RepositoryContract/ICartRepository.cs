@@ -18,7 +18,7 @@ namespace AmazonWeb.Core.Domain.RepositoryContract
         Task<IEnumerable<CartItem>> GetCartByUserIdAsync(Guid userId);
 
         // 🎯 Dynamic alteration handling: inserts a new row or updates quantity parameters
-        Task<bool> UpdateQuantityAsync(Guid userId, Guid productId, int quantity);
+        Task<IEnumerable<CartItem>> UpdateQuantityAsync(Guid userId, Guid productId, int quantity);
 
         // 🎯 Removes a specific product item row from a user's cart
         Task<bool> RemoveItemAsync(Guid userId, Guid productId);

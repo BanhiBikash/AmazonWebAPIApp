@@ -48,44 +48,56 @@ namespace AmazonWeb.Infrastructure.RepositoryContract
         /// <summary>
         /// Natively Upserts (Updates or Inserts) an item quantity parameter safely.
         /// </summary>
-        public async Task<bool> UpdateQuantityAsync(Guid userId, Guid productId, int quantity)
+        public async Task<IEnumerable<CartItem>> UpdateQuantityAsync(Guid userId, Guid productId, int quantity)
         {
+            // 🎯 Single DB connection check for the entire consolidated transaction sequence
             if (!await IsDatabaseAliveAsync())
             {
-                throw new InvalidOperationException("Database connectivity check failed. Unable to update cart quantity.");
+                throw new InvalidOperationException("Database connectivity check failed. Unable to update cart.");
             }
 
             if (quantity <= 0)
             {
-                // Defensively fallback to item removal if quantity parameters slide below 1
-                return await RemoveItemAsync(userId, productId);
-            }
-
-            // Check if this item record footprint already exists for the customer
-            var existingItem = await _context.CartItems
-                .FirstOrDefaultAsync(ci => ci.UserId == userId && ci.ProductId == productId);
-
-            if (existingItem != null)
-            {
-                // Update targeted quantity properties
-                existingItem.Quantity = quantity;
-                existingItem.DateAdded = DateTime.UtcNow; // Push to top of cart list
+                var targetItem = await _context.CartItems
+                    .FirstOrDefaultAsync(ci => ci.UserId == userId && ci.ProductId == productId);
+                if (targetItem != null)
+                {
+                    _context.CartItems.Remove(targetItem);
+                    await _context.SaveChangesAsync();
+                }
             }
             else
             {
-                // Fresh product insertion block
-                var newItem = new CartItem
+                var existingItem = await _context.CartItems
+                    .FirstOrDefaultAsync(ci => ci.UserId == userId && ci.ProductId == productId);
+
+                if (existingItem != null)
                 {
-                    Id = Guid.NewGuid(),
-                    UserId = userId,
-                    ProductId = productId,
-                    Quantity = quantity,
-                    DateAdded = DateTime.UtcNow
-                };
-                await _context.CartItems.AddAsync(newItem);
+                    existingItem.Quantity = quantity;
+                    existingItem.DateAdded = DateTime.UtcNow;
+                }
+                else
+                {
+                    var newItem = new CartItem
+                    {
+                        Id = Guid.NewGuid(),
+                        UserId = userId,
+                        ProductId = productId,
+                        Quantity = quantity,
+                        DateAdded = DateTime.UtcNow
+                    };
+                    await _context.CartItems.AddAsync(newItem);
+                }
+
+                await _context.SaveChangesAsync();
             }
 
-            return await _context.SaveChangesAsync() > 0;
+            // 🎯 REUSE Connection: Return the fresh state immediately from the exact same method
+            return await _context.CartItems
+                .Include(ci => ci.Product)
+                .Where(ci => ci.UserId == userId)
+                .OrderByDescending(ci => ci.DateAdded)
+                .ToListAsync();
         }
 
         /// <summary>

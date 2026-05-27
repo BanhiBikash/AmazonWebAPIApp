@@ -19,7 +19,7 @@ namespace AmazonWeb.Core.ServiceContracts.CartContracts
         /// Adds an item or updates its quantity in the user's cart, 
         /// executing business rule validations first.
         /// </summary>
-        Task<bool> AddOrUpdateItemAsync(Guid userId, CartRequest cartRequest);
+        Task<CartResponse?> AddOrUpdateItemAsync(Guid userId, CartRequest cartRequest);
 
         /// <summary>
         /// Removes a specific product row from a user's cart.
