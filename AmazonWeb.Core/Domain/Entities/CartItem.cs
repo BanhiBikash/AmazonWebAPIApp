@@ -44,7 +44,5 @@ namespace AmazonWeb.Core.Domain.Entities
 
         [ForeignKey(nameof(ProductId))]
         public Product Product { get; set; } = null!;
-        public string? ProductName { get; set; }
-        public string ImageUrl { get; internal set; }
     }
 }

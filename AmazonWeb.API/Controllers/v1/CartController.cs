@@ -19,7 +19,7 @@ namespace AmazonWeb.API.Controllers.v1
         }
 
         [HttpGet]
-        public async Task<CartResponse?> GetCartByUserIdAsync(Guid userId)
+        public async Task<ActionResult<CartResponse?>> GetCartByUserIdAsync(Guid userId)
         {
             return await _cartService.GetCartByUserIdAsync(userId);
         }

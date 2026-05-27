@@ -115,6 +115,100 @@
     "ReturnTypes": []
   },
   {
+    "ContainingType": "AmazonWeb.API.Controllers.v1.CartController",
+    "Method": "GetCartByUserIdAsync",
+    "RelativePath": "api/v1/Cart",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "userId",
+        "Type": "System.Guid",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "AmazonWeb.Core.DTO.ResponseDTO.CartResponse",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "AmazonWeb.API.Controllers.v1.CartController",
+    "Method": "ClearCart",
+    "RelativePath": "api/v1/Cart/ClearCart",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "userId",
+        "Type": "System.Guid",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "AmazonWeb.API.Controllers.v1.CartController",
+    "Method": "RemoveItem",
+    "RelativePath": "api/v1/Cart/RemoveItem",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "userId",
+        "Type": "System.Guid",
+        "IsRequired": false
+      },
+      {
+        "Name": "productId",
+        "Type": "System.Guid",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "AmazonWeb.API.Controllers.v1.CartController",
+    "Method": "UpdateCart",
+    "RelativePath": "api/v1/Cart/UpdateCart",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "userId",
+        "Type": "System.Guid",
+        "IsRequired": false
+      },
+      {
+        "Name": "cartRequest",
+        "Type": "AmazonWeb.Core.DTO.AddDTO.CartRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "AmazonWeb.Core.DTO.ResponseDTO.CartResponse",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
     "ContainingType": "AmazonWeb.API.Controllers.v1.ProductsController",
     "Method": "GetAllProducts",
     "RelativePath": "api/v1/Products",

@@ -76,10 +76,9 @@ namespace AmazonWeb.Core.Services
         public async Task<bool> RemoveItemAsync(Guid userId, Guid productId)
         {
             ApplicationUser? user = await _userManager.FindByIdAsync(userId.ToString());
-            ProductResponse? product = await _productService.GetProductByIdAsync(productId);
 
             // Ensure both user and product exist before attempting to remove the item from the cart    
-            if (user == null || product == null)
+            if (user == null)
             {
                 return false; // User not found
             }
