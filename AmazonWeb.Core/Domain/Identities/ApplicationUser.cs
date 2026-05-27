@@ -44,6 +44,9 @@ namespace AmazonWeb.Core.Domain.Identities
 
         // Example: link to orders
         public List<Order>? Orders { get; set; }
+        
+        // 🛒 Direct link to active shopping cart rows
+        public List<CartItem> CartItems { get; set; } = new List<CartItem>();
 
         public bool IsDeleted { get; set; } = false;
 

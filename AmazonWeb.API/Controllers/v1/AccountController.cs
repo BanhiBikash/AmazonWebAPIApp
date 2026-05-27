@@ -230,7 +230,7 @@ namespace AmazonWeb.API.Controllers.v1
             return Ok(new { Message = "Password updated successfully." });
         }
 
-        [HttpPost]
+        [HttpPut]
         [Authorize] // 👈 Requires an active authentication token/cookie session
         [Route("[Action]")]
         public async Task<ActionResult> UpdateProfile([FromForm] UserUpdateRequest request)
@@ -280,7 +280,10 @@ namespace AmazonWeb.API.Controllers.v1
                 Message = "Profile updated successfully.",
                 ProfileImageUrl = user.ProfileImageUrl,
                 Address = user.Address,
-                City = user.City
+                City = user.City,
+                State = user.State,
+                PostalCode = user.PostalCode,
+                Country = user.Country
             });
         }
 
@@ -338,6 +341,34 @@ namespace AmazonWeb.API.Controllers.v1
             {
                 return Unauthorized("Token parsing failure state: " + ex.Message);
             }
+        }
+
+        [HttpGet("[Action]")]
+        [Authorize]
+        public async Task<ActionResult> GetProfileDetails()
+        {
+            // 1. Secure extraction out of the identity passport token
+            string? currentUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (string.IsNullOrEmpty(currentUserId))
+                return Unauthorized();
+
+            ApplicationUser? user = await _userManager.FindByIdAsync(currentUserId);
+            if (user == null)
+                return NotFound("User account records could not be resolved.");
+
+            // 2. Return clean current state matching your React form expectations
+            return Ok(new
+            {
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                Email = user.Email,
+                ProfileImageUrl = user.ProfileImageUrl,
+                Address = user.Address,
+                City = user.City,
+                State = user.State,
+                PostalCode = user.PostalCode,
+                Country = user.Country
+            });
         }
     }
 }

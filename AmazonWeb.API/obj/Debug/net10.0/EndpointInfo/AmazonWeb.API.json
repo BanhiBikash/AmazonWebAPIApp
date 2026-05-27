@@ -100,7 +100,7 @@
       }
     },
     "/api/v1/Account/UpdateProfile": {
-      "post": {
+      "put": {
         "tags": [
           "Account"
         ],
@@ -198,6 +198,18 @@
             }
           }
         },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/v1/Account/GetProfileDetails": {
+      "get": {
+        "tags": [
+          "Account"
+        ],
         "responses": {
           "200": {
             "description": "OK"

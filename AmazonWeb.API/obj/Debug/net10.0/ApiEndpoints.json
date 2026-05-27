@@ -1,6 +1,16 @@
 [
   {
     "ContainingType": "AmazonWeb.API.Controllers.v1.AccountController",
+    "Method": "GetProfileDetails",
+    "RelativePath": "api/v1/Account/GetProfileDetails",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "AmazonWeb.API.Controllers.v1.AccountController",
     "Method": "Login",
     "RelativePath": "api/v1/Account/Login",
     "HttpMethod": "POST",
@@ -67,7 +77,7 @@
     "ContainingType": "AmazonWeb.API.Controllers.v1.AccountController",
     "Method": "UpdateProfile",
     "RelativePath": "api/v1/Account/UpdateProfile",
-    "HttpMethod": "POST",
+    "HttpMethod": "PUT",
     "IsController": true,
     "Order": 0,
     "Parameters": [

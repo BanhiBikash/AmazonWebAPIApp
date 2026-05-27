@@ -1,2 +1,6 @@
 wwwroot\resources\product-thumbnail\672cded7-e978-4065-a96e-86f570bc4a6f.webp
+wwwroot\resources\product-thumbnail\a5a872a9-5ef5-4e60-87df-478159285e20.webp
+wwwroot\resources\product-thumbnail\a91a2af8-e751-4fe2-9cf0-ed05f2958d08.webp
 wwwroot\resources\product-thumbnail\bdb8cda5-010f-4d32-99de-2260dbb16eb7.webp
+wwwroot\resources\product-thumbnail\c32fca30-477b-46a5-bde4-eb992463264b.png
+wwwroot\resources\product-thumbnail\c32fca30-477b-46a5-bde4-eb992463264b.webp
