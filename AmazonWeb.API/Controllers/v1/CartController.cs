@@ -4,7 +4,7 @@ using AmazonWeb.Core.ServiceContracts.CartContracts;
 using Asp.Versioning;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System;
+using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt; // 🎯 Added for clear claim mapping definitions
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -34,6 +34,29 @@ namespace AmazonWeb.API.Controllers.v1
 
             Guid userId = Guid.Parse(userIdString);
             return await _cartService.GetCartByUserIdAsync(userId);
+        }
+
+        [HttpPost("[Action]")]
+        public async Task<IActionResult> MergeCart([FromBody] List<CartRequest> guestItems)
+        {
+            var userIdString = User.FindFirstValue(JwtRegisteredClaimNames.Sub) ?? User.FindFirstValue("sub");
+            if (string.IsNullOrEmpty(userIdString))
+                return Unauthorized();
+
+            Guid userId = Guid.Parse(userIdString);
+
+            if (guestItems != null && guestItems.Count > 0)
+            {
+                foreach (var item in guestItems)
+                {
+                    // Reuses your existing service logic to upsert or add quantities safely
+                    await _cartService.AddOrUpdateItemAsync(userId, item);
+                }
+            }
+
+            // Return the updated, fully combined database cart structure
+            var updatedCart = await _cartService.GetCartByUserIdAsync(userId);
+            return Ok(updatedCart);
         }
 
         [HttpPost("[Action]")]
