@@ -3,16 +3,13 @@ using AmazonWeb.Core.DTO.ResponseDTO;
 using AmazonWeb.Core.ServiceContracts.CartContracts;
 using Asp.Versioning;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-using System.Collections.Generic;
-using System.IdentityModel.Tokens.Jwt; // 🎯 Added for clear claim mapping definitions
+using Microsoft.AspNetCore.Mvc;using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
-using System.Threading.Tasks;
 
 namespace AmazonWeb.API.Controllers.v1
 {
     [ApiVersion("1.0")]
-    [AllowAnonymous] // 🔓 Overrides the global Program.cs filter to let guest traffic hit this controller layer
+    [AllowAnonymous] // 🔓 Allows guest traffic to hit baseline mapping flows safely
     public class CartController : CustomControllerBase
     {
         private readonly ICartService _cartService;
@@ -25,10 +22,12 @@ namespace AmazonWeb.API.Controllers.v1
         [HttpGet]
         public async Task<ActionResult<CartResponse?>> GetCartByUserIdAsync()
         {
-            // 🎯 Fixed: Matches the 'JwtRegisteredClaimNames.Sub' claim produced by your service
-            var userIdString = User.FindFirstValue(JwtRegisteredClaimNames.Sub) ?? User.FindFirstValue("sub");
+            // 🎯 FIXED: Standardized fallback chain across ALL actions to capture auto-mapped tokens
+            var userIdString = User.FindFirstValue(JwtRegisteredClaimNames.Sub)
+                               ?? User.FindFirstValue("sub")
+                               ?? User.FindFirstValue(ClaimTypes.NameIdentifier);
 
-            // 👥 Guest Mode: If no token headers are provided, don't crash, return an empty profile state baseline
+            // 👥 Guest Mode Baseline
             if (string.IsNullOrEmpty(userIdString))
                 return Ok(null);
 
@@ -39,7 +38,10 @@ namespace AmazonWeb.API.Controllers.v1
         [HttpPost("[Action]")]
         public async Task<IActionResult> MergeCart([FromBody] List<CartRequest> guestItems)
         {
-            var userIdString = User.FindFirstValue(JwtRegisteredClaimNames.Sub) ?? User.FindFirstValue("sub");
+            var userIdString = User.FindFirstValue(JwtRegisteredClaimNames.Sub)
+                               ?? User.FindFirstValue("sub")
+                               ?? User.FindFirstValue(ClaimTypes.NameIdentifier);
+
             if (string.IsNullOrEmpty(userIdString))
                 return Unauthorized();
 
@@ -49,12 +51,22 @@ namespace AmazonWeb.API.Controllers.v1
             {
                 foreach (var item in guestItems)
                 {
-                    // Reuses your existing service logic to upsert or add quantities safely
-                    await _cartService.AddOrUpdateItemAsync(userId, item);
+                    if (item.ProductId == Guid.Empty || item.Quantity <= 0)
+                        continue; // Guard against corrupt payloads
+
+                    // 🎯 FIXED: Rebuild a clean execution context scope wrapper payload object. 
+                    // This forces your service layer to lookup up-to-date data properties (Price, SKU, etc.)
+                    // instead of saving null/zeroed guest fields passed from client-side JSON caches.
+                    var isolatedPayload = new CartRequest
+                    {
+                        ProductId = item.ProductId,
+                        Quantity = item.Quantity
+                    };
+
+                    await _cartService.AddOrUpdateItemAsync(userId, isolatedPayload);
                 }
             }
 
-            // Return the updated, fully combined database cart structure
             var updatedCart = await _cartService.GetCartByUserIdAsync(userId);
             return Ok(updatedCart);
         }
@@ -62,9 +74,11 @@ namespace AmazonWeb.API.Controllers.v1
         [HttpPost("[Action]")]
         public async Task<ActionResult<CartResponse>> UpdateCart(CartRequest cartRequest)
         {
-            var userIdString = User.FindFirstValue(JwtRegisteredClaimNames.Sub) ?? User.FindFirstValue("sub");
+            var userIdString = User.FindFirstValue(JwtRegisteredClaimNames.Sub)
+                               ?? User.FindFirstValue("sub")
+                               ?? User.FindFirstValue(ClaimTypes.NameIdentifier);
 
-            // 🔒 Guard: Guests cannot write records into the remote DB tables
+            // 🔒 Guard: Authenticated context required
             if (string.IsNullOrEmpty(userIdString))
                 return Unauthorized("An authenticated session token is required to update database carts.");
 
@@ -82,7 +96,10 @@ namespace AmazonWeb.API.Controllers.v1
         [HttpDelete("[Action]")]
         public async Task<ActionResult> RemoveItem(Guid productId)
         {
-            var userIdString = User.FindFirstValue(JwtRegisteredClaimNames.Sub) ?? User.FindFirstValue("sub");
+            var userIdString = User.FindFirstValue(JwtRegisteredClaimNames.Sub)
+                               ?? User.FindFirstValue("sub")
+                               ?? User.FindFirstValue(ClaimTypes.NameIdentifier);
+
             if (string.IsNullOrEmpty(userIdString))
                 return Unauthorized("An authenticated session token is required to modify items.");
 
@@ -98,7 +115,10 @@ namespace AmazonWeb.API.Controllers.v1
         [HttpDelete("[Action]")]
         public async Task<ActionResult> ClearCart()
         {
-            var userIdString = User.FindFirstValue(JwtRegisteredClaimNames.Sub) ?? User.FindFirstValue("sub");
+            var userIdString = User.FindFirstValue(JwtRegisteredClaimNames.Sub)
+                               ?? User.FindFirstValue("sub")
+                               ?? User.FindFirstValue(ClaimTypes.NameIdentifier);
+
             if (string.IsNullOrEmpty(userIdString))
                 return Unauthorized("An authenticated session token is required to clear carts.");
 

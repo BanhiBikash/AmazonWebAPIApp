@@ -146,6 +146,22 @@
   },
   {
     "ContainingType": "AmazonWeb.API.Controllers.v1.CartController",
+    "Method": "MergeCart",
+    "RelativePath": "api/v1/Cart/MergeCart",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "guestItems",
+        "Type": "System.Collections.Generic.List\u00601[[AmazonWeb.Core.DTO.AddDTO.CartRequest, AmazonWeb.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "AmazonWeb.API.Controllers.v1.CartController",
     "Method": "RemoveItem",
     "RelativePath": "api/v1/Cart/RemoveItem",
     "HttpMethod": "DELETE",

@@ -35,6 +35,7 @@ builder.Services.AddControllers(options =>
 {
     // Allows strings to be serialized as enums in swagger and api responses
     options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+    options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
 });
 
 // Database
