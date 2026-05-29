@@ -2,6 +2,7 @@
 using AmazonWeb.Core.Domain.Identities;
 using AmazonWeb.Core.Domain.RepositoryContract;
 using AmazonWeb.Core.ServiceContracts;
+using AmazonWeb.Core.ServiceContracts.CartContracts;
 using AmazonWeb.Core.ServiceContracts.ProductContracts;
 using AmazonWeb.Core.ServiceContracts.TokenContracts;
 using AmazonWeb.Core.Services;
@@ -46,6 +47,7 @@ builder.Services.AddSingleton<IFileService, LocalFileService>();
 builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddScoped<IJWTTokenservice, JWTTokenService>();
 builder.Services.AddScoped<ICartRepository, CartRepository>();
+builder.Services.AddScoped<ICartService,CartService>();
 
 // Swagger
 builder.Services.AddEndpointsApiExplorer();
