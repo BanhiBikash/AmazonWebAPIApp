@@ -1,7 +1,4 @@
 ﻿using AmazonWeb.Core.Domain.Entities;
-using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace AmazonWeb.Core.Domain.RepositoryContract
 {

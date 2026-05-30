@@ -32,7 +32,8 @@ namespace AmazonWeb.API.Controllers.v1
                 return Ok(null);
 
             Guid userId = Guid.Parse(userIdString);
-            return await _cartService.GetCartByUserIdAsync(userId);
+            CartResponse? cartResponse = await _cartService.GetCartByUserIdAsync(userId);
+            return Ok(cartResponse);
         }
 
         [HttpPost("[Action]")]

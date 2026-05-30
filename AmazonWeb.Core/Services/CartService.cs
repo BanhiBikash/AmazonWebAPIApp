@@ -1,4 +1,5 @@
-﻿using AmazonWeb.Core.Domain.Identities;
+﻿using AmazonWeb.Core.Domain.Entities;
+using AmazonWeb.Core.Domain.Identities;
 using AmazonWeb.Core.Domain.RepositoryContract;
 using AmazonWeb.Core.DTO.AddDTO;
 using AmazonWeb.Core.DTO.ResponseDTO;
@@ -15,7 +16,7 @@ namespace AmazonWeb.Core.Services
         private readonly IProductService _productService;
 
         // Dependency Injection to pull in your repository layer
-        public CartService(ICartRepository cartRepository,UserManager<ApplicationUser> userManager,IProductService productService)
+        public CartService(ICartRepository cartRepository, UserManager<ApplicationUser> userManager, IProductService productService)
         {
             _cartRepository = cartRepository;
             _userManager = userManager;
@@ -30,13 +31,20 @@ namespace AmazonWeb.Core.Services
         {
             var response = new CartResponse();
 
-            // Fetch fully populated entities from the database (.Include(Product) is handled inside the repo)
+            // Fetch cart items from the database (.Include(Product) is handled inside the repo)
             var rawCartItems = await _cartRepository.GetCartByUserIdAsync(userId);
 
             if (rawCartItems != null)
             {
-                // Assigning the entity collection directly to avoid unnecessary mapping complexity
-                response.Items = rawCartItems.ToList();
+                foreach (CartItem item in rawCartItems)
+                {
+                    // Map the raw entity to a DTO for the response
+                    var product = await _productService.GetProductByIdAsync(item.ProductId);
+                    if (product != null)
+                    {
+                        response = await MapCartItemsToResponseAsync(rawCartItems); // Synchronously wait for the mapping to complete
+                    }
+                }
             }
 
             return response;
@@ -60,14 +68,10 @@ namespace AmazonWeb.Core.Services
                 cartRequest.Quantity
             );
 
-            // Map the database rows directly to your DTO response envelope
-            var response = new CartResponse();
-            if (updatedItems != null)
-            {
-                response.Items = updatedItems.ToList();
-            }
+            if (updatedItems == null) return null;
 
-            return response;
+            //React instantly receives names, prices, images, and total calculations.
+            return await MapCartItemsToResponseAsync(updatedItems);
         }
 
         /// <summary>
@@ -99,6 +103,50 @@ namespace AmazonWeb.Core.Services
             }
 
             return await _cartRepository.ClearCartAsync(userId);
+        }
+
+        /// <summary>
+        /// Shared high-performance private mapping engine to convert raw entities to DTOs.
+        /// </summary>
+        private async Task<CartResponse> MapCartItemsToResponseAsync(IEnumerable<CartItem> cartItems)
+        {
+            var response = new CartResponse();
+
+            foreach (CartItem item in cartItems)
+            {
+                // 🚀 OPTIMIZATION 1: If your repository loaded the Product using .Include(),
+                // we extract the data right here out of memory instantly. Zero DB overhead.
+                if (item.Product != null)
+                {
+                    response.Items.Add(new CartItemDto
+                    {
+                        ProductId = item.ProductId,
+                        Name = item.Product.Name,
+                        Quantity = item.Quantity,
+                        Price = item.Product.Price,
+                        imageUrl = item.Product.ImageUrl,
+                    });
+                }
+                else
+                {
+                    // 🛡️ FALLBACK: If the repository forgot to load the Product via an eager join, 
+                    // we safely query it using your catalog service so the app doesn't crash.
+                    var product = await _productService.GetProductByIdAsync(item.ProductId);
+                    if (product != null)
+                    {
+                        response.Items.Add(new CartItemDto
+                        {
+                            ProductId = item.ProductId,
+                            Name = product.Name,
+                            Quantity = item.Quantity,
+                            Price = product.Price,
+                            imageUrl = product.ImageUrl,
+                        });
+                    }
+                }
+            }
+
+            return response;
         }
     }
 }
