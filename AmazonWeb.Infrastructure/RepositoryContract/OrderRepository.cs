@@ -25,6 +25,11 @@ namespace AmazonWeb.Infrastructure.RepositoryContract
 
         public async Task<Order> AddAsync(Order order)
         {
+            if (!await IsDatabaseAliveAsync())
+            {
+                throw new InvalidOperationException("Database connectivity check failed. Unable to fetch cart data.");
+            }
+
             await _dbContext.Orders.AddAsync(order);
             int result = await _dbContext.SaveChangesAsync();
 
@@ -40,6 +45,11 @@ namespace AmazonWeb.Infrastructure.RepositoryContract
 
         public async Task<bool> DeleteAsync(Guid id)
         {
+            if (!await IsDatabaseAliveAsync())
+            {
+                throw new InvalidOperationException("Database connectivity check failed. Unable to fetch cart data.");
+            }
+
             var order = await _dbContext.Orders.FindAsync(id);
             if (order == null)
                 return false;
@@ -52,28 +62,48 @@ namespace AmazonWeb.Infrastructure.RepositoryContract
 
         public async Task<IEnumerable<Order>> GetAllAsync()
         {
+            if (!await IsDatabaseAliveAsync())
+            {
+                throw new InvalidOperationException("Database connectivity check failed. Unable to fetch cart data.");
+            }
+
             //egaer return so that items are not left behind, otherwise it will return orders without items
             return await _dbContext.Orders.Include(order=>order.Items).ToListAsync();
         }
 
-        public Task<Order?> GetByIdAsync(Guid id)
+        public async Task<Order?> GetByIdAsync(Guid id)
         {
+            if (!await IsDatabaseAliveAsync())
+            {
+                throw new InvalidOperationException("Database connectivity check failed. Unable to fetch cart data.");
+            }
+
             if (id==Guid.Empty)
             {
                 throw new ArgumentNullException("Id is empty, can't be retrieved.");
             }
 
-            return _dbContext.Orders.Include(order => order.Items).FirstOrDefaultAsync(order => order.Id == id);
+            return await _dbContext.Orders.Include(order => order.Items).FirstOrDefaultAsync(order => order.Id == id);
         }
 
         public async Task<IEnumerable<Order>> GetByStatusAsync(OrderStatus status)
         {
+            if (!await IsDatabaseAliveAsync())
+            {
+                throw new InvalidOperationException("Database connectivity check failed. Unable to fetch cart data.");
+            }
+
             return await _dbContext.Orders.Include(o=>o.Items).Where(order => order.Status == status).ToListAsync();
         }
 
         public async Task<IEnumerable<Order>> GetByUserIdAsync(Guid userId)
         {
-            if(userId == Guid.Empty)
+            if (!await IsDatabaseAliveAsync())
+            {
+                throw new InvalidOperationException("Database connectivity check failed. Unable to fetch cart data.");
+            }
+
+            if (userId == Guid.Empty)
             {
                 throw new ArgumentNullException("UserId is empty, can't be retrieved.");
             }
@@ -83,6 +113,11 @@ namespace AmazonWeb.Infrastructure.RepositoryContract
 
         public async Task<Order> UpdateAsync(Order order)
         {
+            if (!await IsDatabaseAliveAsync())
+            {
+                throw new InvalidOperationException("Database connectivity check failed. Unable to fetch cart data.");
+            }
+
             Order? orderDB = await _dbContext.Orders.Where(o=>o.Id==order.Id).FirstOrDefaultAsync();
 
             if(orderDB == null)

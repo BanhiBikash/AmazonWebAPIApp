@@ -1,6 +1,5 @@
 ﻿using AmazonWeb.Core.Domain.Identities;
-using System;
-using System.Collections.Generic;
+using AmazonWeb.Core.DTO.ResponseDTO;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -40,6 +39,22 @@ namespace AmazonWeb.Core.Domain.Entities
         // Navigation properties
         public ApplicationUser User { get; set; }
         public List<OrderItem> Items { get; set; } = new List<OrderItem>();
+
+        public OrderResponse ToOrderResponse()
+        {
+            return new OrderResponse
+            {
+                Id = Id, // You can drop "Order." and access properties directly
+                UserId = UserId,
+                OrderDate = OrderDate,
+                ShippingAddress = ShippingAddress,
+                PostalCode = PostalCode,
+                City = City,
+                Country = Country,
+                Status = Status.ToString(),
+                Items = Items
+            };
+        }
     }
 
     public enum OrderStatus
