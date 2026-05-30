@@ -48,6 +48,7 @@ builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddScoped<IJWTTokenservice, JWTTokenService>();
 builder.Services.AddScoped<ICartRepository, CartRepository>();
 builder.Services.AddScoped<ICartService,CartService>();
+builder.Services.AddScoped<IOrderRepository,OrderRepository>();
 
 // Swagger
 builder.Services.AddEndpointsApiExplorer();

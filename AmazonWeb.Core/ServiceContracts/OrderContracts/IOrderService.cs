@@ -17,7 +17,7 @@ namespace AmazonWeb.Core.ServiceContracts.OrderContracts
         /// </summary>
         /// <param name="userEmail"></param>
         /// <returns>returns the orders of a user</returns>
-        Task<OrderResponse?> GetOrdersByEmail(Guid userID);
+        Task<List<OrderResponse>?> GetOrdersByUserID(Guid userID);
 
         /// <summary>
         /// Takes the OrderID
