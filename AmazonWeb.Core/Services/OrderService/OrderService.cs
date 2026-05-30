@@ -28,31 +28,84 @@ namespace AmazonWeb.Core.Services.OrderService
         //Get orders of a particular email
         public async Task<List<OrderResponse>?> GetOrdersByUserID(Guid userID)
         {
-            if(userID == Guid.Empty)
+            if (userID == Guid.Empty)
             {
                 throw new ArgumentException("The user id is empty");
             }
 
             IEnumerable<Order>? orders = await _orderRepository.GetByUserIdAsync(userID);
 
-            List<OrderResponse>? orderResponses = new List<OrderResponse>();
+            // Guard against null results from the repository safely
+            if (orders is null)
+            {
+                return new List<OrderResponse>();
+            }
+
+            // Pull the base URL out of your appsettings.json configuration file
+            string? baseUrl = _configuration.GetValue<string>("JwtSettings:Issuer");
+            List<OrderResponse> orderResponses = new List<OrderResponse>();
 
             foreach (var order in orders)
             {
-                 orderResponses.Add(order.ToOrderResponse());
+                // 1. Transform the database entity into a response DTO
+                OrderResponse response = order.ToOrderResponse();
+
+                // 2. Safely loop through and prepend the base URL to every item in this specific order
+                if (response.Items != null && !string.IsNullOrEmpty(baseUrl))
+                {
+                    response.Items.ForEach(item =>
+                    {
+                        if (!item.ImageUrl.StartsWith("http", StringComparison.OrdinalIgnoreCase))
+                        {
+                            item.ImageUrl = baseUrl.TrimEnd('/') + "/" + item.ImageUrl.TrimStart('/');
+                        }
+                    });
+                }
+
+                // 3. Add the fully mapped response to our final tracking list
+                orderResponses.Add(response);
             }
 
             return orderResponses;
         }
 
-        public async Task<OrderResponse?> GetOrdersByOrderID(Guid OrderID)
+        public async Task<OrderResponse?> GetOrdersByOrderID(Guid orderID)
         {
-            if(OrderID == Guid.Empty)
+            if (orderID == Guid.Empty)
             {
                 throw new ArgumentException("The order id is empty");
             }
 
-            return await _orderRepository.GetByIdAsync(OrderID) is Order order ? order.ToOrderResponse() : null;
+            // 🎯 FIX 1: Query the database EXACTLY ONCE
+            Order? order = await _orderRepository.GetByIdAsync(orderID);
+
+            // 🎯 FIX 2: Check for null BEFORE executing extension methods or loops
+            if (order is null)
+            {
+                return null; // Safely returns null to the controller (which maps to 404 Not Found)
+            }
+
+            // Transform the domain entity to our response format
+            OrderResponse orderResponse = order.ToOrderResponse();
+
+            // Pull the base URL out of your appsettings.json configuration file
+            string? baseUrl = _configuration.GetValue<string>("JwtSettings:Issuer");
+
+            // 🎯 FIX 3: Safely prepend the URL to your DTO item structures
+            if (orderResponse.Items != null && !string.IsNullOrEmpty(baseUrl))
+            {
+                orderResponse.Items.ForEach(item =>
+                {
+                    // Only prepend if it's not already a fully qualified URL
+                    if (!item.ImageUrl.StartsWith("http", StringComparison.OrdinalIgnoreCase))
+                    {
+                        item.ImageUrl = baseUrl.TrimEnd('/') + "/" + item.ImageUrl.TrimStart('/');
+                    }
+                });
+            }
+
+            // Return the mutated object containing the full image paths
+            return orderResponse;
         }
 
         public async Task<OrderResponse?> ReceiveOrder(OrderAddRequest request)
