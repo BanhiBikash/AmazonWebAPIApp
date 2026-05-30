@@ -30,5 +30,13 @@ namespace AmazonWeb.Core.ServiceContracts.CartContracts
         /// Completely clears out a user's active shopping cart rows.
         /// </summary>
         Task<bool> ClearCartAsync(Guid userId);
+
+        /// <summary>
+        /// Merges Local and database cart and syncs to database
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="guestItems"></param>
+        /// <returns>Merged-cart</returns>
+        Task<CartResponse?> MergeCartAsync(Guid userId, List<CartRequest> guestItems);
     }
 }

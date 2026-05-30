@@ -104,6 +104,49 @@ namespace AmazonWeb.Core.Services
 
             return await _cartRepository.ClearCartAsync(userId);
         }
+        public async Task<CartResponse?> MergeCartAsync(Guid userId, List<CartRequest> guestItems)
+        {
+            // 1. Guard against empty local guest carts
+            if (guestItems == null || guestItems.Count == 0)
+            {
+                return await GetCartByUserIdAsync(userId);
+            }
+
+            // 2. Fetch current DB state to check for common items before running the loop
+            var currentDbCart = await GetCartByUserIdAsync(userId);
+            var dbItems = currentDbCart?.Items ?? new List<CartItemDto>();
+
+            foreach (var item in guestItems)
+            {
+                // Guard against corrupt payloads safely in the service layer
+                if (item.ProductId == Guid.Empty || item.Quantity <= 0)
+                    continue;
+
+                // 3. Find if this guest product is already common to the database cart
+                var commonDbItem = dbItems.FirstOrDefault(i => i.ProductId == item.ProductId);
+
+                int targetQuantity = item.Quantity;
+                if (commonDbItem != null)
+                {
+                    // 🥤 THE COMMON ITEM ACCUMULATION CRITERIA:
+                    // Sum quantities instead of absolute overrides (3 in DB + 1 from guest = 4 total)
+                    targetQuantity = commonDbItem.Quantity + item.Quantity;
+                }
+
+                // Rebuild an isolated, clean payload to force up-to-date catalog lookup evaluations
+                var isolatedPayload = new CartRequest
+                {
+                    ProductId = item.ProductId,
+                    Quantity = targetQuantity
+                };
+
+                // 4. Update row records via your existing service logic execution track
+                await AddOrUpdateItemAsync(userId, isolatedPayload);
+            }
+
+            // 5. Return the fresh, combined cart state straight back to the controller
+            return await GetCartByUserIdAsync(userId);
+        }
 
         /// <summary>
         /// Shared high-performance private mapping engine to convert raw entities to DTOs.

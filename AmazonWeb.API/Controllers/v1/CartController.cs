@@ -39,6 +39,7 @@ namespace AmazonWeb.API.Controllers.v1
         [HttpPost("[Action]")]
         public async Task<IActionResult> MergeCart([FromBody] List<CartRequest> guestItems)
         {
+            // 1. Identify user via Token Claims
             var userIdString = User.FindFirstValue(JwtRegisteredClaimNames.Sub)
                                ?? User.FindFirstValue("sub")
                                ?? User.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -48,28 +49,10 @@ namespace AmazonWeb.API.Controllers.v1
 
             Guid userId = Guid.Parse(userIdString);
 
-            if (guestItems != null && guestItems.Count > 0)
-            {
-                foreach (var item in guestItems)
-                {
-                    if (item.ProductId == Guid.Empty || item.Quantity <= 0)
-                        continue; // Guard against corrupt payloads
+            // 🎯 CLEAN ARCHITECTURE: Delegate all processing and mapping to the Service
+            CartResponse? updatedCart = await _cartService.MergeCartAsync(userId, guestItems);
 
-                    // 🎯 FIXED: Rebuild a clean execution context scope wrapper payload object. 
-                    // This forces your service layer to lookup up-to-date data properties (Price, SKU, etc.)
-                    // instead of saving null/zeroed guest fields passed from client-side JSON caches.
-                    var isolatedPayload = new CartRequest
-                    {
-                        ProductId = item.ProductId,
-                        Quantity = item.Quantity
-                    };
-
-                    await _cartService.AddOrUpdateItemAsync(userId, isolatedPayload);
-                }
-            }
-
-            var updatedCart = await _cartService.GetCartByUserIdAsync(userId);
-            return Ok(updatedCart);
+            return Ok(updatedCart ?? new CartResponse());
         }
 
         [HttpPost("[Action]")]
