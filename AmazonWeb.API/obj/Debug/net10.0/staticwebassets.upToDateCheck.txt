@@ -4,3 +4,4 @@ wwwroot\resources\product-thumbnail\a91a2af8-e751-4fe2-9cf0-ed05f2958d08.webp
 wwwroot\resources\product-thumbnail\bdb8cda5-010f-4d32-99de-2260dbb16eb7.webp
 wwwroot\resources\product-thumbnail\c32fca30-477b-46a5-bde4-eb992463264b.png
 wwwroot\resources\product-thumbnail\c32fca30-477b-46a5-bde4-eb992463264b.webp
+wwwroot\resources\product-thumbnail\e03bc204-317b-4879-a2f6-1daee100c25d.png

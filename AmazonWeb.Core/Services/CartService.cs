@@ -7,7 +7,6 @@ using AmazonWeb.Core.ServiceContracts.CartContracts;
 using AmazonWeb.Core.ServiceContracts.ProductContracts;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
-using System.Buffers.Text;
 
 namespace AmazonWeb.Core.Services
 {
@@ -18,52 +17,25 @@ namespace AmazonWeb.Core.Services
         private readonly IProductService _productService;
         private readonly IConfiguration _configuration;
 
-        // Dependency Injection to pull in your repository layer
         public CartService(ICartRepository cartRepository, UserManager<ApplicationUser> userManager, IProductService productService, IConfiguration configuration)
         {
             _cartRepository = cartRepository;
             _userManager = userManager;
             _productService = productService;
-            _configuration = configuration; 
+            _configuration = configuration;
         }
 
         /// <summary>
         /// Retrieves the processed cart details for a specific user.
-        /// Assigns the raw entity list straight to the response.
         /// </summary>
         public async Task<CartResponse?> GetCartByUserIdAsync(Guid userId)
         {
-            var response = new CartResponse();
-
-            // Fetch cart items from the database (.Include(Product) is handled inside the repo)
             var rawCartItems = await _cartRepository.GetCartByUserIdAsync(userId);
+            if (rawCartItems == null) return new CartResponse();
 
-            if (rawCartItems != null)
-            {
-                foreach (CartItem item in rawCartItems)
-                {
-                    // Map the raw entity to a DTO for the response
-                    var product = await _productService.GetProductByIdAsync(item.ProductId);
-                    if (product != null)
-                    {
-                        response = await MapCartItemsToResponseAsync(rawCartItems); // Synchronously wait for the mapping to complete
-                    }
-                }
-            }
-
-            //ftech the base url from configuration to prepend to the image urls in the order items
-            string? baseurl = _configuration.GetValue<string>("JwtSettings:Issuer");
-
-            foreach (var item in response.Items)
-            {
-                // Only prepend if it's not already a fully qualified URL
-                if (!item.imageUrl.StartsWith("http", StringComparison.OrdinalIgnoreCase) && !string.IsNullOrEmpty(baseurl))
-                {
-                    item.imageUrl = baseurl.TrimEnd('/') + "/" + item.imageUrl.TrimStart('/');
-                }
-            }
-
-            return response;
+            // 🎯 FIXED: Removed the performance draining N+1 loop completely. 
+            // The mapping engine handles the translation safely in a single pass.
+            return await MapCartItemsToResponseAsync(rawCartItems);
         }
 
         /// <summary>
@@ -73,11 +45,9 @@ namespace AmazonWeb.Core.Services
         {
             if (cartRequest == null) return null;
 
-            // 🔍 Single user validation check
             var user = await _userManager.FindByIdAsync(userId.ToString());
             if (user == null) return null;
 
-            // The repo executes the logic and returns the raw collection in one trip
             var updatedItems = await _cartRepository.UpdateQuantityAsync(
                 userId,
                 cartRequest.ProductId,
@@ -86,7 +56,7 @@ namespace AmazonWeb.Core.Services
 
             if (updatedItems == null) return null;
 
-            //React instantly receives names, prices, images, and total calculations.
+            // 🎯 FIXED: No need to append anything here. Private mapper handles it cleanly.
             return await MapCartItemsToResponseAsync(updatedItems);
         }
 
@@ -95,13 +65,8 @@ namespace AmazonWeb.Core.Services
         /// </summary>
         public async Task<bool> RemoveItemAsync(Guid userId, Guid productId)
         {
-            ApplicationUser? user = await _userManager.FindByIdAsync(userId.ToString());
-
-            // Ensure both user and product exist before attempting to remove the item from the cart    
-            if (user == null)
-            {
-                return false; // User not found
-            }
+            var user = await _userManager.FindByIdAsync(userId.ToString());
+            if (user == null) return false;
 
             return await _cartRepository.RemoveItemAsync(userId, productId);
         }
@@ -111,98 +76,99 @@ namespace AmazonWeb.Core.Services
         /// </summary>
         public async Task<bool> ClearCartAsync(Guid userId)
         {
-            ApplicationUser? user = await _userManager.FindByIdAsync(userId.ToString());
-
-            if (user is null)
-            {
-                return false; // User not found
-            }
+            var user = await _userManager.FindByIdAsync(userId.ToString());
+            if (user is null) return false;
 
             return await _cartRepository.ClearCartAsync(userId);
         }
+
+        /// <summary>
+        /// Merges a guest cookie cart into the persistent user database cart upon authentication login.
+        /// </summary>
         public async Task<CartResponse?> MergeCartAsync(Guid userId, List<CartRequest> guestItems)
         {
-            // 1. Guard against empty local guest carts
             if (guestItems == null || guestItems.Count == 0)
             {
                 return await GetCartByUserIdAsync(userId);
             }
 
-            // 2. Fetch current DB state to check for common items before running the loop
-            var currentDbCart = await GetCartByUserIdAsync(userId);
-            var dbItems = currentDbCart?.Items ?? new List<CartItemDto>();
+            var currentDbCart = await _cartRepository.GetCartByUserIdAsync(userId);
+            var dbItems = currentDbCart ?? new List<CartItem>();
 
             foreach (var item in guestItems)
             {
-                // Guard against corrupt payloads safely in the service layer
                 if (item.ProductId == Guid.Empty || item.Quantity <= 0)
                     continue;
 
-                // 3. Find if this guest product is already common to the database cart
                 var commonDbItem = dbItems.FirstOrDefault(i => i.ProductId == item.ProductId);
 
                 int targetQuantity = item.Quantity;
                 if (commonDbItem != null)
                 {
-                    // 🥤 THE COMMON ITEM ACCUMULATION CRITERIA:
-                    // Sum quantities instead of absolute overrides (3 in DB + 1 from guest = 4 total)
                     targetQuantity = commonDbItem.Quantity + item.Quantity;
                 }
 
-                // Rebuild an isolated, clean payload to force up-to-date catalog lookup evaluations
                 var isolatedPayload = new CartRequest
                 {
                     ProductId = item.ProductId,
                     Quantity = targetQuantity
                 };
 
-                // 4. Update row records via your existing service logic execution track
                 await AddOrUpdateItemAsync(userId, isolatedPayload);
             }
 
-            // 5. Return the fresh, combined cart state straight back to the controller
+            // 🎯 FIXED: Clean return mapping with zero redundant text manipulation loops.
             return await GetCartByUserIdAsync(userId);
         }
 
         /// <summary>
-        /// Shared high-performance private mapping engine to convert raw entities to DTOs.
+        /// Single Point of Truth: Shared private mapping engine to handle all DTO formatting,
+        /// configuration checks, and defensive base URL prepending routines safely in memory.
         /// </summary>
         private async Task<CartResponse> MapCartItemsToResponseAsync(IEnumerable<CartItem> cartItems)
         {
             var response = new CartResponse();
+            string? baseUrl = _configuration.GetValue<string>("JwtSettings:Issuer");
 
             foreach (CartItem item in cartItems)
             {
-                // 🚀 OPTIMIZATION 1: If your repository loaded the Product using .Include(),
-                // we extract the data right here out of memory instantly. Zero DB overhead.
+                CartItemDto dtoItem;
+
                 if (item.Product != null)
                 {
-                    response.Items.Add(new CartItemDto
+                    // Memory Extraction Optimization via eager loading (.Include)
+                    dtoItem = new CartItemDto
                     {
                         ProductId = item.ProductId,
                         Name = item.Product.Name,
                         Quantity = item.Quantity,
                         Price = item.Product.Price,
-                        imageUrl = item.Product.ImageUrl,
-                    });
+                        imageUrl = item.Product.ImageUrl ?? string.Empty
+                    };
                 }
                 else
                 {
-                    // 🛡️ FALLBACK: If the repository forgot to load the Product via an eager join, 
-                    // we safely query it using your catalog service so the app doesn't crash.
+                    // Fallback database lookup tracking if eager loading was omitted
                     var product = await _productService.GetProductByIdAsync(item.ProductId);
-                    if (product != null)
+                    if (product == null) continue; // Skip orphan database tracking anomalies safely
+
+                    dtoItem = new CartItemDto
                     {
-                        response.Items.Add(new CartItemDto
-                        {
-                            ProductId = item.ProductId,
-                            Name = product.Name,
-                            Quantity = item.Quantity,
-                            Price = product.Price,
-                            imageUrl = product.ImageUrl,
-                        });
-                    }
+                        ProductId = item.ProductId,
+                        Name = product.Name,
+                        Quantity = item.Quantity,
+                        Price = product.Price,
+                        imageUrl = product.ImageUrl ?? string.Empty
+                    };
                 }
+
+                // 🎯 THE CENTRALIZED URL SANITIZER: Run your string transformations right here, exactly once.
+                if (!string.IsNullOrEmpty(baseUrl) && !dtoItem.imageUrl.StartsWith("http", StringComparison.OrdinalIgnoreCase))
+                {
+                    dtoItem.imageUrl = baseUrl.TrimEnd('/') + "/" + dtoItem.imageUrl.TrimStart('/');
+                }
+
+                response.Items.Add(dtoItem);
             }
 
             return response;
