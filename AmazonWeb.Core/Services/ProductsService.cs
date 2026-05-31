@@ -6,20 +6,23 @@ using AmazonWeb.Core.DTO.ResponseDTO;
 using AmazonWeb.Core.DTO.UpdateDTO;
 using AmazonWeb.Core.ServiceContracts;
 using AmazonWeb.Core.ServiceContracts.ProductContracts;
+using Microsoft.Extensions.Configuration; // 🎯 ADDED: For accessing configuration strings safely
 
 namespace AmazonWeb.Core.Services
 {
-    public class ProductService:IProductService
+    public class ProductService : IProductService
     {
         private readonly IProductRepository _productRepository;
         private readonly IFileService _fileService;
+        private readonly IConfiguration _configuration; // 🎯 ADDED: To pull your Centralized Identity Server Issuer URL
 
-        public ProductService(IProductRepository productRepository, IFileService fileService) 
+        public ProductService(IProductRepository productRepository, IFileService fileService, IConfiguration configuration)
         {
             _productRepository = productRepository;
             _fileService = fileService;
+            _configuration = configuration;
         }
-        
+
         // Check DB health
         public async Task<bool> IsDatabaseAliveAsync()
         {
@@ -33,31 +36,26 @@ namespace AmazonWeb.Core.Services
             if (id == Guid.Empty)
                 throw new ArgumentException("Product Id cannot be empty.");
 
-            // Check if database is alive before attempting to retrieve product
-            if (!(await IsDatabaseAliveAsync()))
-            {
-                return null;
-            }
-
-            Product? product =  await _productRepository.GetByIdAsync(id);
+            Product? product = await _productRepository.GetByIdAsync(id);
 
             product = product != null && !product.IsDeleted ? product : null;
 
-            return product != null ? Product.ToProductResponse(product) : null;
+            // 🎯 FIXED: Map and append full base URL dynamically here
+            return product != null ? FormatProductResponseWithUrl(Product.ToProductResponse(product)) : null;
         }
 
         // Get all products
         public async Task<IEnumerable<ProductResponse>?> GetAllProductsAsync()
         {
-            // Check if database is alive before attempting to retrieve product
-            if (!(await IsDatabaseAliveAsync()))
-            {
-                return null;
-            }
-
             IEnumerable<Product>? products = await _productRepository.GetAllAsync();
 
-            return products != null ? products.Select(Product.ToProductResponse).Where(products=>products.IsDeleted==false) : null;
+            if (products == null) return null;
+
+            // 🎯 FIXED: Converts entities, screens out soft-deleted products, and updates image URL roots cleanly
+            return products
+                .Where(p => !p.IsDeleted)
+                .Select(Product.ToProductResponse)
+                .Select(FormatProductResponseWithUrl);
         }
 
         // Add product-work continue
@@ -70,7 +68,7 @@ namespace AmazonWeb.Core.Services
             Guid productId = Guid.NewGuid();
 
             //Takes the file and name and saves it also Build relative URL for client access
-            var relativeUrl = await _fileService.UploadThumbnailAsync(productAddRequest.Thumbnail,productId);
+            var relativeUrl = await _fileService.UploadThumbnailAsync(productAddRequest.Thumbnail, productId);
 
             // Map to Product entity
             var product = new Product
@@ -82,8 +80,8 @@ namespace AmazonWeb.Core.Services
                 Stock = productAddRequest.Stock,
                 Description = productAddRequest.Description,
                 ImageUrl = relativeUrl,
-                Category = productAddRequest.Category !=null?productAddRequest.Category:ProductCategory.Common,
-                SubCategory = productAddRequest.SubCategory!=null?productAddRequest.SubCategory:ProductSubCategory.Common,
+                Category = productAddRequest.Category != null ? productAddRequest.Category : ProductCategory.Common,
+                SubCategory = productAddRequest.SubCategory != null ? productAddRequest.SubCategory : ProductSubCategory.Common,
                 IsDeleted = false
             }; ;
 
@@ -95,12 +93,6 @@ namespace AmazonWeb.Core.Services
         {
             if (productUpdateRequest == null)
                 throw new ArgumentNullException(nameof(productUpdateRequest));
-
-            // Check if database is alive before attempting to retrieve product
-            if (!(await IsDatabaseAliveAsync()))
-            {
-                return null;
-            }
 
             ProductResponse? product = await GetProductByIdAsync(productUpdateRequest.Id);
 
@@ -137,7 +129,8 @@ namespace AmazonWeb.Core.Services
 
             Product? UpdatedProduct = await _productRepository.UpdateAsync(productToUpdate);
 
-            return UpdatedProduct != null ? Product.ToProductResponse(UpdatedProduct) : null;
+            // 🎯 FIXED: Cleans updated paths instantly before bubbling up to controller endpoints
+            return UpdatedProduct != null ? FormatProductResponseWithUrl(Product.ToProductResponse(UpdatedProduct)) : null;
         }
 
         // Delete product
@@ -145,10 +138,6 @@ namespace AmazonWeb.Core.Services
         {
             if (id == Guid.Empty)
                 throw new ArgumentException("Product Id cannot be empty.");
-
-            // Check if database is alive before attempting to retrieve product
-            if (!(await IsDatabaseAliveAsync()))
-                return false;
 
             ProductResponse? product = await GetProductByIdAsync(id);
             if (product == null)
@@ -195,7 +184,8 @@ namespace AmazonWeb.Core.Services
             var products = await _productRepository.GetByPriceRangeAsync(minPrice, maxPrice);
             return products?
                 .Where(p => !p.IsDeleted)
-                .Select(Product.ToProductResponse);
+                .Select(Product.ToProductResponse)
+                .Select(FormatProductResponseWithUrl); // 🎯 FIXED
         }
 
         // Get products by category
@@ -204,7 +194,8 @@ namespace AmazonWeb.Core.Services
             var products = await _productRepository.GetByCategoryAsync(category);
             return products?
                 .Where(p => !p.IsDeleted)
-                .Select(Product.ToProductResponse);
+                .Select(Product.ToProductResponse)
+                .Select(FormatProductResponseWithUrl); // 🎯 FIXED
         }
 
         // Get products by subcategory
@@ -213,7 +204,8 @@ namespace AmazonWeb.Core.Services
             var products = await _productRepository.GetBySubCategoryAsync(subCategory);
             return products?
                 .Where(p => !p.IsDeleted)
-                .Select(Product.ToProductResponse);
+                .Select(Product.ToProductResponse)
+                .Select(FormatProductResponseWithUrl); // 🎯 FIXED
         }
 
         // Search products by name
@@ -225,7 +217,27 @@ namespace AmazonWeb.Core.Services
             var products = await _productRepository.SearchByNameAsync(name);
             return products?
                 .Where(p => !p.IsDeleted)
-                .Select(Product.ToProductResponse);
+                .Select(Product.ToProductResponse)
+                .Select(FormatProductResponseWithUrl); // 🎯 FIXED
+        }
+
+        /* ==========================================================================
+           🎯 THE CENTRALIZED URL SANITIZER (Single point of truth)
+           ========================================================================== */
+        private ProductResponse FormatProductResponseWithUrl(ProductResponse response)
+        {
+            if (response == null) return response;
+
+            string? baseUrl = _configuration.GetValue<string>("JwtSettings:Issuer");
+
+            if (!string.IsNullOrEmpty(baseUrl) &&
+                !string.IsNullOrEmpty(response.ImageUrl) &&
+                !response.ImageUrl.StartsWith("http", StringComparison.OrdinalIgnoreCase))
+            {
+                response.ImageUrl = baseUrl.TrimEnd('/') + "/" + response.ImageUrl.TrimStart('/');
+            }
+
+            return response;
         }
     }
 }
