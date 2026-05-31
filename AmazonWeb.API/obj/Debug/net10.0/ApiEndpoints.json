@@ -203,6 +203,48 @@
     ]
   },
   {
+    "ContainingType": "AmazonWeb.API.Controllers.v1.OrdersController",
+    "Method": "GetOrderByUserID",
+    "RelativePath": "api/v1/Orders/GetOrderByUserID",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "AmazonWeb.API.Controllers.v1.OrdersController",
+    "Method": "GetOrdersByOrderID",
+    "RelativePath": "api/v1/Orders/GetOrdersByOrderID",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "orderID",
+        "Type": "System.Guid",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "AmazonWeb.API.Controllers.v1.OrdersController",
+    "Method": "ReceiveOrder",
+    "RelativePath": "api/v1/Orders/ReceiveOrder",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "addRequest",
+        "Type": "AmazonWeb.Core.DTO.AddDTO.OrderAddRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "AmazonWeb.API.Controllers.v1.ProductsController",
     "Method": "GetAllProducts",
     "RelativePath": "api/v1/Products",
@@ -514,16 +556,6 @@
         "StatusCode": 200
       }
     ]
-  },
-  {
-    "ContainingType": "AmazonWeb.API.Controllers.v1.Shopping",
-    "Method": "Get",
-    "RelativePath": "api/v1/Shopping/Get",
-    "HttpMethod": "GET",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [],
-    "ReturnTypes": []
   },
   {
     "ContainingType": "AmazonWeb.API.Controllers.v2.Shopping",

@@ -7,6 +7,7 @@ using AmazonWeb.Core.ServiceContracts.OrderContracts;
 using Azure.Core;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
+using System.Buffers.Text;
 
 namespace AmazonWeb.Core.Services.OrderService
 {
@@ -28,84 +29,63 @@ namespace AmazonWeb.Core.Services.OrderService
         //Get orders of a particular email
         public async Task<List<OrderResponse>?> GetOrdersByUserID(Guid userID)
         {
-            if (userID == Guid.Empty)
+            if(userID == Guid.Empty)
             {
                 throw new ArgumentException("The user id is empty");
             }
 
             IEnumerable<Order>? orders = await _orderRepository.GetByUserIdAsync(userID);
 
-            // Guard against null results from the repository safely
-            if (orders is null)
-            {
-                return new List<OrderResponse>();
-            }
+            List<OrderResponse>? orderResponses = new List<OrderResponse>();
 
-            // Pull the base URL out of your appsettings.json configuration file
-            string? baseUrl = _configuration.GetValue<string>("JwtSettings:Issuer");
-            List<OrderResponse> orderResponses = new List<OrderResponse>();
+            //ftech the base url from configuration to prepend to the image urls in the order items
+            string? baseurl = _configuration.GetValue<string>("JwtSettings:Issuer");
+
+            //go through each order and each item
+            foreach (var order in orderResponses)
+            {
+                order.Items.ForEach(item =>
+                {
+                    // Only prepend if it's not already a fully qualified URL
+                    if (!item.ImageUrl.StartsWith("http", StringComparison.OrdinalIgnoreCase) && !string.IsNullOrEmpty(baseurl))
+                    {
+                        item.ImageUrl = baseurl.TrimEnd('/') + "/" + item.ImageUrl.TrimStart('/');
+                    }
+                });
+            }
 
             foreach (var order in orders)
             {
-                // 1. Transform the database entity into a response DTO
-                OrderResponse response = order.ToOrderResponse();
-
-                // 2. Safely loop through and prepend the base URL to every item in this specific order
-                if (response.Items != null && !string.IsNullOrEmpty(baseUrl))
-                {
-                    response.Items.ForEach(item =>
-                    {
-                        if (!item.ImageUrl.StartsWith("http", StringComparison.OrdinalIgnoreCase))
-                        {
-                            item.ImageUrl = baseUrl.TrimEnd('/') + "/" + item.ImageUrl.TrimStart('/');
-                        }
-                    });
-                }
-
-                // 3. Add the fully mapped response to our final tracking list
-                orderResponses.Add(response);
+                 orderResponses.Add(order.ToOrderResponse());
             }
 
             return orderResponses;
         }
 
-        public async Task<OrderResponse?> GetOrdersByOrderID(Guid orderID)
+        public async Task<OrderResponse?> GetOrdersByOrderID(Guid OrderID)
         {
-            if (orderID == Guid.Empty)
+            if(OrderID == Guid.Empty)
             {
                 throw new ArgumentException("The order id is empty");
             }
 
-            // 🎯 FIX 1: Query the database EXACTLY ONCE
-            Order? order = await _orderRepository.GetByIdAsync(orderID);
+            OrderResponse? orderResponse = (await _orderRepository.GetByIdAsync(OrderID)).ToOrderResponse();
 
-            // 🎯 FIX 2: Check for null BEFORE executing extension methods or loops
-            if (order is null)
-            {
-                return null; // Safely returns null to the controller (which maps to 404 Not Found)
-            }
+            string? baseurl  = _configuration.GetValue<string>("JwtSettings:Issuer");
 
-            // Transform the domain entity to our response format
-            OrderResponse orderResponse = order.ToOrderResponse();
-
-            // Pull the base URL out of your appsettings.json configuration file
-            string? baseUrl = _configuration.GetValue<string>("JwtSettings:Issuer");
-
-            // 🎯 FIX 3: Safely prepend the URL to your DTO item structures
-            if (orderResponse.Items != null && !string.IsNullOrEmpty(baseUrl))
+            if (orderResponse.Items != null && !string.IsNullOrEmpty(baseurl))
             {
                 orderResponse.Items.ForEach(item =>
                 {
                     // Only prepend if it's not already a fully qualified URL
                     if (!item.ImageUrl.StartsWith("http", StringComparison.OrdinalIgnoreCase))
                     {
-                        item.ImageUrl = baseUrl.TrimEnd('/') + "/" + item.ImageUrl.TrimStart('/');
+                        item.ImageUrl = baseurl.TrimEnd('/') + "/" + item.ImageUrl.TrimStart('/');
                     }
                 });
             }
 
-            // Return the mutated object containing the full image paths
-            return orderResponse;
+            return await _orderRepository.GetByIdAsync(OrderID) is Order order ? order.ToOrderResponse() : null;
         }
 
         public async Task<OrderResponse?> ReceiveOrder(OrderAddRequest request)

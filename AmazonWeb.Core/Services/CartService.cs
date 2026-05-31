@@ -6,6 +6,8 @@ using AmazonWeb.Core.DTO.ResponseDTO;
 using AmazonWeb.Core.ServiceContracts.CartContracts;
 using AmazonWeb.Core.ServiceContracts.ProductContracts;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Configuration;
+using System.Buffers.Text;
 
 namespace AmazonWeb.Core.Services
 {
@@ -14,13 +16,15 @@ namespace AmazonWeb.Core.Services
         private readonly ICartRepository _cartRepository;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IProductService _productService;
+        private readonly IConfiguration _configuration;
 
         // Dependency Injection to pull in your repository layer
-        public CartService(ICartRepository cartRepository, UserManager<ApplicationUser> userManager, IProductService productService)
+        public CartService(ICartRepository cartRepository, UserManager<ApplicationUser> userManager, IProductService productService, IConfiguration configuration)
         {
             _cartRepository = cartRepository;
             _userManager = userManager;
             _productService = productService;
+            _configuration = configuration; 
         }
 
         /// <summary>
@@ -44,6 +48,18 @@ namespace AmazonWeb.Core.Services
                     {
                         response = await MapCartItemsToResponseAsync(rawCartItems); // Synchronously wait for the mapping to complete
                     }
+                }
+            }
+
+            //ftech the base url from configuration to prepend to the image urls in the order items
+            string? baseurl = _configuration.GetValue<string>("JwtSettings:Issuer");
+
+            foreach (var item in response.Items)
+            {
+                // Only prepend if it's not already a fully qualified URL
+                if (!item.imageUrl.StartsWith("http", StringComparison.OrdinalIgnoreCase) && !string.IsNullOrEmpty(baseurl))
+                {
+                    item.imageUrl = baseurl.TrimEnd('/') + "/" + item.imageUrl.TrimStart('/');
                 }
             }
 
