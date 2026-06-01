@@ -92,7 +92,7 @@ namespace AmazonWeb.Infrastructure.RepositoryContract
                 return Enumerable.Empty<Product>();
 
             return await _dbContext.Products
-                                   .Where(p => p.Name.Contains(name))
+                                   .Where(p => p.Name.Contains(name) || p.Category.ToString().Contains(name) || p.SubCategory.ToString().Contains(name))
                                    .ToListAsync();
         }
     }
