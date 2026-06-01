@@ -448,7 +448,7 @@
     "Parameters": [
       {
         "Name": "category",
-        "Type": "AmazonWeb.Core.Domain.Entities.ProductCategory",
+        "Type": "System.String",
         "IsRequired": true
       }
     ],
@@ -508,7 +508,7 @@
   {
     "ContainingType": "AmazonWeb.API.Controllers.v1.ProductsController",
     "Method": "SearchProductsByName",
-    "RelativePath": "api/v1/Products/search",
+    "RelativePath": "api/v1/Products/search/{name}",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
@@ -516,7 +516,7 @@
       {
         "Name": "name",
         "Type": "System.String",
-        "IsRequired": false
+        "IsRequired": true
       }
     ],
     "ReturnTypes": [

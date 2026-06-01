@@ -50,9 +50,9 @@ namespace AmazonWeb.API.Controllers.v1
         }
 
         // GET: api/v1/Products/search?name=puzzle
-        [HttpGet("search")]
+        [HttpGet("search/{name}")]
         [AllowAnonymous]
-        public async Task<ActionResult<IEnumerable<ProductResponse>>> SearchProductsByName([FromQuery] string name)
+        public async Task<ActionResult<IEnumerable<ProductResponse>>> SearchProductsByName([FromRoute] string name)
         {
             if (string.IsNullOrWhiteSpace(name))
                 return BadRequest("Search query parameter cannot be empty.");
@@ -76,18 +76,32 @@ namespace AmazonWeb.API.Controllers.v1
         // GET: api/v1/Products/category/Toys
         [HttpGet("category/{category}")]
         [AllowAnonymous]
-        public async Task<ActionResult<IEnumerable<ProductResponse>>> GetProductsByCategory(ProductCategory category)
+        public async Task<ActionResult<IEnumerable<ProductResponse>>> GetProductsByCategory([FromRoute]  string category)
         {
-            var products = await _productService.GetProductsByCategoryAsync(category);
+            //parse the route string into your enum handling case insensitivity and invalid values gracefully
+            if (!Enum.TryParse<ProductCategory>(category, ignoreCase: true, out var parsedCategory))
+            {
+                // Returns a clean 400 Bad Request if the category name doesn't exist in your enum
+                return BadRequest($"The category value '{category}' is invalid.");
+            }
+
+            var products = await _productService.GetProductsByCategoryAsync(parsedCategory);
             return Ok(products ?? new List<ProductResponse>());
         }
 
         // GET: api/v1/Products/subcategory/Toy_Puzzles
         [HttpGet("subcategory/{subCategory}")]
         [AllowAnonymous]
-        public async Task<ActionResult<IEnumerable<ProductResponse>>> GetProductsBySubCategory(ProductSubCategory subCategory)
+        public async Task<ActionResult<IEnumerable<ProductResponse>>> GetProductsBySubCategory([FromRoute] string subCategory)
         {
-            var products = await _productService.GetProductsBySubCategoryAsync(subCategory);
+            //parse the route string into your enum handling case insensitivity and invalid values gracefully
+            if (!Enum.TryParse<ProductSubCategory>(subCategory, ignoreCase: true, out var parsedSubCategory))
+            {
+                // Returns a clean 400 Bad Request if the category name doesn't exist in your enum
+                return BadRequest($"The category value '{subCategory}' is invalid.");
+            }
+
+            var products = await _productService.GetProductsBySubCategoryAsync(parsedSubCategory);
             return Ok(products ?? new List<ProductResponse>());
         }
 

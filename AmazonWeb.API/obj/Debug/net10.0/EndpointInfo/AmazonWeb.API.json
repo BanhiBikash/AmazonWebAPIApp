@@ -744,7 +744,7 @@
         }
       }
     },
-    "/api/v1/Products/search": {
+    "/api/v1/Products/search/{name}": {
       "get": {
         "tags": [
           "Products"
@@ -752,7 +752,8 @@
         "parameters": [
           {
             "name": "name",
-            "in": "query",
+            "in": "path",
+            "required": true,
             "schema": {
               "type": "string"
             }
@@ -858,7 +859,7 @@
             "in": "path",
             "required": true,
             "schema": {
-              "$ref": "#/components/schemas/ProductCategory"
+              "type": "string"
             }
           }
         ],
@@ -1507,6 +1508,8 @@
           "Jewelry",
           "Shoes",
           "Stationary",
+          "Quad_item",
+          "FireTV",
           "Common"
         ],
         "type": "string"
@@ -1629,6 +1632,11 @@
           "Stationary_Notebooks",
           "Stationary_ArtSupplies",
           "Stationary_OfficeSupplies",
+          "FireTV_Stick",
+          "FireTV_Box",
+          "FireTV_Accessories",
+          "FireTV_SmartTV",
+          "FireTV_Set",
           "Common"
         ],
         "type": "string"

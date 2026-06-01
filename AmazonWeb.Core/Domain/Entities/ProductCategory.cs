@@ -22,6 +22,8 @@ namespace AmazonWeb.Core.Domain.Entities
         Jewelry,
         Shoes,
         Stationary,
+        Quad_item,
+        FireTV,
         Common
     }
 }

@@ -98,6 +98,12 @@
         Stationary_ArtSupplies,
         Stationary_OfficeSupplies,
 
+        //Fire TV
+        FireTV_Stick,
+        FireTV_Box,
+        FireTV_Accessories,
+        FireTV_SmartTV,
+        FireTV_Set,
 
         //common
         Common
