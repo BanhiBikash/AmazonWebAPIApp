@@ -46,8 +46,17 @@ namespace AmazonWeb.Infrastructure.RepositoryContract
 
         public async Task<Product> UpdateAsync(Product product)
         {
-            // Let EF Core attach and track the modified state. 
-            // If the product doesn't exist, SaveChangesAsync will throw a DbUpdateConcurrencyException naturally.
+            // 1. Check if EF Core is already holding a tracked instance of this product in memory
+            var localInstance = _dbContext.Products.Local
+                .FirstOrDefault(p => p.Id == product.Id);
+
+            if (localInstance != null)
+            {
+                // 2. Detach it so it yields control of that 'Id' slot
+                _dbContext.Entry(localInstance).State = EntityState.Detached;
+            }
+
+            // 3. Track the newly mapped product parameter as modified safely
             _dbContext.Entry(product).State = EntityState.Modified;
             await _dbContext.SaveChangesAsync();
 

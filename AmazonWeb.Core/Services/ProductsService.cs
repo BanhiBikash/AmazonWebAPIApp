@@ -129,7 +129,7 @@ namespace AmazonWeb.Core.Services
 
             Product? UpdatedProduct = await _productRepository.UpdateAsync(productToUpdate);
 
-            // 🎯 FIXED: Cleans updated paths instantly before bubbling up to controller endpoints
+            // Cleans updated paths instantly before bubbling up to controller endpoints
             return UpdatedProduct != null ? FormatProductResponseWithUrl(Product.ToProductResponse(UpdatedProduct)) : null;
         }
 

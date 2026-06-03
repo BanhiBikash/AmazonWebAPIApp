@@ -541,7 +541,7 @@
     "Parameters": [
       {
         "Name": "subCategory",
-        "Type": "AmazonWeb.Core.Domain.Enums.ProductSubCategory",
+        "Type": "System.String",
         "IsRequired": true
       }
     ],

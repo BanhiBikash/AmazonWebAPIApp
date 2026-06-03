@@ -907,7 +907,7 @@
             "in": "path",
             "required": true,
             "schema": {
-              "$ref": "#/components/schemas/ProductSubCategory"
+              "type": "string"
             }
           }
         ],

@@ -160,6 +160,7 @@ namespace AmazonWeb.API.Controllers.v1
 
         [Route("[action]")]
         [HttpGet]
+        [AllowAnonymous]
         public IActionResult GetCategories()
         {
             // 1. Extract all values from the ProductCategory Enum
