@@ -237,12 +237,62 @@
     "Order": 0,
     "Parameters": [
       {
-        "Name": "addRequest",
-        "Type": "AmazonWeb.Core.DTO.AddDTO.OrderAddRequest",
-        "IsRequired": true
+        "Name": "UserId",
+        "Type": "System.Guid",
+        "IsRequired": false
+      },
+      {
+        "Name": "ShippingAddress",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "PostalCode",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "City",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "Country",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "PaymentMethod",
+        "Type": "AmazonWeb.Core.Domain.Entities.PaymentMethod",
+        "IsRequired": false
+      },
+      {
+        "Name": "PaymentSource",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "TransactionStatus",
+        "Type": "AmazonWeb.Core.Domain.Entities.TransactionStatus",
+        "IsRequired": false
+      },
+      {
+        "Name": "Items",
+        "Type": "System.Collections.Generic.List\u00601[[AmazonWeb.Core.Domain.Entities.OrderItem, AmazonWeb.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "IsRequired": false
       }
     ],
-    "ReturnTypes": []
+    "ReturnTypes": [
+      {
+        "Type": "AmazonWeb.Core.DTO.ResponseDTO.OrderResponse",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
   },
   {
     "ContainingType": "AmazonWeb.API.Controllers.v1.ProductsController",

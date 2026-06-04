@@ -409,26 +409,114 @@
         ],
         "requestBody": {
           "content": {
-            "application/json": {
+            "multipart/form-data": {
               "schema": {
-                "$ref": "#/components/schemas/OrderAddRequest"
-              }
-            },
-            "text/json": {
-              "schema": {
-                "$ref": "#/components/schemas/OrderAddRequest"
-              }
-            },
-            "application/*+json": {
-              "schema": {
-                "$ref": "#/components/schemas/OrderAddRequest"
+                "required": [
+                  "City",
+                  "Country",
+                  "Items",
+                  "PaymentMethod",
+                  "PaymentSource",
+                  "PostalCode",
+                  "ShippingAddress",
+                  "TransactionStatus",
+                  "UserId"
+                ],
+                "type": "object",
+                "properties": {
+                  "UserId": {
+                    "type": "string",
+                    "format": "uuid"
+                  },
+                  "ShippingAddress": {
+                    "maxLength": 200,
+                    "minLength": 0,
+                    "type": "string"
+                  },
+                  "PostalCode": {
+                    "maxLength": 20,
+                    "minLength": 0,
+                    "type": "string"
+                  },
+                  "City": {
+                    "maxLength": 100,
+                    "minLength": 0,
+                    "type": "string"
+                  },
+                  "Country": {
+                    "maxLength": 100,
+                    "minLength": 0,
+                    "type": "string"
+                  },
+                  "PaymentMethod": {
+                    "$ref": "#/components/schemas/PaymentMethod"
+                  },
+                  "PaymentSource": {
+                    "type": "string"
+                  },
+                  "TransactionStatus": {
+                    "$ref": "#/components/schemas/TransactionStatus"
+                  },
+                  "Items": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/OrderItem"
+                    }
+                  }
+                }
+              },
+              "encoding": {
+                "UserId": {
+                  "style": "form"
+                },
+                "ShippingAddress": {
+                  "style": "form"
+                },
+                "PostalCode": {
+                  "style": "form"
+                },
+                "City": {
+                  "style": "form"
+                },
+                "Country": {
+                  "style": "form"
+                },
+                "PaymentMethod": {
+                  "style": "form"
+                },
+                "PaymentSource": {
+                  "style": "form"
+                },
+                "TransactionStatus": {
+                  "style": "form"
+                },
+                "Items": {
+                  "style": "form"
+                }
               }
             }
           }
         },
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/OrderResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OrderResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OrderResponse"
+                }
+              }
+            }
           }
         }
       }
@@ -1088,6 +1176,13 @@
             },
             "nullable": true
           },
+          "transactions": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Transaction"
+            },
+            "nullable": true
+          },
           "cartItems": {
             "type": "array",
             "items": {
@@ -1334,50 +1429,6 @@
         },
         "additionalProperties": false
       },
-      "OrderAddRequest": {
-        "required": [
-          "items",
-          "shippingAddress",
-          "userId"
-        ],
-        "type": "object",
-        "properties": {
-          "userId": {
-            "type": "string",
-            "format": "uuid"
-          },
-          "items": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/OrderItem"
-            }
-          },
-          "shippingAddress": {
-            "maxLength": 200,
-            "minLength": 0,
-            "type": "string"
-          },
-          "postalCode": {
-            "maxLength": 20,
-            "minLength": 0,
-            "type": "string",
-            "nullable": true
-          },
-          "city": {
-            "maxLength": 100,
-            "minLength": 0,
-            "type": "string",
-            "nullable": true
-          },
-          "country": {
-            "maxLength": 100,
-            "minLength": 0,
-            "type": "string",
-            "nullable": true
-          }
-        },
-        "additionalProperties": false
-      },
       "OrderItem": {
         "required": [
           "imageUrl",
@@ -1426,13 +1477,74 @@
         },
         "additionalProperties": false
       },
+      "OrderResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "userId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "orderDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "totalAmount": {
+            "type": "integer",
+            "format": "int32",
+            "readOnly": true
+          },
+          "status": {
+            "type": "string",
+            "nullable": true
+          },
+          "shippingAddress": {
+            "type": "string",
+            "nullable": true
+          },
+          "postalCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "city": {
+            "type": "string",
+            "nullable": true
+          },
+          "country": {
+            "type": "string",
+            "nullable": true
+          },
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/OrderItem"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
       "OrderStatus": {
         "enum": [
           "Pending",
           "Processing",
           "Shipped",
           "Delivered",
-          "Cancelled"
+          "Cancelled",
+          "Failed"
+        ],
+        "type": "string"
+      },
+      "PaymentMethod": {
+        "enum": [
+          "CreditCard",
+          "DebitCard",
+          "NetBanking",
+          "UPI",
+          "Wallet"
         ],
         "type": "string"
       },
@@ -1716,6 +1828,78 @@
           }
         },
         "additionalProperties": false
+      },
+      "Transaction": {
+        "required": [
+          "orderId",
+          "orderItems",
+          "paymentMethod",
+          "paymentSource",
+          "shippingAddress",
+          "status",
+          "totalAmount",
+          "transactionDate",
+          "userId"
+        ],
+        "type": "object",
+        "properties": {
+          "transactionId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "userId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "paymentMethod": {
+            "$ref": "#/components/schemas/PaymentMethod"
+          },
+          "paymentSource": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "orderId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "orderItems": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/OrderItem"
+            }
+          },
+          "totalAmount": {
+            "maximum": 2147483647,
+            "minimum": 0,
+            "type": "integer",
+            "format": "int32"
+          },
+          "transactionDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "status": {
+            "$ref": "#/components/schemas/TransactionStatus"
+          },
+          "shippingAddress": {
+            "maxLength": 500,
+            "minLength": 0,
+            "type": "string"
+          },
+          "user": {
+            "$ref": "#/components/schemas/ApplicationUser"
+          }
+        },
+        "additionalProperties": false
+      },
+      "TransactionStatus": {
+        "enum": [
+          "Success",
+          "Pending",
+          "Failed",
+          "Refunded"
+        ],
+        "type": "string"
       },
       "UpdatePasswordDTO": {
         "required": [

@@ -239,5 +239,26 @@ namespace AmazonWeb.Core.Services
 
             return response;
         }
+
+        public async Task DeductProductStockAsync(Guid id, int quantity)
+        {
+            if (id == Guid.Empty)
+                throw new ArgumentException("Product Id cannot be empty.");
+
+            // 1. Fetch the trackable entity directly from your repository layer
+            Product? product = await _productRepository.GetByIdAsync(id);
+
+            if (product == null || product.IsDeleted)
+                throw new InvalidOperationException("Product no longer exists or has been deleted.");
+
+            if (product.Stock < quantity)
+                throw new InvalidOperationException($"Insufficient warehouse stock for product '{product.Name}'.");
+
+            // 2. Perform the update purely on the domain entity object
+            product.Stock -= quantity;
+
+            // 3. Save it back to your permanent store using your update abstraction contract
+            await _productRepository.UpdateAsync(product);
+        }
     }
 }

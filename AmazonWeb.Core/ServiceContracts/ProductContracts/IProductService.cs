@@ -63,5 +63,7 @@ namespace AmazonWeb.Core.ServiceContracts.ProductContracts
         /// Executes a character string pattern search across all active product title vectors.
         /// </summary>
         Task<IEnumerable<ProductResponse>?> SearchProductsByNameAsync(string name);
+
+        Task DeductProductStockAsync(Guid id, int quantity);
     }
 }

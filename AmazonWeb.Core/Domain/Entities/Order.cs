@@ -63,6 +63,7 @@ namespace AmazonWeb.Core.Domain.Entities
         Processing,
         Shipped,
         Delivered,
-        Cancelled
+        Cancelled,
+        Failed
     }
 }
