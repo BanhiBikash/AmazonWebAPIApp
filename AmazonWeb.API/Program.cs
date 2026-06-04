@@ -55,6 +55,7 @@ builder.Services.AddScoped<ICartService,CartService>();
 builder.Services.AddScoped<IOrderRepository,OrderRepository>();
 builder.Services.AddScoped<IOrderService, OrderService>();
 builder.Services.AddScoped<ITransactionService, TransactionService>();
+builder.Services.AddScoped<ITransactionRepository, TransactionRepository>();
 
 // Swagger
 builder.Services.AddEndpointsApiExplorer();
