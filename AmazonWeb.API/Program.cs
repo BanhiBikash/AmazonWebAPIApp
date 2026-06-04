@@ -6,8 +6,10 @@ using AmazonWeb.Core.ServiceContracts.CartContracts;
 using AmazonWeb.Core.ServiceContracts.OrderContracts;
 using AmazonWeb.Core.ServiceContracts.ProductContracts;
 using AmazonWeb.Core.ServiceContracts.TokenContracts;
+using AmazonWeb.Core.ServiceContracts.TransactionContract;
 using AmazonWeb.Core.Services;
 using AmazonWeb.Core.Services.OrderService;
+using AmazonWeb.Core.Services.TransactionService;
 using AmazonWeb.Infrastructure.DBContext;
 using AmazonWeb.Infrastructure.RepositoryContract;
 using Asp.Versioning;
@@ -52,6 +54,7 @@ builder.Services.AddScoped<ICartRepository, CartRepository>();
 builder.Services.AddScoped<ICartService,CartService>();
 builder.Services.AddScoped<IOrderRepository,OrderRepository>();
 builder.Services.AddScoped<IOrderService, OrderService>();
+builder.Services.AddScoped<ITransactionService, TransactionService>();
 
 // Swagger
 builder.Services.AddEndpointsApiExplorer();
