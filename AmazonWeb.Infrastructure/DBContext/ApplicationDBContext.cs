@@ -17,6 +17,7 @@ namespace AmazonWeb.Infrastructure.DBContext
         public DbSet<Order> Orders { get; set; }
         public DbSet<OrderItem> OrderItems { get; set; }
         public DbSet<CartItem> CartItems { get; set; } // 🛒 Registered CartItem Aggregate Dataset
+        public DbSet<Transaction> Transactions { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -64,6 +65,25 @@ namespace AmazonWeb.Infrastructure.DBContext
             // Global query filter for soft delete
             modelBuilder.Entity<ApplicationUser>()
                 .HasQueryFilter(u => !u.IsDeleted);
+
+            //Transaction table configuration
+            modelBuilder.Entity<Transaction>(entity =>
+            {
+                entity.HasKey(t => t.TransactionId);
+
+                // 1. Configure Relationship: User → Transactions
+                entity.HasOne(t => t.User)
+                      .WithMany(u => u.Transactions)
+                      .HasForeignKey(t => t.UserId)             // 🎯 Point to your clean UserId column
+                      .OnDelete(DeleteBehavior.Restrict);       // Safe tracking audit trail behavior
+
+                // 2. Configure Relationship: Order → Transactions (If you want EF to know OrderId is a Foreign Key)
+                // Assuming you don't have a virtual "Order" navigation property inside Transaction, you can set it up anonymously:
+                entity.HasOne<Order>()
+                      .WithMany()
+                      .HasForeignKey(t => t.OrderId)            // 🎯 Point to your clean OrderId column
+                      .OnDelete(DeleteBehavior.Restrict);
+            });
         }
     }
 }

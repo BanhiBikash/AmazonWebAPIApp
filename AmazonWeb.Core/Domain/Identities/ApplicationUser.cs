@@ -44,7 +44,10 @@ namespace AmazonWeb.Core.Domain.Identities
 
         // Example: link to orders
         public List<Order>? Orders { get; set; }
-        
+
+        //Link to transactions
+        public List<Transaction>? Transactions { get; set; }
+
         // 🛒 Direct link to active shopping cart rows
         public List<CartItem> CartItems { get; set; } = new List<CartItem>();
 
