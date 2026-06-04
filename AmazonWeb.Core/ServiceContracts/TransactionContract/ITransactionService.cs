@@ -8,9 +8,9 @@ namespace AmazonWeb.Core.ServiceContracts.TransactionContract
 {
     public interface ITransactionService
     {
-        Task<TransactionResponse> RegisterTransaction(TransactionRequest? transactionRequest);
+        Task<TransactionResponse> RegisterTransaction(TransactionRequest transactionRequest);
 
-        Task<TransactionResponse> GetTransaction(Guid? TransactionID);
+        Task<TransactionResponse> GetTransaction(Guid TransactionID);
 
         Task<IEnumerable<TransactionResponse>?> GetUserTransactions(Guid? UserID);
     }

@@ -5,6 +5,7 @@ using AmazonWeb.Core.ServiceContracts.TransactionContract;
 using AmazonWeb.Core.Domain.Entities;
 using Microsoft.AspNetCore.Identity;
 using AmazonWeb.Core.Domain.Identities;
+using AmazonWeb.Core.Domain.RepositoryContract;
 
 namespace AmazonWeb.Core.Services.TransactionService
 {
@@ -12,27 +13,26 @@ namespace AmazonWeb.Core.Services.TransactionService
     {
         private readonly IProductService _productService;
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly ITransactionRepository _transactionRepository;
 
-        public TransactionService(IProductService productService, UserManager<ApplicationUser> userManager)
+        public TransactionService(IProductService productService, UserManager<ApplicationUser> userManager, ITransactionRepository transactionRepository)
         {
             _productService = productService;
             _userManager = userManager;
+            _transactionRepository = transactionRepository;
         }
-        public async Task<TransactionResponse> GetTransaction(Guid? TransactionID)
+        public async Task<TransactionResponse> GetTransaction(Guid TransactionID)
         {
-            if(TransactionID == null)
-                throw new ArgumentNullException(nameof(TransactionID), "Transaction ID cannot be null.");
-
             if(TransactionID == Guid.Empty)
                 throw new ArgumentException("Transaction ID cannot be an empty GUID.", nameof(TransactionID));
-
+            
             // Simulate fetching transaction details from the database
-            TransactionResponse transactionResponse = new TransactionResponse();
+            TransactionResponse? transactionResponse = (await _transactionRepository.GetTransactionByIdAsync(TransactionID)).ToTransactionResponse();
 
             return transactionResponse;
         }
 
-        public async Task<TransactionResponse> RegisterTransaction(TransactionRequest? transactionRequest)
+        public async Task<TransactionResponse> RegisterTransaction(TransactionRequest transactionRequest)
         {
             // 1. Fail early if the incoming request payload is null
             if (transactionRequest == null)
@@ -74,7 +74,7 @@ namespace AmazonWeb.Core.Services.TransactionService
             Transaction newTransaction = transactionRequest.ToTransaction();
 
             //push to Database and receive response back
-            TransactionResponse transactionResponse = newTransaction.ToTransactionResponse();
+            TransactionResponse transactionResponse = (await _transactionRepository.AddAsync(newTransaction)).ToTransactionResponse();
 
             return transactionResponse;
         }
