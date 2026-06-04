@@ -1,4 +1,5 @@
 ﻿using AmazonWeb.Core.Domain.Identities;
+using AmazonWeb.Core.DTO.ResponseDTO;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -43,6 +44,23 @@ namespace AmazonWeb.Core.Domain.Entities
 
         // Navigation properties
         public ApplicationUser? User { get; set; }
+
+        public TransactionResponse ToTransactionResponse()
+        {
+            return new TransactionResponse()
+            {
+                TransactionId = this.TransactionId,
+                UserId = this.UserId,
+                PaymentMethod = this.PaymentMethod,
+                PaymentSource = this.PaymentSource,
+                OrderId = this.OrderId,
+                OrderItems = this.OrderItems,
+                TotalAmount = this.TotalAmount,
+                TransactionDate = this.TransactionDate,
+                Status = this.Status,
+                ShippingAddress = this.ShippingAddress
+            };
+        }
     }
 
     public enum TransactionStatus

@@ -1,15 +1,13 @@
 ﻿using AmazonWeb.Core.Domain.Entities;
-using AmazonWeb.Core.Domain.Identities;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Text;
 
-namespace AmazonWeb.Core.DTO.AddDTO
+namespace AmazonWeb.Core.DTO.ResponseDTO
 {
-    public class TransactionRequest
-
+    public class TransactionResponse
     {
+        [Key]
+        public Guid TransactionId { get; set; }
+
         [Required(ErrorMessage = "User ID is required.")]
         public Guid UserId { get; set; }
 
@@ -39,22 +37,5 @@ namespace AmazonWeb.Core.DTO.AddDTO
         [Required(ErrorMessage = "Shipping physical destination address is required.")]
         [StringLength(500, ErrorMessage = "Shipping Address cannot exceed 500 characters.")]
         public string ShippingAddress { get; set; } = string.Empty;
-
-        public Transaction ToTransaction()
-        {
-            return new Transaction()
-            {
-                TransactionId = Guid.NewGuid(),
-                UserId = this.UserId,
-                PaymentMethod = this.PaymentMethod,
-                PaymentSource = this.PaymentSource,
-                OrderId = this.OrderId,
-                OrderItems = this.OrderItems,
-                TotalAmount = this.TotalAmount,
-                TransactionDate = this.TransactionDate,
-                Status = this.Status,
-                ShippingAddress = this.ShippingAddress
-            };
-        }
     }
 }
