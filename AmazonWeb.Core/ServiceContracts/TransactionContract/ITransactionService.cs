@@ -11,5 +11,7 @@ namespace AmazonWeb.Core.ServiceContracts.TransactionContract
         Task<TransactionResponse> RegisterTransaction(TransactionRequest? transactionRequest);
 
         Task<TransactionResponse> GetTransaction(Guid? TransactionID);
+
+        Task<IEnumerable<TransactionResponse>?> GetUserTransactions(Guid? UserID);
     }
 }

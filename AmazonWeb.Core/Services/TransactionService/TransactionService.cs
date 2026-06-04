@@ -3,16 +3,20 @@ using AmazonWeb.Core.DTO.ResponseDTO;
 using AmazonWeb.Core.ServiceContracts.ProductContracts;
 using AmazonWeb.Core.ServiceContracts.TransactionContract;
 using AmazonWeb.Core.Domain.Entities;
+using Microsoft.AspNetCore.Identity;
+using AmazonWeb.Core.Domain.Identities;
 
 namespace AmazonWeb.Core.Services.TransactionService
 {
     public class TransactionService : ITransactionService
     {
         private readonly IProductService _productService;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        public TransactionService(IProductService productService)
+        public TransactionService(IProductService productService, UserManager<ApplicationUser> userManager)
         {
             _productService = productService;
+            _userManager = userManager;
         }
         public async Task<TransactionResponse> GetTransaction(Guid? TransactionID)
         {
@@ -73,6 +77,26 @@ namespace AmazonWeb.Core.Services.TransactionService
             TransactionResponse transactionResponse = newTransaction.ToTransactionResponse();
 
             return transactionResponse;
+        }
+
+        public async Task<IEnumerable<TransactionResponse>?> GetUserTransactions(Guid? UserID)
+        {
+            if (UserID == null)
+                throw new ArgumentNullException(nameof(UserID), "User ID cannot be null.");
+
+            if (UserID == Guid.Empty)
+                throw new ArgumentException("User ID cannot be an empty GUID.", nameof(UserID));
+
+            //check if user exists in the database
+            ApplicationUser? user = await _userManager.FindByIdAsync(UserID.ToString());
+
+            if (user == null)
+                throw new InvalidOperationException($"User with ID {UserID} does not exist.");
+
+            //Fetch the transactions for the user from the database
+            IEnumerable<TransactionResponse>? transactions = user.Transactions?.Select(t => t.ToTransactionResponse());
+
+            return transactions;
         }
     }
 }
