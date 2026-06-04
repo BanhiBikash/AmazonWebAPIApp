@@ -28,7 +28,7 @@ namespace AmazonWeb.Core.Domain.Entities
         [Range(0, int.MaxValue, ErrorMessage = "Unit price must be non-negative")]
         public int UnitPrice { get; set; }
 
-        [Required]
-        public Order Order { get; set; }
+        //[Required]
+        public Order? Order { get; set; }
     }
 }

@@ -64,7 +64,7 @@ namespace AmazonWeb.API.Controllers.v1
         }
 
         [HttpPost("[Action]")]
-        public async Task<ActionResult<OrderResponse>> ReceiveOrder ([FromForm] CheckoutRequest checkoutRequest)
+        public async Task<ActionResult<OrderResponse>> ReceiveOrder ([FromBody] CheckoutRequest checkoutRequest)
         {
             // ==========================================================================
             // STEP 1: Candidate Verification - Structural & Payload Level

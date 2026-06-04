@@ -409,90 +409,19 @@
         ],
         "requestBody": {
           "content": {
-            "multipart/form-data": {
+            "application/json": {
               "schema": {
-                "required": [
-                  "City",
-                  "Country",
-                  "Items",
-                  "PaymentMethod",
-                  "PaymentSource",
-                  "PostalCode",
-                  "ShippingAddress",
-                  "TransactionStatus",
-                  "UserId"
-                ],
-                "type": "object",
-                "properties": {
-                  "UserId": {
-                    "type": "string",
-                    "format": "uuid"
-                  },
-                  "ShippingAddress": {
-                    "maxLength": 200,
-                    "minLength": 0,
-                    "type": "string"
-                  },
-                  "PostalCode": {
-                    "maxLength": 20,
-                    "minLength": 0,
-                    "type": "string"
-                  },
-                  "City": {
-                    "maxLength": 100,
-                    "minLength": 0,
-                    "type": "string"
-                  },
-                  "Country": {
-                    "maxLength": 100,
-                    "minLength": 0,
-                    "type": "string"
-                  },
-                  "PaymentMethod": {
-                    "$ref": "#/components/schemas/PaymentMethod"
-                  },
-                  "PaymentSource": {
-                    "type": "string"
-                  },
-                  "TransactionStatus": {
-                    "$ref": "#/components/schemas/TransactionStatus"
-                  },
-                  "Items": {
-                    "type": "array",
-                    "items": {
-                      "$ref": "#/components/schemas/OrderItem"
-                    }
-                  }
-                }
-              },
-              "encoding": {
-                "UserId": {
-                  "style": "form"
-                },
-                "ShippingAddress": {
-                  "style": "form"
-                },
-                "PostalCode": {
-                  "style": "form"
-                },
-                "City": {
-                  "style": "form"
-                },
-                "Country": {
-                  "style": "form"
-                },
-                "PaymentMethod": {
-                  "style": "form"
-                },
-                "PaymentSource": {
-                  "style": "form"
-                },
-                "TransactionStatus": {
-                  "style": "form"
-                },
-                "Items": {
-                  "style": "form"
-                }
+                "$ref": "#/components/schemas/CheckoutRequest"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CheckoutRequest"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/CheckoutRequest"
               }
             }
           }
@@ -1329,6 +1258,63 @@
         },
         "additionalProperties": false
       },
+      "CheckoutRequest": {
+        "required": [
+          "city",
+          "country",
+          "items",
+          "paymentMethod",
+          "paymentSource",
+          "postalCode",
+          "shippingAddress",
+          "transactionStatus",
+          "userId"
+        ],
+        "type": "object",
+        "properties": {
+          "userId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "shippingAddress": {
+            "maxLength": 200,
+            "minLength": 0,
+            "type": "string"
+          },
+          "postalCode": {
+            "maxLength": 20,
+            "minLength": 0,
+            "type": "string"
+          },
+          "city": {
+            "maxLength": 100,
+            "minLength": 0,
+            "type": "string"
+          },
+          "country": {
+            "maxLength": 100,
+            "minLength": 0,
+            "type": "string"
+          },
+          "paymentMethod": {
+            "$ref": "#/components/schemas/PaymentMethod"
+          },
+          "paymentSource": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "transactionStatus": {
+            "$ref": "#/components/schemas/TransactionStatus"
+          },
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/OrderItem"
+            }
+          }
+        },
+        "additionalProperties": false
+      },
       "Gender": {
         "enum": [
           "Male",
@@ -1432,7 +1418,6 @@
       "OrderItem": {
         "required": [
           "imageUrl",
-          "order",
           "orderId",
           "productId",
           "productName",
