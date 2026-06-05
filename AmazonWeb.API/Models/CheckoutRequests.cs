@@ -54,7 +54,7 @@ namespace AmazonWeb.API.Models
         /// <summary>
         /// Compiles the incoming flat data graph straight into an Order Domain Entity.
         /// </summary>
-        public OrderAddRequest MapToOrderRequest(Guid sharedOrderId)
+        public OrderAddRequest MapToOrderRequest()
         {
             var order = new OrderAddRequest
             {
@@ -69,7 +69,7 @@ namespace AmazonWeb.API.Models
             {
                 order.Items.Add(new OrderItem
                 {
-                    OrderId = sharedOrderId,
+                    OrderId = Guid.Empty,   //Temporary placeholder, will be set in the OrderService when creating the Order entity
                     ProductId = item.ProductId,
                     Quantity = item.Quantity,
                     UnitPrice = item.UnitPrice // Maps directly to your OrderItem configuration rules

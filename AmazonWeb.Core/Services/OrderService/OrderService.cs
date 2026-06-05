@@ -112,17 +112,7 @@ namespace AmazonWeb.Core.Services.OrderService
                 throw new ArgumentException("Please register to put in an order.Error at Order Service.");
             }
 
-            Order addOrder = request.ToOrderEntity();
-
-            addOrder.Id = request.Items.FirstOrDefault().OrderId != null ? (request.Items.FirstOrDefault().OrderId) : Guid.Empty;
-
-            //check if the order is failed
-            if(addOrder.ShippingAddress == "Failed") 
-            { 
-                addOrder.Status = OrderStatus.Failed;
-            }
-
-            Order? orderResponse = await _orderRepository.AddAsync(addOrder);
+            Order? orderResponse = await _orderRepository.AddAsync(request.ToOrderEntity());
 
             return orderResponse.ToOrderResponse();
         }

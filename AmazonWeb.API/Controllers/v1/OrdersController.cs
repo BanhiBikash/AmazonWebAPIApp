@@ -86,6 +86,9 @@ namespace AmazonWeb.API.Controllers.v1
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
+            //step2 create orderrequest and map the data from checkout request to these two request
+            OrderAddRequest? orderRequest = checkoutRequest.MapToOrderRequest();
+
             // ==========================================================================
             // STEP 2: Candidate Verification - Price Match Integrity Check and Stock Check
             // ==========================================================================
