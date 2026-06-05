@@ -276,7 +276,16 @@ namespace AmazonWeb.Core.Services
                 {
                     DataTruth=false;
                 }
-            }     
+            }
+
+            //if all the data is correct then let's reserve the items in the warehouse by deducting the stock
+            if (DataTruth)
+            {
+                foreach(ItemData item in itemDatas)
+                {
+                    await DeductProductStockAsync(item.ProductId, item.Quantity);
+                }
+            }
             
             return DataTruth;
         }

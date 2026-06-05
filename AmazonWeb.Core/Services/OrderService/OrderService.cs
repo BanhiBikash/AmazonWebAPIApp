@@ -135,7 +135,7 @@ namespace AmazonWeb.Core.Services.OrderService
             {
                 Order orderToAdd = request.ToOrderEntity();
                 orderToAdd.Status = OrderStatus.Pending; // Set initial status to Pending, only when the transaction is successful it will be set to successful
-                Order? orderResponse = await _orderRepository.AddAsync(request.ToOrderEntity());
+                Order? orderResponse = await _orderRepository.AddAsync(orderToAdd);
 
                 return orderResponse.ToOrderResponse();
             }
