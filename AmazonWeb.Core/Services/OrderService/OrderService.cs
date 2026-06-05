@@ -7,6 +7,7 @@ using AmazonWeb.Core.ServiceContracts.OrderContracts;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using AmazonWeb.Core.Models;
+using AmazonWeb.Core.ServiceContracts.ProductContracts;
 
 namespace AmazonWeb.Core.Services.OrderService
 {
@@ -14,15 +15,17 @@ namespace AmazonWeb.Core.Services.OrderService
     {
         //readonly vars for DI
         private readonly IOrderRepository _orderRepository;
+        private readonly IProductService _productService;
         private readonly IConfiguration _configuration;
         private readonly UserManager<ApplicationUser> _user;
 
         //for DI
-        public OrderService(IOrderRepository orderRepository, IConfiguration configuration, UserManager<ApplicationUser> user)
+        public OrderService(IOrderRepository orderRepository, IConfiguration configuration, UserManager<ApplicationUser> user,IProductService productService)
         {
             _orderRepository = orderRepository;
             _configuration = configuration;
             _user = user;
+            _productService = productService;
         }
 
         //Get orders of a particular email
@@ -124,9 +127,22 @@ namespace AmazonWeb.Core.Services.OrderService
                 });
             }
 
-            Order? orderResponse = await _orderRepository.AddAsync(request.ToOrderEntity());
+            //send the item data to the inventory service to check if the items are in stock and the cost is correct
+            bool isValid = await _productService.CheckItemDataSanctity(itemDatas);
 
-            return orderResponse.ToOrderResponse();
+            //if valid order
+            if (isValid)
+            {
+                Order orderToAdd = request.ToOrderEntity();
+                orderToAdd.Status = OrderStatus.Pending; // Set initial status to Pending, only when the transaction is successful it will be set to successful
+                Order? orderResponse = await _orderRepository.AddAsync(request.ToOrderEntity());
+
+                return orderResponse.ToOrderResponse();
+            }
+            else
+            {
+                throw new InvalidOperationException("The order is invalid. Please check the item data and try again.");
+            }
         }
 
     }
