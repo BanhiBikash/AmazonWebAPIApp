@@ -3,6 +3,7 @@ using AmazonWeb.Core.Domain.Enums;
 using AmazonWeb.Core.DTO.AddDTO;
 using AmazonWeb.Core.DTO.ResponseDTO;
 using AmazonWeb.Core.DTO.UpdateDTO;
+using AmazonWeb.Core.Models;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -65,5 +66,7 @@ namespace AmazonWeb.Core.ServiceContracts.ProductContracts
         Task<IEnumerable<ProductResponse>?> SearchProductsByNameAsync(string name);
 
         Task DeductProductStockAsync(Guid id, int quantity);
+
+        Task<bool> CheckItemDataSanctity(List<ItemData> itemDatas);
     }
 }

@@ -4,6 +4,7 @@ using AmazonWeb.Core.Domain.RepositoryContract;
 using AmazonWeb.Core.DTO.AddDTO;
 using AmazonWeb.Core.DTO.ResponseDTO;
 using AmazonWeb.Core.DTO.UpdateDTO;
+using AmazonWeb.Core.Models;
 using AmazonWeb.Core.ServiceContracts;
 using AmazonWeb.Core.ServiceContracts.ProductContracts;
 using Microsoft.Extensions.Configuration; // 🎯 ADDED: For accessing configuration strings safely
@@ -259,6 +260,25 @@ namespace AmazonWeb.Core.Services
 
             // 3. Save it back to your permanent store using your update abstraction contract
             await _productRepository.UpdateAsync(product);
+        }
+
+        //check if the ItemData sent from the client is still valid by comparing it with the live data from the database
+        public async Task<bool> CheckItemDataSanctity(List<ItemData> itemDatas)
+        {
+            bool DataTruth = true;
+
+            foreach(ItemData item in itemDatas)
+            {
+                // Pure Service Access: Fetching cleaned data from your ProductService
+                ProductResponse? liveProduct = await GetProductByIdAsync(item.ProductId);
+
+                if (liveProduct == null || liveProduct.Price != item.unitPrice || liveProduct.Stock < item.Quantity)
+                {
+                    DataTruth=false;
+                }
+            }     
+            
+            return DataTruth;
         }
     }
 }

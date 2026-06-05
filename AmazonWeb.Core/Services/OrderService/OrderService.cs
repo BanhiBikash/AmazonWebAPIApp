@@ -4,10 +4,9 @@ using AmazonWeb.Core.Domain.RepositoryContract;
 using AmazonWeb.Core.DTO.AddDTO;
 using AmazonWeb.Core.DTO.ResponseDTO;
 using AmazonWeb.Core.ServiceContracts.OrderContracts;
-using Azure.Core;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
-using System.Buffers.Text;
+using AmazonWeb.Core.Models;
 
 namespace AmazonWeb.Core.Services.OrderService
 {
@@ -110,6 +109,19 @@ namespace AmazonWeb.Core.Services.OrderService
             if (user == null)
             {
                 throw new ArgumentException("Please register to put in an order.Error at Order Service.");
+            }
+
+            //check if the cost of the items are correct and the items are in stock
+            List<ItemData> itemDatas = new List<ItemData>();
+
+            foreach (var item in request.Items)
+            {
+                itemDatas.Add(new ItemData() {
+                    ProductId = item.ProductId,
+                    ProductName = item.ProductName,
+                    unitPrice = item.UnitPrice,
+                    Quantity = item.Quantity
+                });
             }
 
             Order? orderResponse = await _orderRepository.AddAsync(request.ToOrderEntity());
