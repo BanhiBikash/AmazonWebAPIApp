@@ -411,17 +411,17 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/CheckoutRequest"
+                "$ref": "#/components/schemas/OrderAddRequest"
               }
             },
             "text/json": {
               "schema": {
-                "$ref": "#/components/schemas/CheckoutRequest"
+                "$ref": "#/components/schemas/OrderAddRequest"
               }
             },
             "application/*+json": {
               "schema": {
-                "$ref": "#/components/schemas/CheckoutRequest"
+                "$ref": "#/components/schemas/OrderAddRequest"
               }
             }
           }
@@ -976,214 +976,6 @@
   },
   "components": {
     "schemas": {
-      "ApplicationUser": {
-        "required": [
-          "firstName",
-          "gender",
-          "lastName",
-          "userRole"
-        ],
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "string",
-            "format": "uuid"
-          },
-          "userName": {
-            "type": "string",
-            "nullable": true
-          },
-          "normalizedUserName": {
-            "type": "string",
-            "nullable": true
-          },
-          "email": {
-            "type": "string",
-            "nullable": true
-          },
-          "normalizedEmail": {
-            "type": "string",
-            "nullable": true
-          },
-          "emailConfirmed": {
-            "type": "boolean"
-          },
-          "passwordHash": {
-            "type": "string",
-            "nullable": true
-          },
-          "securityStamp": {
-            "type": "string",
-            "nullable": true
-          },
-          "concurrencyStamp": {
-            "type": "string",
-            "nullable": true
-          },
-          "phoneNumber": {
-            "type": "string",
-            "nullable": true
-          },
-          "phoneNumberConfirmed": {
-            "type": "boolean"
-          },
-          "twoFactorEnabled": {
-            "type": "boolean"
-          },
-          "lockoutEnd": {
-            "type": "string",
-            "format": "date-time",
-            "nullable": true
-          },
-          "lockoutEnabled": {
-            "type": "boolean"
-          },
-          "accessFailedCount": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "firstName": {
-            "maxLength": 50,
-            "minLength": 0,
-            "type": "string"
-          },
-          "lastName": {
-            "maxLength": 50,
-            "minLength": 0,
-            "type": "string"
-          },
-          "dateOfBirth": {
-            "type": "string",
-            "format": "date",
-            "nullable": true
-          },
-          "gender": {
-            "$ref": "#/components/schemas/Gender"
-          },
-          "address": {
-            "maxLength": 200,
-            "minLength": 0,
-            "type": "string",
-            "nullable": true
-          },
-          "city": {
-            "maxLength": 100,
-            "minLength": 0,
-            "type": "string",
-            "nullable": true
-          },
-          "state": {
-            "maxLength": 100,
-            "minLength": 0,
-            "type": "string",
-            "nullable": true
-          },
-          "postalCode": {
-            "maxLength": 20,
-            "minLength": 0,
-            "type": "string",
-            "nullable": true
-          },
-          "country": {
-            "maxLength": 100,
-            "minLength": 0,
-            "type": "string",
-            "nullable": true
-          },
-          "profileImageUrl": {
-            "type": "string",
-            "format": "uri",
-            "nullable": true
-          },
-          "userRole": {
-            "$ref": "#/components/schemas/Role"
-          },
-          "orders": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/Order"
-            },
-            "nullable": true
-          },
-          "transactions": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/Transaction"
-            },
-            "nullable": true
-          },
-          "cartItems": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/CartItem"
-            },
-            "nullable": true
-          },
-          "isDeleted": {
-            "type": "boolean"
-          },
-          "refreshToken": {
-            "type": "string",
-            "nullable": true
-          },
-          "refreshTokenExpiryTime": {
-            "type": "string",
-            "format": "date-time",
-            "nullable": true
-          }
-        },
-        "additionalProperties": false
-      },
-      "CartItem": {
-        "required": [
-          "dateAdded",
-          "productId",
-          "quantity",
-          "userId"
-        ],
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "string",
-            "format": "uuid"
-          },
-          "userId": {
-            "type": "string",
-            "format": "uuid"
-          },
-          "productId": {
-            "type": "string",
-            "format": "uuid"
-          },
-          "quantity": {
-            "maximum": 100,
-            "minimum": 1,
-            "type": "integer",
-            "format": "int32"
-          },
-          "dateAdded": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "unitPrice": {
-            "type": "integer",
-            "format": "int32",
-            "readOnly": true
-          },
-          "totalPrice": {
-            "type": "integer",
-            "format": "int32",
-            "readOnly": true
-          },
-          "user": {
-            "$ref": "#/components/schemas/ApplicationUser"
-          },
-          "product": {
-            "$ref": "#/components/schemas/Product"
-          }
-        },
-        "additionalProperties": false
-      },
       "CartItemDto": {
         "type": "object",
         "properties": {
@@ -1258,63 +1050,6 @@
         },
         "additionalProperties": false
       },
-      "CheckoutRequest": {
-        "required": [
-          "city",
-          "country",
-          "items",
-          "paymentMethod",
-          "paymentSource",
-          "postalCode",
-          "shippingAddress",
-          "transactionStatus",
-          "userId"
-        ],
-        "type": "object",
-        "properties": {
-          "userId": {
-            "type": "string",
-            "format": "uuid"
-          },
-          "shippingAddress": {
-            "maxLength": 200,
-            "minLength": 0,
-            "type": "string"
-          },
-          "postalCode": {
-            "maxLength": 20,
-            "minLength": 0,
-            "type": "string"
-          },
-          "city": {
-            "maxLength": 100,
-            "minLength": 0,
-            "type": "string"
-          },
-          "country": {
-            "maxLength": 100,
-            "minLength": 0,
-            "type": "string"
-          },
-          "paymentMethod": {
-            "$ref": "#/components/schemas/PaymentMethod"
-          },
-          "paymentSource": {
-            "minLength": 1,
-            "type": "string"
-          },
-          "transactionStatus": {
-            "$ref": "#/components/schemas/TransactionStatus"
-          },
-          "items": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/OrderItem"
-            }
-          }
-        },
-        "additionalProperties": false
-      },
       "Gender": {
         "enum": [
           "Male",
@@ -1347,42 +1082,27 @@
         },
         "additionalProperties": false
       },
-      "Order": {
+      "OrderAddRequest": {
         "required": [
-          "orderDate",
-          "status",
-          "totalAmount",
-          "userId"
+          "items",
+          "shippingAddress"
         ],
         "type": "object",
         "properties": {
-          "id": {
-            "type": "string",
-            "format": "uuid"
-          },
           "userId": {
             "type": "string",
             "format": "uuid"
           },
-          "orderDate": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "totalAmount": {
-            "maximum": 1.7976931348623157E+308,
-            "minimum": 0,
-            "type": "integer",
-            "format": "int32",
-            "readOnly": true
-          },
-          "status": {
-            "$ref": "#/components/schemas/OrderStatus"
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/OrderItem"
+            }
           },
           "shippingAddress": {
             "maxLength": 200,
             "minLength": 0,
-            "type": "string",
-            "nullable": true
+            "type": "string"
           },
           "postalCode": {
             "maxLength": 20,
@@ -1400,16 +1120,6 @@
             "maxLength": 100,
             "minLength": 0,
             "type": "string",
-            "nullable": true
-          },
-          "user": {
-            "$ref": "#/components/schemas/ApplicationUser"
-          },
-          "items": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/OrderItem"
-            },
             "nullable": true
           }
         },
@@ -1455,9 +1165,6 @@
             "minimum": 0,
             "type": "integer",
             "format": "int32"
-          },
-          "order": {
-            "$ref": "#/components/schemas/Order"
           }
         },
         "additionalProperties": false
@@ -1508,81 +1215,6 @@
               "$ref": "#/components/schemas/OrderItem"
             },
             "nullable": true
-          }
-        },
-        "additionalProperties": false
-      },
-      "OrderStatus": {
-        "enum": [
-          "Pending",
-          "Processing",
-          "Shipped",
-          "Delivered",
-          "Cancelled",
-          "Failed"
-        ],
-        "type": "string"
-      },
-      "PaymentMethod": {
-        "enum": [
-          "CreditCard",
-          "DebitCard",
-          "NetBanking",
-          "UPI",
-          "Wallet"
-        ],
-        "type": "string"
-      },
-      "Product": {
-        "required": [
-          "category",
-          "description",
-          "id",
-          "imageUrl",
-          "inStock",
-          "name",
-          "price",
-          "stock",
-          "subCategory"
-        ],
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "string",
-            "format": "uuid"
-          },
-          "name": {
-            "minLength": 1,
-            "type": "string"
-          },
-          "price": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "inStock": {
-            "type": "boolean"
-          },
-          "stock": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "description": {
-            "minLength": 1,
-            "type": "string"
-          },
-          "imageUrl": {
-            "minLength": 1,
-            "type": "string",
-            "format": "uri"
-          },
-          "category": {
-            "$ref": "#/components/schemas/ProductCategory"
-          },
-          "subCategory": {
-            "$ref": "#/components/schemas/ProductSubCategory"
-          },
-          "isDeleted": {
-            "type": "boolean"
           }
         },
         "additionalProperties": false
@@ -1813,78 +1445,6 @@
           }
         },
         "additionalProperties": false
-      },
-      "Transaction": {
-        "required": [
-          "orderId",
-          "orderItems",
-          "paymentMethod",
-          "paymentSource",
-          "shippingAddress",
-          "status",
-          "totalAmount",
-          "transactionDate",
-          "userId"
-        ],
-        "type": "object",
-        "properties": {
-          "transactionId": {
-            "type": "string",
-            "format": "uuid"
-          },
-          "userId": {
-            "type": "string",
-            "format": "uuid"
-          },
-          "paymentMethod": {
-            "$ref": "#/components/schemas/PaymentMethod"
-          },
-          "paymentSource": {
-            "minLength": 1,
-            "type": "string"
-          },
-          "orderId": {
-            "type": "string",
-            "format": "uuid"
-          },
-          "orderItems": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/OrderItem"
-            }
-          },
-          "totalAmount": {
-            "maximum": 2147483647,
-            "minimum": 0,
-            "type": "integer",
-            "format": "int32"
-          },
-          "transactionDate": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "status": {
-            "$ref": "#/components/schemas/TransactionStatus"
-          },
-          "shippingAddress": {
-            "maxLength": 500,
-            "minLength": 0,
-            "type": "string"
-          },
-          "user": {
-            "$ref": "#/components/schemas/ApplicationUser"
-          }
-        },
-        "additionalProperties": false
-      },
-      "TransactionStatus": {
-        "enum": [
-          "Success",
-          "Pending",
-          "Failed",
-          "Refunded"
-        ],
-        "type": "string"
       },
       "UpdatePasswordDTO": {
         "required": [

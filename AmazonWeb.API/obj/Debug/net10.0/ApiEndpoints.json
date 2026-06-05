@@ -237,8 +237,8 @@
     "Order": 0,
     "Parameters": [
       {
-        "Name": "checkoutRequest",
-        "Type": "AmazonWeb.API.Models.CheckoutRequest",
+        "Name": "orderAddRequest",
+        "Type": "AmazonWeb.Core.DTO.AddDTO.OrderAddRequest",
         "IsRequired": true
       }
     ],

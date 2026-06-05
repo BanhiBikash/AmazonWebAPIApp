@@ -5,7 +5,7 @@ namespace AmazonWeb.Core.DTO.AddDTO
 {
     public class OrderAddRequest
     {
-        public Guid UserId { get; set; }
+        public Guid UserId { get; set; } = Guid.Empty;
 
         [Required(ErrorMessage = "At least one item is required")]
         public List<OrderItem> Items { get; set; }
