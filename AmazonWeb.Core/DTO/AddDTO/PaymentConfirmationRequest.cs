@@ -1,4 +1,6 @@
-﻿public class PaymentConfirmationRequest
+﻿using System.ComponentModel.DataAnnotations;
+
+public class PaymentConfirmationRequest
 {
     [Required]
     public Guid OrderId { get; set; }

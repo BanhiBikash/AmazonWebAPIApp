@@ -21,11 +21,22 @@ using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+using Razorpay.Api;
 using Swashbuckle.AspNetCore.SwaggerGen;
 using System.Text;
 using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
+
+// 1. Fetch Razorpay keys from appsettings.json
+string razorpayKey = builder.Configuration["Razorpay:KeyId"] ?? string.Empty;
+string razorpaySecret = builder.Configuration["Razorpay:KeySecret"] ?? string.Empty;
+
+// 2. Initialize the Razorpay Client globally so the SDK caches the secret key context
+if (!string.IsNullOrEmpty(razorpayKey) && !string.IsNullOrEmpty(razorpaySecret))
+{
+    new RazorpayClient(razorpayKey, razorpaySecret);
+}
 
 // Add services to the container.
 builder.Services.AddControllers(options =>

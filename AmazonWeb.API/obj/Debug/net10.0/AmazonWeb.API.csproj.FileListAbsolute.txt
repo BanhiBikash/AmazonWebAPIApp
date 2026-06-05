@@ -172,3 +172,5 @@ C:\Users\Banhi\source\repos\aspnetcore\AmazonWebAPIProject\AmazonWeb.API\bin\Deb
 C:\Users\Banhi\source\repos\aspnetcore\AmazonWebAPIProject\AmazonWeb.API\obj\Debug\net10.0\AmazonWeb.API.MvcApplicationPartsAssemblyInfo.cs
 C:\Users\Banhi\source\repos\aspnetcore\AmazonWebAPIProject\AmazonWeb.API\bin\Debug\net10.0\AmazonWeb.API.staticwebassets.runtime.json
 C:\Users\Banhi\source\repos\aspnetcore\AmazonWebAPIProject\AmazonWeb.API\bin\Debug\net10.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+C:\Users\Banhi\source\repos\aspnetcore\AmazonWebAPIProject\AmazonWeb.API\bin\Debug\net10.0\BouncyCastle.Crypto.dll
+C:\Users\Banhi\source\repos\aspnetcore\AmazonWebAPIProject\AmazonWeb.API\bin\Debug\net10.0\Razorpay.dll

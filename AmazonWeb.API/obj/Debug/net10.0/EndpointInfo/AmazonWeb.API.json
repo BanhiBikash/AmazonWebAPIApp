@@ -972,6 +972,37 @@
           }
         }
       }
+    },
+    "/api/v1/Transaction/ConfirmPayment": {
+      "post": {
+        "tags": [
+          "Transaction"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PaymentConfirmationRequest"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PaymentConfirmationRequest"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/PaymentConfirmationRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
     }
   },
   "components": {
@@ -1215,6 +1246,33 @@
               "$ref": "#/components/schemas/OrderItem"
             },
             "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "PaymentConfirmationRequest": {
+        "required": [
+          "orderId",
+          "razorpayPaymentId",
+          "razorpaySignature"
+        ],
+        "type": "object",
+        "properties": {
+          "orderId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "razorpayPaymentId": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "razorpayOrderId": {
+            "type": "string",
+            "nullable": true
+          },
+          "razorpaySignature": {
+            "minLength": 1,
+            "type": "string"
           }
         },
         "additionalProperties": false
@@ -1487,6 +1545,9 @@
     },
     {
       "name": "Products"
+    },
+    {
+      "name": "Transaction"
     }
   ]
 }

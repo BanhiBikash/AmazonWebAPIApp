@@ -568,6 +568,22 @@
     ]
   },
   {
+    "ContainingType": "AmazonWeb.API.Controllers.v1.TransactionController",
+    "Method": "ConfirmPayment",
+    "RelativePath": "api/v1/Transaction/ConfirmPayment",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "PaymentConfirmationRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "AmazonWeb.API.Controllers.v2.Shopping",
     "Method": "Get",
     "RelativePath": "api/v2/Shopping/Get",
