@@ -24,21 +24,22 @@ namespace AmazonWeb.Infrastructure.DBContext
             base.OnModelCreating(modelBuilder);
 
             // Configure Order Relationships
-            modelBuilder.Entity<Order>()
-                .HasOne(o => o.User)
+            modelBuilder.Entity<Order>(entity =>
+            {
+                entity.HasOne(o => o.User)
                 .WithMany(u => u.Orders)
                 .HasForeignKey(o => o.UserId);
 
+                // Relationship: Order → OrderItems
+                entity.HasMany(o => o.Items);
+            });
+                
             // Configure OrderItem Relationships
             modelBuilder.Entity<OrderItem>(entity =>
             {
                 // Composite primary key (OrderId + ProductId)
                 entity.HasKey(oi => new { oi.OrderId, oi.ProductId });
 
-                // Relationship: Order → OrderItems
-                entity.HasOne(oi => oi.Order)
-                      .WithMany(o => o.Items)
-                      .HasForeignKey(oi => oi.OrderId);
             });
 
             // 🛒 Configure CartItem Table Constraints & Indexes
