@@ -1,5 +1,6 @@
 ﻿using AmazonWeb.Core.DTO.AddDTO;
 using AmazonWeb.Core.DTO.ResponseDTO;
+using AmazonWeb.Core.DTO.UpdateDTO;
 
 namespace AmazonWeb.Core.ServiceContracts.OrderContracts
 {
@@ -25,5 +26,12 @@ namespace AmazonWeb.Core.ServiceContracts.OrderContracts
         /// <param name="OrderID"></param>
         /// <returns>Returns the order response</returns>
         Task<OrderResponse?> GetOrdersByOrderID(Guid OrderID);
+
+        /// <summary>
+        /// Takes an order update request and updates the order
+        /// </summary>
+        /// <param name="updateRequest"></param>
+        /// <returns>OrderResponse of updated order</returns>
+        Task<OrderResponse?> UpdateOrder(OrderUpdateRequest updateRequest);
     }
 }

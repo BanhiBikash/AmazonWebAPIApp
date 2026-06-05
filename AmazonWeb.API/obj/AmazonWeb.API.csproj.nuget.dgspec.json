@@ -595,6 +595,10 @@
               "target": "Package",
               "version": "[10.0.8, )"
             },
+            "Razorpay": {
+              "target": "Package",
+              "version": "[3.3.2, )"
+            },
             "System.Security.Cryptography.Xml": {
               "target": "Package",
               "version": "[8.0.3, )"

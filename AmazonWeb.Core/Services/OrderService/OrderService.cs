@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using AmazonWeb.Core.Models;
 using AmazonWeb.Core.ServiceContracts.ProductContracts;
+using AmazonWeb.Core.DTO.UpdateDTO;
 
 namespace AmazonWeb.Core.Services.OrderService
 {
@@ -145,5 +146,44 @@ namespace AmazonWeb.Core.Services.OrderService
             }
         }
 
+        public async Task<OrderResponse?> UpdateOrder(OrderUpdateRequest updateRequest)
+        {
+            if(updateRequest == null)
+            {
+                throw new ArgumentNullException(nameof(updateRequest), "The order update request is null");
+            }
+
+            foreach (var property in typeof(OrderUpdateRequest).GetProperties())
+            {
+                if (property.GetValue(updateRequest) == null)
+                {
+                    throw new ArgumentNullException(property.Name, $"The {property.Name} property is null");
+                }
+            }
+
+            OrderResponse? orderToUpdate = await GetOrdersByOrderID(updateRequest.Id);
+
+            if (orderToUpdate != null)
+            {
+                Order updatedOrder = await _orderRepository.UpdateAsync(new Order()
+                {
+                    Id = updateRequest.Id,
+                    ShippingAddress = updateRequest.ShippingAddress,
+                    PostalCode = updateRequest.PostalCode,
+                    City = updateRequest.City,
+                    Country = updateRequest.Country,
+                    Status = updateRequest.Status ?? OrderStatus.Processing,
+                    OrderDate = orderToUpdate.OrderDate,
+                    Items = orderToUpdate.Items,
+                    User = await _user.FindByIdAsync(orderToUpdate.UserId.ToString())
+                });
+
+                return (await _orderRepository.UpdateAsync(updatedOrder)).ToOrderResponse();
+            }
+            else
+            {
+                throw new Exception("Order not found.");
+            }
+        }
     }
 }

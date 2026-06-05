@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "+llQcy8C29U=",
+  "dgSpecHash": "7iFSXPQmv5s=",
   "success": true,
   "projectFilePath": "C:\\Users\\Banhi\\source\\repos\\aspnetcore\\AmazonWebAPIProject\\AmazonWeb.API\\AmazonWeb.API.csproj",
   "expectedPackageFiles": [
@@ -46,6 +46,8 @@
     "C:\\Users\\Banhi\\.nuget\\packages\\microsoft.visualstudio.solutionpersistence\\1.0.52\\microsoft.visualstudio.solutionpersistence.1.0.52.nupkg.sha512",
     "C:\\Users\\Banhi\\.nuget\\packages\\mono.texttemplating\\3.0.0\\mono.texttemplating.3.0.0.nupkg.sha512",
     "C:\\Users\\Banhi\\.nuget\\packages\\newtonsoft.json\\13.0.3\\newtonsoft.json.13.0.3.nupkg.sha512",
+    "C:\\Users\\Banhi\\.nuget\\packages\\portable.bouncycastle\\1.9.0\\portable.bouncycastle.1.9.0.nupkg.sha512",
+    "C:\\Users\\Banhi\\.nuget\\packages\\razorpay\\3.3.2\\razorpay.3.3.2.nupkg.sha512",
     "C:\\Users\\Banhi\\.nuget\\packages\\swashbuckle.aspnetcore\\10.1.7\\swashbuckle.aspnetcore.10.1.7.nupkg.sha512",
     "C:\\Users\\Banhi\\.nuget\\packages\\swashbuckle.aspnetcore.swagger\\10.1.7\\swashbuckle.aspnetcore.swagger.10.1.7.nupkg.sha512",
     "C:\\Users\\Banhi\\.nuget\\packages\\swashbuckle.aspnetcore.swaggergen\\10.1.7\\swashbuckle.aspnetcore.swaggergen.10.1.7.nupkg.sha512",
