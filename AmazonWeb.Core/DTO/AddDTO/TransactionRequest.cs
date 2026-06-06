@@ -55,6 +55,8 @@ namespace AmazonWeb.Core.DTO.AddDTO
                 PaymentMethod = this.PaymentMethod,
                 PaymentSource = this.PaymentSource,
                 OrderId = this.OrderId,
+                PaymentMerchantOrderId = this.PaymentMerchantOrderId,
+                PaymentMerchantTransactionId = this.PaymentMerchantTransactionId,
                 OrderItems = this.OrderItems,
                 TotalAmount = this.TotalAmount,
                 TransactionDate = this.TransactionDate,

@@ -12,4 +12,7 @@ public class PaymentConfirmationRequest
 
     [Required]
     public string RazorpaySignature { get; set; } = string.Empty;
+
+    [Required]
+    public string? PaymentMethod { get; set; }
 }
