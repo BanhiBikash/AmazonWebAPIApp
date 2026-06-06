@@ -1253,6 +1253,7 @@
       "PaymentConfirmationRequest": {
         "required": [
           "orderId",
+          "paymentMethod",
           "razorpayPaymentId",
           "razorpaySignature"
         ],
@@ -1271,6 +1272,10 @@
             "nullable": true
           },
           "razorpaySignature": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "paymentMethod": {
             "minLength": 1,
             "type": "string"
           }

@@ -28,24 +28,33 @@ namespace AmazonWeb.API.Controllers.v1
         [HttpPost("[Action]")]
         public async Task<IActionResult> ConfirmPayment([FromBody] PaymentConfirmationRequest request)
         {
+            // Validate request contract upfront
+            if (request == null || request.OrderId == Guid.Empty)
+            {
+                return BadRequest("Invalid transaction payload. Order reference is missing.");
+            }
+
             var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             if (string.IsNullOrEmpty(userIdClaim))
             {
                 return Unauthorized();
             }
-            Guid currentUserId = Guid.Parse(userIdClaim);
+
+            if (!Guid.TryParse(userIdClaim, out Guid currentUserId))
+            {
+                return BadRequest("User context contains an invalid identity signature.");
+            }
 
             // 1. Fetch the existing pending order record from your database
             var existingOrder = await _orderService.GetOrdersByOrderID(request.OrderId);
             if (existingOrder == null)
             {
-                return NotFound("Order record could not be located.");
+                return NotFound($"Order record '{request.OrderId}' could not be located.");
             }
 
             // 2. Security Guard Clause: Ensure this order belongs to the user signed into the token
             if (existingOrder.UserId != currentUserId)
             {
-                // Using explicit 403 status code to prevent routing failures in JWT middleware challenge states
                 return StatusCode(403, "Access mismatch. Order context belongs to a different profile account.");
             }
 
@@ -53,14 +62,12 @@ namespace AmazonWeb.API.Controllers.v1
             if (string.Equals(existingOrder.Status, OrderStatus.Processing.ToString(), StringComparison.OrdinalIgnoreCase) ||
                 string.Equals(existingOrder.Status, OrderStatus.Failed.ToString(), StringComparison.OrdinalIgnoreCase))
             {
-                return Ok(new { message = "Payment verified and recorded previously." });
+                return Ok(new { message = "Payment verified and recorded previously.", orderId = request.OrderId });
             }
 
             // 3. SECURE INTEGRITY CHECK: Verify the cryptographic signature on the server side
             try
             {
-                // 🎯 FIX: Razorpay signature verification explicitly requires the order ID attribute
-                // even if generated completely client-side. The payload generated checks: order_id + "|" + payment_id
                 Dictionary<string, string> attributes = new Dictionary<string, string>
         {
             { "razorpay_order_id", request.RazorpayOrderId ?? string.Empty },
@@ -68,14 +75,12 @@ namespace AmazonWeb.API.Controllers.v1
             { "razorpay_signature", request.RazorpaySignature }
         };
 
-                // This static method throws a SignatureVerificationError if the payload was altered
-                // Ensure you have initialized your Razorpay Client somewhere with your Key Secret, 
-                // or configure it to access your environment credentials properly.
+                // Static method throws a SignatureVerificationError if the payload was altered.
+                // Requires RazorpayClient to be configured globally in Program.cs
                 Utils.verifyPaymentSignature(attributes);
             }
             catch (Exception ex)
             {
-                // Log the internal message internally for your diagnostic review
                 System.Diagnostics.Debug.WriteLine($"Razorpay Signature Failure: {ex.Message}");
                 return BadRequest("Payment verification signature verification failed. Invalid transaction source.");
             }
@@ -96,15 +101,28 @@ namespace AmazonWeb.API.Controllers.v1
                     return StatusCode(500, "Payment confirmed at bank, but failed to update order status in database.");
                 }
 
-                // Build transaction history tracker mapped precisely to your DB Schema
+                // 🎯 Parse your frontend string to your custom backend PaymentMethod Enum safely
+                if (!Enum.TryParse<PaymentMethod>(request.PaymentMethod, true, out var parsedMethod))
+                {
+                    parsedMethod = PaymentMethod.UPI; // Default fallback safety
+                }
+
+                // Build transaction history tracker mapped precisely to your updated Schema
                 TransactionRequest transactionRecord = new TransactionRequest()
                 {
                     OrderId = request.OrderId,
                     UserId = currentUserId,
-                    PaymentSource = request.RazorpayPaymentId, // Store payment reference tracking ID string
-                    PaymentMethod = 0, // Maps to your Card/UPI Enum tracking indicator
+                    PaymentSource = request.RazorpayPaymentId,
+
+                    // 🎯 FIXED: Dynamic payment method tracking instead of hardcoded 0
+                    PaymentMethod = parsedMethod,
+
+                    // 🎯 FIXED: Mapping out your new merchant tracking parameters securely
+                    PaymentMerchantOrderId = request.RazorpayOrderId,
+                    PaymentMerchantTransactionId = request.RazorpayPaymentId,
+
                     TotalAmount = existingOrder.TotalAmount,
-                    Status = 0, // 0 = Success matching your transaction state values
+                    Status = TransactionStatus.Success, // Uses your custom enum type value 
                     TransactionDate = DateTime.UtcNow
                 };
 
@@ -112,10 +130,18 @@ namespace AmazonWeb.API.Controllers.v1
 
                 if (transactionResponse == null)
                 {
-                    return StatusCode(500, "Payment confirmed at bank, but failed to log transaction record in database.");
+                    // 🎯 DATA INTEGRITY ROLLBACK: Revert order back if transaction logs crash
+                    OrderUpdateRequest rollbackRequest = new()
+                    {
+                        Id = request.OrderId,
+                        Status = OrderStatus.Pending
+                    };
+                    await _orderService.UpdateOrder(rollbackRequest);
+
+                    return StatusCode(500, "Payment confirmed at bank, but failed to log transaction record in database. Status rolled back.");
                 }
 
-                return Ok(new { message = "Fulfillment processing successfully locked and committed." });
+                return Ok(new { message = "Fulfillment processing successfully locked and committed.", orderId = request.OrderId });
             }
             catch (Exception ex)
             {
