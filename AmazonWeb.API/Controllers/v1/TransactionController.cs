@@ -224,18 +224,7 @@ namespace AmazonWeb.API.Controllers.v1
 
                     TotalAmount = existingOrder.TotalAmount,
                     Status = TransactionStatus.Success,
-                    TransactionDate = DateTime.UtcNow,
-
-                    //items
-                    OrderItems = existingOrder.Items.Select(item => new OrderItem
-                    {
-                        OrderId = existingOrder.Id,
-                        ProductId = item.ProductId,
-                        ProductName = item.ProductName,
-                        ImageUrl = item.ImageUrl,
-                        Quantity = item.Quantity,
-                        UnitPrice = item.UnitPrice
-                    }).ToList()
+                    TransactionDate = DateTime.UtcNow
                 };
 
                 TransactionResponse? transactionResponse = await _transactionService.RegisterTransaction(transactionRecord);

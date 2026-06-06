@@ -28,7 +28,6 @@ namespace AmazonWeb.Infrastructure.RepositoryContract
         {
             // Uses .Include() to eagerly load the associated OrderItems list from the database
             return await _dbCOntext.Transactions
-                .Include(t => t.OrderItems)
                 .FirstOrDefaultAsync(t => t.TransactionId == transactionId);
         }
 
@@ -36,7 +35,6 @@ namespace AmazonWeb.Infrastructure.RepositoryContract
         {
             // Fetches all historical transactions for the user, sorted by date with items included
             return await _dbCOntext.Transactions
-                .Include(t => t.OrderItems)
                 .Where(t => t.UserId == userId)
                 .OrderByDescending(t => t.TransactionDate)
                 .ToListAsync();

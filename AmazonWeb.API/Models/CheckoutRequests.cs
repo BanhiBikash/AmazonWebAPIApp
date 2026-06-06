@@ -94,22 +94,8 @@ namespace AmazonWeb.API.Models
                 Status = this.TransactionStatus, // Success or Failed
 
                 // Concat shipping items into a string format for your 500-char Transaction ledger configuration
-                ShippingAddress = $"{this.ShippingAddress}, {this.City}, {this.PostalCode}, {this.Country}".Trim().Trim(','),
-
-                // Map the shared OrderItem reference lists over 
-                OrderItems = new List<OrderItem>()
+                ShippingAddress = $"{this.ShippingAddress}, {this.City}, {this.PostalCode}, {this.Country}".Trim().Trim(',')
             };
-
-            foreach (var item in this.Items)
-            {
-                transaction.OrderItems.Add(new OrderItem
-                {
-                    OrderId = sharedOrderId,
-                    ProductId = item.ProductId,
-                    Quantity = item.Quantity,
-                    UnitPrice = item.UnitPrice
-                });
-            }
 
             return transaction;
         }

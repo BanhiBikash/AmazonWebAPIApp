@@ -22,9 +22,6 @@ namespace AmazonWeb.Core.DTO.ResponseDTO
         public string? PaymentMerchantOrderId { get; set; }
         public string? PaymentMerchantTransactionId { get; set; }
 
-        [Required(ErrorMessage = "Transaction order item collection list cannot be null.")]
-        public List<OrderItem>? OrderItems { get; set; }
-
         [Required(ErrorMessage = "Total transaction payment amount is required.")]
         [Range(0, int.MaxValue, ErrorMessage = "Total amount cannot be negative.")]
         public int TotalAmount { get; set; } // Represented as integer for your architecture (INR)

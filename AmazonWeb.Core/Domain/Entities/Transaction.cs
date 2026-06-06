@@ -32,9 +32,6 @@ namespace AmazonWeb.Core.Domain.Entities
         [StringLength(100, ErrorMessage = "Merchant Transaction ID cannot exceed 100 characters.")]
         public string? PaymentMerchantTransactionId { get; set; }
 
-        [Required(ErrorMessage = "Transaction order item collection list cannot be null.")]
-        public List<OrderItem>? OrderItems { get; set; }
-
         [Required(ErrorMessage = "Total transaction payment amount is required.")]
         [Range(0, int.MaxValue, ErrorMessage = "Total amount cannot be negative.")]
         public int TotalAmount { get; set; } // Represented as integer for your architecture (INR)
@@ -63,7 +60,6 @@ namespace AmazonWeb.Core.Domain.Entities
                 OrderId = this.OrderId,
                 PaymentMerchantOrderId = this.PaymentMerchantOrderId,
                 PaymentMerchantTransactionId = this.PaymentMerchantTransactionId,
-                OrderItems = this.OrderItems,
                 TotalAmount = this.TotalAmount,
                 TransactionDate = this.TransactionDate,
                 Status = this.Status,
