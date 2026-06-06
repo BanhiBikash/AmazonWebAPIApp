@@ -24,6 +24,14 @@ namespace AmazonWeb.Core.Domain.Entities
         [Required(ErrorMessage = "Order ID link tracking reference is required.")]
         public Guid OrderId { get; set; }
 
+        // 🎯 Added: Tracks Razorpay's auto-generated Order ID (e.g., "order_OlsK83kd9s")
+        [StringLength(100, ErrorMessage = "Merchant Order ID cannot exceed 100 characters.")]
+        public string? PaymentMerchantOrderId { get; set; }
+
+        // 🎯 Added: Tracks Razorpay's permanent Payment ID transaction reference (e.g., "pay_Nks938skd")
+        [StringLength(100, ErrorMessage = "Merchant Transaction ID cannot exceed 100 characters.")]
+        public string? PaymentMerchantTransactionId { get; set; }
+
         [Required(ErrorMessage = "Transaction order item collection list cannot be null.")]
         public List<OrderItem>? OrderItems { get; set; }
 
@@ -35,7 +43,6 @@ namespace AmazonWeb.Core.Domain.Entities
         public DateTime TransactionDate { get; set; } = DateTime.UtcNow;
 
         [Required(ErrorMessage = "Transaction processing status is required.")]
-        [StringLength(20, ErrorMessage = "Status value cannot exceed 20 characters.")]
         public TransactionStatus Status { get; set; } // Success, Pending, Failed, Refunded
 
         [Required(ErrorMessage = "Shipping physical destination address is required.")]
@@ -54,6 +61,8 @@ namespace AmazonWeb.Core.Domain.Entities
                 PaymentMethod = this.PaymentMethod,
                 PaymentSource = this.PaymentSource,
                 OrderId = this.OrderId,
+                PaymentMerchantOrderId = this.PaymentMerchantOrderId,
+                PaymentMerchantTransactionId = this.PaymentMerchantTransactionId,
                 OrderItems = this.OrderItems,
                 TotalAmount = this.TotalAmount,
                 TransactionDate = this.TransactionDate,

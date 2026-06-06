@@ -22,6 +22,12 @@ namespace AmazonWeb.Core.DTO.AddDTO
         [Required(ErrorMessage = "Order ID link tracking reference is required.")]
         public Guid OrderId { get; set; }
 
+        [Required(ErrorMessage = "Payment merchant order ID is required.")]
+        public string? PaymentMerchantOrderId { get; set; }
+
+        [Required(ErrorMessage = "Payment Trsanaction ID is also needed.")]
+        public string? PaymentMerchantTransactionId { get; set; }
+
         [Required(ErrorMessage = "Transaction order item collection list cannot be null.")]
         public List<OrderItem>? OrderItems { get; set; }
 
