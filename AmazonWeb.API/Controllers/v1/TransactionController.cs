@@ -148,5 +148,92 @@ namespace AmazonWeb.API.Controllers.v1
                 return StatusCode(500, $"Payment confirmed at bank, but transaction auditing logs failed: {ex.Message}");
             }
         }
+
+        //this is demo for bypassing the razorpay signature verification for local development testing purposes only. Do not use in production or public staging environments.
+        [HttpPost("[Action]")]
+        public async Task<IActionResult> ConfirmPaymentDemo([FromBody] PaymentConfirmationRequest request)
+        {
+            // Validate request contract upfront
+            if (request == null || request.OrderId == Guid.Empty)
+            {
+                return BadRequest("Invalid demo transaction payload.");
+            }
+
+            var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (string.IsNullOrEmpty(userIdClaim))
+            {
+                return Unauthorized();
+            }
+            Guid currentUserId = Guid.Parse(userIdClaim);
+
+            // 1. Fetch the existing pending order record from your database
+            var existingOrder = await _orderService.GetOrdersByOrderID(request.OrderId);
+            if (existingOrder == null)
+            {
+                return NotFound("Demo mode error: Order record could not be found.");
+            }
+
+            // 2. Security validation check
+            if (existingOrder.UserId != currentUserId)
+            {
+                return StatusCode(403, "Access mismatch profile account context exception.");
+            }
+
+            // 3. 🎯 SKIP RAZORPAY SIGNATURE CRYPTO MATH ENTIRELY
+            // No signature check here to keep it clean and fast for local development tests.
+            System.Diagnostics.Debug.WriteLine($"[DEMO SECTOR ROUTE] Bypassing secure validation math for mock payment ID: {request.RazorpayPaymentId}");
+
+            // 4. Update order status and write logs to your transaction tables
+            try
+            {
+                OrderUpdateRequest updateRequest = new()
+                {
+                    Id = request.OrderId,
+                    Status = OrderStatus.Processing // Flags order layout as paid
+                };
+
+                OrderResponse? updatedOrder = await _orderService.UpdateOrder(updateRequest);
+                if (updatedOrder == null)
+                {
+                    return StatusCode(500, "Demo failed updating order status flags.");
+                }
+
+                // Parse your simulated incoming string type back to the enum context
+                if (!Enum.TryParse<PaymentMethod>(request.PaymentMethod, true, out var parsedMethod))
+                {
+                    parsedMethod = PaymentMethod.Wallet; // Default demo choice
+                }
+
+                // Build mock history database instance values
+                TransactionRequest transactionRecord = new TransactionRequest()
+                {
+                    OrderId = request.OrderId,
+                    UserId = currentUserId,
+                    PaymentSource = "DEMO_BYPASS_MODE_SOURCE",
+                    PaymentMethod = parsedMethod,
+
+                    // Log the mock identifier tokens generated on your frontend
+                    PaymentMerchantOrderId = request.RazorpayOrderId,
+                    PaymentMerchantTransactionId = request.RazorpayPaymentId,
+
+                    TotalAmount = existingOrder.TotalAmount,
+                    Status = TransactionStatus.Success,
+                    TransactionDate = DateTime.UtcNow
+                };
+
+                TransactionResponse? transactionResponse = await _transactionService.RegisterTransaction(transactionRecord);
+
+                if (transactionResponse == null)
+                {
+                    return StatusCode(500, "Demo failed writing transaction record schema entry.");
+                }
+
+                return Ok(new { message = "Demo Bypass transaction committed and logged cleanly.", orderId = request.OrderId });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Demo internal process failure layout mapping error: {ex.Message}");
+            }
+        }
     }
 }
