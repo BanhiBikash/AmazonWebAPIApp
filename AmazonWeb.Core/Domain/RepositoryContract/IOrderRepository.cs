@@ -22,6 +22,8 @@ namespace AmazonWeb.Core.Domain.RepositoryContract
         Task<IEnumerable<Order>> GetByUserIdAsync(Guid userId);
         Task<IEnumerable<Order>> GetByStatusAsync(OrderStatus status);
 
+        void ClearTracker();
+
         // DIP: Services depend on this abstraction, not EF Core
     }
 }

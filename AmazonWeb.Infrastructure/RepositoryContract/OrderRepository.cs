@@ -2,9 +2,6 @@
 using AmazonWeb.Core.Domain.RepositoryContract;
 using AmazonWeb.Infrastructure.DBContext;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace AmazonWeb.Infrastructure.RepositoryContract
 {
@@ -21,6 +18,11 @@ namespace AmazonWeb.Infrastructure.RepositoryContract
         public async Task<bool> IsDatabaseAliveAsync()
         {
             return await _dbContext.Database.CanConnectAsync();
+        }// 🎯 IMPLEMENT THIS: Safely wipe the local change tracker memory
+        
+        public void ClearTracker()
+        {
+            _dbContext.ChangeTracker.Clear();
         }
 
         public async Task<Order> AddAsync(Order order)
@@ -83,7 +85,7 @@ namespace AmazonWeb.Infrastructure.RepositoryContract
                 throw new ArgumentNullException("Id is empty, can't be retrieved.");
             }
 
-            return await _dbContext.Orders.Include(order => order.Items).FirstOrDefaultAsync(order => order.Id == id);
+            return await _dbContext.Orders.Include(order => order.Items).AsNoTracking().FirstOrDefaultAsync(order => order.Id == id);
         }
 
         public async Task<IEnumerable<Order>> GetByStatusAsync(OrderStatus status)
@@ -118,17 +120,18 @@ namespace AmazonWeb.Infrastructure.RepositoryContract
                 throw new InvalidOperationException("Database connectivity check failed. Unable to fetch cart data.");
             }
 
-            Order? orderDB = await _dbContext.Orders.Where(o=>o.Id==order.Id).FirstOrDefaultAsync();
-
-            if(orderDB == null)
+            var trackedEntity = _dbContext.Orders.Local.FirstOrDefault(o => o.Id == order.Id);
+            if (trackedEntity != null)
             {
-                throw new InvalidOperationException("Order not found, can't be updated.");
+                _dbContext.Entry(trackedEntity).State = EntityState.Detached;
             }
 
+            // 🎯 SAFETY FIX: Inform EF to only modify the Order record columns, 
+            // keeping your unpopulated 'Items' list completely isolated and safe!
             _dbContext.Entry(order).State = EntityState.Modified;
-            var result = await _dbContext.SaveChangesAsync();
 
-            return result>0? order : null;
+            await _dbContext.SaveChangesAsync();
+            return order;
         }
     }
 }

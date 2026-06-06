@@ -19,7 +19,7 @@ namespace AmazonWeb.API.Controllers.v1
         private readonly IOrderService _orderService;
         private readonly ITransactionService _transactionService;
 
-        TransactionController(IOrderService orderService, ITransactionService transactionService)
+        public TransactionController(IOrderService orderService, ITransactionService transactionService)
         {
             _orderService = orderService;
             _transactionService = transactionService;
@@ -186,13 +186,19 @@ namespace AmazonWeb.API.Controllers.v1
             // 4. Update order status and write logs to your transaction tables
             try
             {
+                // 🎯 FIXED: Map the existing order layout strings here to satisfy the Service Contract's non-nullable constraints
                 OrderUpdateRequest updateRequest = new()
                 {
                     Id = request.OrderId,
-                    Status = OrderStatus.Processing // Flags order layout as paid
+                    Status = OrderStatus.Processing, // Flags order layout as paid
+                    ShippingAddress = existingOrder.ShippingAddress,
+                    PostalCode = existingOrder.PostalCode,
+                    City = existingOrder.City,
+                    Country = existingOrder.Country
                 };
 
                 OrderResponse? updatedOrder = await _orderService.UpdateOrder(updateRequest);
+
                 if (updatedOrder == null)
                 {
                     return StatusCode(500, "Demo failed updating order status flags.");
@@ -218,14 +224,37 @@ namespace AmazonWeb.API.Controllers.v1
 
                     TotalAmount = existingOrder.TotalAmount,
                     Status = TransactionStatus.Success,
-                    TransactionDate = DateTime.UtcNow
+                    TransactionDate = DateTime.UtcNow,
+
+                    //items
+                    OrderItems = existingOrder.Items.Select(item => new OrderItem
+                    {
+                        OrderId = existingOrder.Id,
+                        ProductId = item.ProductId,
+                        ProductName = item.ProductName,
+                        ImageUrl = item.ImageUrl,
+                        Quantity = item.Quantity,
+                        UnitPrice = item.UnitPrice
+                    }).ToList()
                 };
 
                 TransactionResponse? transactionResponse = await _transactionService.RegisterTransaction(transactionRecord);
 
                 if (transactionResponse == null)
                 {
-                    return StatusCode(500, "Demo failed writing transaction record schema entry.");
+                    // 🎯 FIXED: Also apply the mapping here to safeguard the rollback option path
+                    OrderUpdateRequest rollbackRequest = new()
+                    {
+                        Id = request.OrderId,
+                        Status = OrderStatus.Pending,
+                        ShippingAddress = existingOrder.ShippingAddress,
+                        PostalCode = existingOrder.PostalCode,
+                        City = existingOrder.City,
+                        Country = existingOrder.Country
+                    };
+                    await _orderService.UpdateOrder(rollbackRequest);
+
+                    return StatusCode(500, "Demo failed writing transaction record schema entry. Order status rolled back.");
                 }
 
                 return Ok(new { message = "Demo Bypass transaction committed and logged cleanly.", orderId = request.OrderId });

@@ -20,6 +20,6 @@ namespace AmazonWeb.Core.DTO.UpdateDTO
         [StringLength(100)]
         public string? Country { get; set; }
 
-        public OrderStatus? Status { get; set; }
+        public OrderStatus Status { get; set; }
     }
 }

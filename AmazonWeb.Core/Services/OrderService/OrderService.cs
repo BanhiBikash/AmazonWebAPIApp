@@ -168,14 +168,13 @@ namespace AmazonWeb.Core.Services.OrderService
                 Order updatedOrder = await _orderRepository.UpdateAsync(new Order()
                 {
                     Id = updateRequest.Id,
+                    UserId = orderToUpdate.UserId,
                     ShippingAddress = orderToUpdate.ShippingAddress,
                     PostalCode = orderToUpdate.PostalCode,
                     City = orderToUpdate.City,
                     Country = orderToUpdate.Country,
-                    Status = updateRequest.Status ?? OrderStatus.Processing,
-                    OrderDate = orderToUpdate.OrderDate,
-                    Items = orderToUpdate.Items,
-                    User = await _user.FindByIdAsync(orderToUpdate.UserId.ToString())
+                    Status = updateRequest.Status,
+                    OrderDate = orderToUpdate.OrderDate
                 });
 
                 return (await _orderRepository.UpdateAsync(updatedOrder)).ToOrderResponse();
