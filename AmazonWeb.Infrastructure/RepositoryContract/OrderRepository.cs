@@ -139,5 +139,36 @@ namespace AmazonWeb.Infrastructure.RepositoryContract
 
             return orderToUpdate;
         }
+
+        //to soft delete pending orders
+        public async Task<int> DeleteExpiredPendingOrdersAsync(DateTime cutoffTime)
+        {
+            if (!await IsDatabaseAliveAsync())
+            {
+                throw new InvalidOperationException("Database connectivity check failed during background cleanup.");
+            }
+
+            // 1. Fetch pending orders that were created before the cutoff time and aren't already deleted
+            // 💡 Note: If your entity uses a different property name for creation time (like 'CreatedDate' or 'OrderDate'), update it here.
+            var expiredOrders = await _dbContext.Orders
+            .Where(order => order.Status == OrderStatus.Pending
+                     && order.OrderDate < cutoffTime
+                     && order.isDeleted == false)
+            .ToListAsync();
+
+            if (!expiredOrders.Any())
+            {
+             return 0; // Nothing to clear out this round
+            }
+
+            // 2. Perform soft deletes on the targeted records
+            foreach (var order in expiredOrders)
+            {
+                order.isDeleted = true;
+            }
+
+            // 3. Persist and return the count of successfully deleted records
+            return await _dbContext.SaveChangesAsync();
+        }
     }
 }

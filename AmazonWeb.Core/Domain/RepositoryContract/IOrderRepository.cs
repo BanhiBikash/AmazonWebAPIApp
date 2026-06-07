@@ -24,6 +24,8 @@ namespace AmazonWeb.Core.Domain.RepositoryContract
 
         void ClearTracker();
 
+        Task<int> DeleteExpiredPendingOrdersAsync(DateTime cutoffTime);
+
         // DIP: Services depend on this abstraction, not EF Core
     }
 }
