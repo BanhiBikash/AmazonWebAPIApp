@@ -120,18 +120,24 @@ namespace AmazonWeb.Infrastructure.RepositoryContract
                 throw new InvalidOperationException("Database connectivity check failed. Unable to fetch cart data.");
             }
 
-            var trackedEntity = _dbContext.Orders.Local.FirstOrDefault(o => o.Id == order.Id);
-            if (trackedEntity != null)
+            Order? orderToUpdate = await _dbContext.Orders.FindAsync(order.Id);
+
+            // 🎯 THE FIX: Stop execution and return null safely if the database doesn't have this record
+            if (orderToUpdate == null)
             {
-                _dbContext.Entry(trackedEntity).State = EntityState.Detached;
+                throw new InvalidOperationException("Order not found.");
             }
 
-            // 🎯 SAFETY FIX: Inform EF to only modify the Order record columns, 
-            // keeping your unpopulated 'Items' list completely isolated and safe!
-            _dbContext.Entry(order).State = EntityState.Modified;
+            orderToUpdate.ShippingAddress = order.ShippingAddress;
+            orderToUpdate.PostalCode = order.PostalCode;
+            orderToUpdate.City = order.City;
+            orderToUpdate.Country = order.Country;
+            orderToUpdate.Status = order.Status;
 
+            //save the data
             await _dbContext.SaveChangesAsync();
-            return order;
+
+            return orderToUpdate;
         }
     }
 }

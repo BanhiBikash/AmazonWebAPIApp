@@ -92,7 +92,8 @@ namespace AmazonWeb.API.Controllers.v1
         [HttpPost("[Action]")]
         public async Task<ActionResult<OrderResponse?>> UpdateOrder([FromBody] OrderUpdateRequest orderUpdateRequest)
         {
-            return (await _orderService.UpdateOrder(orderUpdateRequest));
+            OrderResponse? updatedOrder = await _orderService.UpdateOrder(orderUpdateRequest);
+            return updatedOrder;
         }
     }
 }

@@ -275,6 +275,32 @@
     ]
   },
   {
+    "ContainingType": "AmazonWeb.API.Controllers.v1.OrdersController",
+    "Method": "UpdateOrder",
+    "RelativePath": "api/v1/Orders/UpdateOrder",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "orderUpdateRequest",
+        "Type": "AmazonWeb.Core.DTO.UpdateDTO.OrderUpdateRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "AmazonWeb.Core.DTO.ResponseDTO.OrderResponse",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
     "ContainingType": "AmazonWeb.API.Controllers.v1.ProductsController",
     "Method": "GetAllProducts",
     "RelativePath": "api/v1/Products",

@@ -165,19 +165,23 @@ namespace AmazonWeb.Core.Services.OrderService
 
             if (orderToUpdate != null)
             {
-                Order updatedOrder = await _orderRepository.UpdateAsync(new Order()
+                Order updatedOrder = new Order()
                 {
                     Id = updateRequest.Id,
                     UserId = orderToUpdate.UserId,
-                    ShippingAddress = orderToUpdate.ShippingAddress,
-                    PostalCode = orderToUpdate.PostalCode,
-                    City = orderToUpdate.City,
-                    Country = orderToUpdate.Country,
+                    ShippingAddress = updateRequest.ShippingAddress,
+                    PostalCode = updateRequest.PostalCode,
+                    City = updateRequest.City,
+                    Country = updateRequest.Country,
                     Status = updateRequest.Status,
                     OrderDate = orderToUpdate.OrderDate
-                });
+                };
 
-                return (await _orderRepository.UpdateAsync(updatedOrder)).ToOrderResponse();
+                Order? updatedOrderResponse = await _orderRepository.UpdateAsync(updatedOrder);
+
+                orderToUpdate = updatedOrderResponse.ToOrderResponse();
+
+                return orderToUpdate;
             }
             else
             {
