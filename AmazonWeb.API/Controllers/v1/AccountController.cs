@@ -362,7 +362,7 @@ namespace AmazonWeb.API.Controllers.v1
                 FirstName = user.FirstName,
                 LastName = user.LastName,
                 Email = user.Email,
-                ProfileImageUrl = user.ProfileImageUrl,
+                ProfileImageUrl = _configuration.GetValue<string>("JwtSettings:Issuer") +user.ProfileImageUrl,
                 Address = user.Address,
                 City = user.City,
                 State = user.State,
