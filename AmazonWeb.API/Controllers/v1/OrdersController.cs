@@ -2,6 +2,7 @@
 using AmazonWeb.Core.Domain.Entities;
 using AmazonWeb.Core.DTO.AddDTO;
 using AmazonWeb.Core.DTO.ResponseDTO;
+using AmazonWeb.Core.DTO.UpdateDTO;
 using AmazonWeb.Core.ServiceContracts.OrderContracts;
 using AmazonWeb.Core.ServiceContracts.ProductContracts;
 using AmazonWeb.Core.ServiceContracts.TransactionContract;
@@ -31,7 +32,7 @@ namespace AmazonWeb.API.Controllers.v1
 
         [Route("[Action]")]
         [HttpGet]
-        public async Task<ActionResult?> GetOrderByUserID()
+        public async Task<ActionResult<List<OrderResponse>?>> GetOrderByUserID()
         {
             //Standardized fallback chain across ALL actions to capture auto-mapped tokens
             var userIdString = User.FindFirstValue(JwtRegisteredClaimNames.Sub)
@@ -50,9 +51,8 @@ namespace AmazonWeb.API.Controllers.v1
             return Ok(orderResponse);
         }
 
-
         [HttpGet("[Action]")]
-        public async Task<ActionResult> GetOrdersByOrderID(Guid orderID)
+        public async Task<ActionResult<OrderResponse?>> GetOrdersByOrderID(Guid orderID)
         {
             if(orderID == Guid.Empty)
             {
@@ -87,6 +87,12 @@ namespace AmazonWeb.API.Controllers.v1
 
             //Wrap the response model cleanly inside an Ok (200 Status) block
             return Ok(response);
+        }
+
+        [HttpPost("[Action]")]
+        public async Task<ActionResult<OrderResponse?>> UpdateOrder([FromBody] OrderUpdateRequest orderUpdateRequest)
+        {
+            return (await _orderService.UpdateOrder(orderUpdateRequest));
         }
     }
 }
