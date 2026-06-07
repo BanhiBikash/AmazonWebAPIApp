@@ -36,6 +36,9 @@ namespace AmazonWeb.Core.Domain.Entities
         [StringLength(100)]
         public string? Country { get; set; }
 
+        //For soft delete
+        public bool? isDeleted { get; set; } = false;
+
         // Navigation properties
         public ApplicationUser User { get; set; }
         public List<OrderItem> Items { get; set; } = new List<OrderItem>();

@@ -19,7 +19,7 @@ namespace AmazonWeb.Infrastructure.RepositoryContract
         {
             return await _dbContext.Database.CanConnectAsync();
         }// 🎯 IMPLEMENT THIS: Safely wipe the local change tracker memory
-        
+
         public void ClearTracker()
         {
             _dbContext.ChangeTracker.Clear();
@@ -70,7 +70,7 @@ namespace AmazonWeb.Infrastructure.RepositoryContract
             }
 
             //egaer return so that items are not left behind, otherwise it will return orders without items
-            return await _dbContext.Orders.Include(order=>order.Items).ToListAsync();
+            return await _dbContext.Orders.Include(order => order.Items).ToListAsync();
         }
 
         public async Task<Order?> GetByIdAsync(Guid id)
@@ -80,12 +80,12 @@ namespace AmazonWeb.Infrastructure.RepositoryContract
                 throw new InvalidOperationException("Database connectivity check failed. Unable to fetch cart data.");
             }
 
-            if (id==Guid.Empty)
+            if (id == Guid.Empty)
             {
                 throw new ArgumentNullException("Id is empty, can't be retrieved.");
             }
 
-            return await _dbContext.Orders.Include(order => order.Items).AsNoTracking().FirstOrDefaultAsync(order => order.Id == id);
+            return await _dbContext.Orders.Include(order => order.Items).Where(order => order.isDeleted == false).AsNoTracking().FirstOrDefaultAsync(order => order.Id == id);
         }
 
         public async Task<IEnumerable<Order>> GetByStatusAsync(OrderStatus status)
@@ -95,7 +95,7 @@ namespace AmazonWeb.Infrastructure.RepositoryContract
                 throw new InvalidOperationException("Database connectivity check failed. Unable to fetch cart data.");
             }
 
-            return await _dbContext.Orders.Include(o=>o.Items).Where(order => order.Status == status).ToListAsync();
+            return await _dbContext.Orders.Include(o => o.Items).Where(order => order.Status == status && order.isDeleted == false).ToListAsync();
         }
 
         public async Task<IEnumerable<Order>> GetByUserIdAsync(Guid userId)
@@ -110,7 +110,7 @@ namespace AmazonWeb.Infrastructure.RepositoryContract
                 throw new ArgumentNullException("UserId is empty, can't be retrieved.");
             }
 
-            return await _dbContext.Orders.Include(order => order.Items).Where(order => order.UserId == userId).ToListAsync();
+            return await _dbContext.Orders.Include(order => order.Items).Where(order => order.UserId == userId && order.isDeleted == false).ToListAsync();
         }
 
         public async Task<Order> UpdateAsync(Order order)
@@ -123,7 +123,7 @@ namespace AmazonWeb.Infrastructure.RepositoryContract
             Order? orderToUpdate = await _dbContext.Orders.FindAsync(order.Id);
 
             // 🎯 THE FIX: Stop execution and return null safely if the database doesn't have this record
-            if (orderToUpdate == null)
+            if (orderToUpdate == null || orderToUpdate.isDeleted == true)
             {
                 throw new InvalidOperationException("Order not found.");
             }
