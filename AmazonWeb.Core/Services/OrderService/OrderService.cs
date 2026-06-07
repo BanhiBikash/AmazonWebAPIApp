@@ -163,7 +163,13 @@ namespace AmazonWeb.Core.Services.OrderService
 
             OrderResponse? orderToUpdate = await GetOrdersByOrderID(updateRequest.Id);
 
-            if (orderToUpdate != null)
+            //orders can be updated only if the orders are under processing or pending
+            if (orderToUpdate.Status != OrderStatus.Pending.ToString() && orderToUpdate.Status!= OrderStatus.Processing.ToString())
+            {
+                throw new InvalidOperationException("Only orders which are processing or pending can be updated.");
+            }
+
+                if (orderToUpdate != null)
             {
                 Order updatedOrder = new Order()
                 {
