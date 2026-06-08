@@ -1,4 +1,5 @@
-﻿using AmazonWeb.API.ServiceConfigurations;
+﻿using AmazonWeb.API.BackgroundServices;
+using AmazonWeb.API.ServiceConfigurations;
 using AmazonWeb.Core.Domain.Identities;
 using AmazonWeb.Core.Domain.RepositoryContract;
 using AmazonWeb.Core.ServiceContracts;
@@ -67,6 +68,9 @@ builder.Services.AddScoped<IOrderRepository,OrderRepository>();
 builder.Services.AddScoped<IOrderService, OrderService>();
 builder.Services.AddScoped<ITransactionService, TransactionService>();
 builder.Services.AddScoped<ITransactionRepository, TransactionRepository>();
+
+//automated-service
+builder.Services.AddHostedService<OrderCleanupBackgroundService>();
 
 // Swagger
 builder.Services.AddEndpointsApiExplorer();

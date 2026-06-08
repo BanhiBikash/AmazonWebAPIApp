@@ -153,7 +153,7 @@ namespace AmazonWeb.Infrastructure.RepositoryContract
             var expiredOrders = await _dbContext.Orders
             .Where(order => order.Status == OrderStatus.Pending
                      && order.OrderDate < cutoffTime
-                     && order.isDeleted == false)
+                     && (order.isDeleted == false || order.isDeleted == null))
             .ToListAsync();
 
             if (!expiredOrders.Any())
