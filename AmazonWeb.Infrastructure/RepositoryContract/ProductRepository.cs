@@ -104,5 +104,20 @@ namespace AmazonWeb.Infrastructure.RepositoryContract
                                    .Where(p => p.Name.Contains(name) || p.Category.ToString().Contains(name) || p.SubCategory.ToString().Contains(name))
                                    .ToListAsync();
         }
+
+        public async Task<IEnumerable<Product>> GetFirstProductEachCategory()
+        {
+            // 1. Fetch only the Guid primary keys of the first product in each category group
+            var productIds = await _dbContext.Products
+                .Where(p => !p.IsDeleted) // Safely skip soft-deleted items first
+                .GroupBy(p => p.Category)
+                .Select(g => g.Select(p => p.Id).FirstOrDefault()) // Extracts just the Guid
+                .ToListAsync();
+
+            // 2. Hydrate the full entity payloads from the extracted primary keys
+            return await _dbContext.Products
+                .Where(p => productIds.Contains(p.Id))
+                .ToListAsync();
+        }
     }
 }

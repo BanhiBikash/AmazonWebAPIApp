@@ -10,6 +10,7 @@ wwwroot\resources\product-thumbnail\860111b3-e66f-4422-90fd-bfd1955a90c3.webp
 wwwroot\resources\product-thumbnail\9514995f-b8ee-4d97-bf53-190da905876e.webp
 wwwroot\resources\product-thumbnail\a5a872a9-5ef5-4e60-87df-478159285e20.webp
 wwwroot\resources\product-thumbnail\a91a2af8-e751-4fe2-9cf0-ed05f2958d08.webp
+wwwroot\resources\product-thumbnail\aced566f-3351-4ff6-a4b1-210d644fb4be.webp
 wwwroot\resources\product-thumbnail\bdb8cda5-010f-4d32-99de-2260dbb16eb7.webp
 wwwroot\resources\product-thumbnail\c32fca30-477b-46a5-bde4-eb992463264b.png
 wwwroot\resources\product-thumbnail\c32fca30-477b-46a5-bde4-eb992463264b.webp

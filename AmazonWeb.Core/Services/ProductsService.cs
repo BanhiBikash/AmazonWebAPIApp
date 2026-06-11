@@ -289,5 +289,27 @@ namespace AmazonWeb.Core.Services
             
             return DataTruth;
         }
+
+        public async Task<IEnumerable<ProductResponse>> GetFirstProductEachCategory()
+        {
+            IEnumerable<Product>? products = await _productRepository.GetFirstProductEachCategory();
+
+            foreach (Product product in products)
+            {
+                product.ImageUrl = _configuration.GetValue<string>("JwtSettings:Issuer") +product.ImageUrl;
+            }
+
+            List<ProductResponse> productResponses = new List<ProductResponse>();
+            
+            foreach (Product product in products)
+            {
+                if (!product.IsDeleted)
+                {
+                    productResponses.Add(Product.ToProductResponse(product));
+                }
+            }
+
+            return productResponses;
+        }
     }
 }

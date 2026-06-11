@@ -563,6 +563,26 @@
   },
   {
     "ContainingType": "AmazonWeb.API.Controllers.v1.ProductsController",
+    "Method": "GetFirstProductEachCategory",
+    "RelativePath": "api/v1/Products/GetFirstProductEachCategory",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": [
+      {
+        "Type": "System.Collections.Generic.IEnumerable\u00601[[AmazonWeb.Core.DTO.ResponseDTO.ProductResponse, AmazonWeb.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "AmazonWeb.API.Controllers.v1.ProductsController",
     "Method": "SearchProductsByName",
     "RelativePath": "api/v1/Products/search/{name}",
     "HttpMethod": "GET",

@@ -68,5 +68,7 @@ namespace AmazonWeb.Core.ServiceContracts.ProductContracts
         Task DeductProductStockAsync(Guid id, int quantity);
 
         Task<bool> CheckItemDataSanctity(List<ItemData> itemDatas);
+
+        Task<IEnumerable<ProductResponse>> GetFirstProductEachCategory();
     }
 }

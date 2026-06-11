@@ -23,6 +23,7 @@ namespace AmazonWeb.Core.Domain.RepositoryContract
         Task<IEnumerable<Product>> GetByCategoryAsync(ProductCategory category);
         Task<IEnumerable<Product>> GetBySubCategoryAsync(ProductSubCategory subCategory);
         Task<IEnumerable<Product>> SearchByNameAsync(string name);
+        Task<IEnumerable<Product>> GetFirstProductEachCategory();
 
         // Liskov Substitution Principle: Any implementation should respect contract
         // Dependency Inversion Principle: High-level modules depend on this abstraction, not EF Core

@@ -186,5 +186,14 @@ namespace AmazonWeb.API.Controllers.v1
             // 3. Return both together so the frontend only needs to make a single API trip
             return Ok(new { categories, subCategories });
         }
+
+        [HttpGet("[Action]")]
+        [AllowAnonymous]
+        public async Task<ActionResult<IEnumerable<ProductResponse>>> GetFirstProductEachCategory()
+        {
+            IEnumerable<ProductResponse> products = await _productService.GetFirstProductEachCategory();
+
+            return Ok(products);
+        }
     }
 }
