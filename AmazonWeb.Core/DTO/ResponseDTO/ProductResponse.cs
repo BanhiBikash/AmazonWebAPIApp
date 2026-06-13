@@ -16,6 +16,10 @@ namespace AmazonWeb.Core.DTO.ResponseDTO
         [Required]
         public int Price { get; set; }
 
+        [Required(ErrorMessage = "There must be a discount percentage")]
+        [Range(0, 100, ErrorMessage = "Discount must be between 0 and 100")]
+        public double Discount { get; set; }
+
         [Required]
         public bool InStock { get; set; }
 

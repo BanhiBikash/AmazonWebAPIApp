@@ -16,6 +16,10 @@ namespace AmazonWeb.Core.Domain.Entities
         [Required]
         public int Price { get; set; }
 
+        [Required(ErrorMessage = "There must be a discount percentage")]
+        [Range(0, 100, ErrorMessage = "Discount must be between 0 and 100")]
+        public double Discount { get; set; }
+
         [Required]
         public bool InStock { get; set; }
 
@@ -44,6 +48,7 @@ namespace AmazonWeb.Core.Domain.Entities
                 Id = product.Id,
                 Name = product.Name,
                 Price = product.Price,
+                Discount = product.Discount,
                 InStock = product.InStock,
                 Stock = product.Stock,
                 Description = product.Description,

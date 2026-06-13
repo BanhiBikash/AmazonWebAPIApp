@@ -15,6 +15,10 @@ namespace AmazonWeb.Core.DTO.AddDTO
         [Required(ErrorMessage = "Price is required")]
         public int Price { get; set; }
 
+        [Required(ErrorMessage = "Stock status is required")]
+        [Range(0, 100, ErrorMessage = "Discount must be between 0 and 100")]
+        public double Discount { get; set; } = 0d;
+
         [Required]
         public bool InStock { get; set; }
 
@@ -41,6 +45,7 @@ namespace AmazonWeb.Core.DTO.AddDTO
                 Id = Guid.NewGuid(), // new product gets a fresh ID
                 Name = request.Name,
                 Price = request.Price,
+                Discount = request.Discount,
                 InStock = request.InStock,
                 Stock = request.Stock,
                 Description = request.Description,
