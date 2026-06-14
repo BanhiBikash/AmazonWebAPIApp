@@ -1,5 +1,6 @@
 ﻿using AmazonWeb.Core.Domain.Enums;
 using AmazonWeb.Core.DTO.ResponseDTO;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.ComponentModel.DataAnnotations;
 
@@ -47,7 +48,8 @@ namespace AmazonWeb.Core.Domain.Entities
             {
                 Id = product.Id,
                 Name = product.Name,
-                Price = product.Price,
+                Price = product.Price - Convert.ToInt32((product.Price * product.Discount) / 100.0),
+                CatalogPrice = product.Price,
                 Discount = product.Discount,
                 InStock = product.InStock,
                 Stock = product.Stock,

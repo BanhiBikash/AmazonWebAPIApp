@@ -118,8 +118,9 @@ namespace AmazonWeb.Core.Services
             {
                 Id = product.Id,
                 Name = product.Name,
-                Price = product.Price,
+                Price = product.CatalogPrice,
                 InStock = product.InStock,
+                Discount = product.Discount,
                 Stock = product.Stock,
                 Description = product.Description,
                 ImageUrl = finalImageUrl,
