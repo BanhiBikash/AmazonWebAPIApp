@@ -589,6 +589,7 @@
                 "required": [
                   "Category",
                   "Description",
+                  "Discount",
                   "InStock",
                   "Name",
                   "Price",
@@ -606,6 +607,12 @@
                   "Price": {
                     "type": "integer",
                     "format": "int32"
+                  },
+                  "Discount": {
+                    "maximum": 100,
+                    "minimum": 0,
+                    "type": "number",
+                    "format": "double"
                   },
                   "InStock": {
                     "type": "boolean"
@@ -634,6 +641,9 @@
                   "style": "form"
                 },
                 "Price": {
+                  "style": "form"
+                },
+                "Discount": {
                   "style": "form"
                 },
                 "InStock": {
@@ -707,6 +717,10 @@
                     "type": "integer",
                     "format": "int32"
                   },
+                  "Discount": {
+                    "type": "integer",
+                    "format": "int32"
+                  },
                   "InStock": {
                     "type": "boolean"
                   },
@@ -740,6 +754,9 @@
                   "style": "form"
                 },
                 "Price": {
+                  "style": "form"
+                },
+                "Discount": {
                   "style": "form"
                 },
                 "InStock": {
@@ -1519,7 +1536,9 @@
       },
       "ProductResponse": {
         "required": [
+          "catalogPrice",
           "category",
+          "discount",
           "id",
           "inStock",
           "name",
@@ -1537,6 +1556,16 @@
             "type": "string"
           },
           "price": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "discount": {
+            "maximum": 100,
+            "minimum": 0,
+            "type": "number",
+            "format": "double"
+          },
+          "catalogPrice": {
             "type": "integer",
             "format": "int32"
           },

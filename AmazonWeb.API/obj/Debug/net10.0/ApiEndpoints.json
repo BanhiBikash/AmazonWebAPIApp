@@ -339,6 +339,11 @@
         "IsRequired": false
       },
       {
+        "Name": "Discount",
+        "Type": "System.Double",
+        "IsRequired": false
+      },
+      {
         "Name": "InStock",
         "Type": "System.Boolean",
         "IsRequired": false
@@ -401,6 +406,11 @@
       },
       {
         "Name": "Price",
+        "Type": "System.Nullable\u00601[[System.Int32, System.Private.CoreLib, Version=10.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
+        "IsRequired": false
+      },
+      {
+        "Name": "Discount",
         "Type": "System.Nullable\u00601[[System.Int32, System.Private.CoreLib, Version=10.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
         "IsRequired": false
       },

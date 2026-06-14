@@ -117,12 +117,12 @@ namespace AmazonWeb.Core.Services
             Product? productToUpdate = new Product()
             {
                 Id = product.Id,
-                Name = product.Name,
-                Price = product.CatalogPrice,
-                InStock = product.InStock,
-                Discount = product.Discount,
-                Stock = product.Stock,
-                Description = product.Description,
+                Name = productUpdateRequest.Name??product.Name,
+                Price = productUpdateRequest.Price??product.Price,
+                InStock = productUpdateRequest.InStock??product.InStock,
+                Discount = productUpdateRequest.Discount??product.Discount,
+                Stock = productUpdateRequest.Stock??product.Stock,
+                Description = productUpdateRequest.Description??product.Description,
                 ImageUrl = finalImageUrl,
                 Category = Enum.Parse<ProductCategory>(product.Category),
                 SubCategory = string.IsNullOrEmpty(product.SubCategory) ? ProductSubCategory.Toy_Puzzles : Enum.Parse<ProductSubCategory>(product.SubCategory),
