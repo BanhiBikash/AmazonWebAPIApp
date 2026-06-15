@@ -30,7 +30,7 @@ namespace AmazonWeb.Core.DTO.UpdateDTO
         public ProductSubCategory? SubCategory { get; set; }
 
         //takes existing product and update request, applies non-null fields from update request to existing product, and returns updated product
-        public static ProductResponse ApplyUpdate(ProductResponse? existingProduct, ProductUpdateRequest? updateRequest)
+        public static Product ApplyUpdate(Product? existingProduct, ProductUpdateRequest? updateRequest)
         {
             if (existingProduct == null)
                 throw new ArgumentNullException(nameof(existingProduct));
