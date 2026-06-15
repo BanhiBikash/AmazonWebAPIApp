@@ -297,7 +297,10 @@ namespace AmazonWeb.Core.Services
 
             foreach (Product product in products)
             {
-                product.ImageUrl = _configuration.GetValue<string>("JwtSettings:Issuer") +product.ImageUrl;
+                if (!product.ImageUrl.Contains("https"))
+                {
+                    product.ImageUrl = _configuration.GetValue<string>("JwtSettings:Issuer") + product.ImageUrl;
+                }
             }
 
             List<ProductResponse> productResponses = new List<ProductResponse>();
