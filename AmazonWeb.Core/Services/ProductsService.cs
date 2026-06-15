@@ -95,7 +95,7 @@ namespace AmazonWeb.Core.Services
             if (productUpdateRequest == null)
                 throw new ArgumentNullException(nameof(productUpdateRequest));
 
-            ProductResponse? product = await GetProductByIdAsync(productUpdateRequest.Id);
+            Product? product = await _productRepository.GetByIdAsync(productUpdateRequest.Id);
 
             // product does not exist or is deleted
             if (product == null)
@@ -103,33 +103,20 @@ namespace AmazonWeb.Core.Services
                 return null;
             }
 
+            //set imageurl as initial
+            string finalImageUrl = product.ImageUrl.Replace(_configuration.GetValue<string>("JwtSettings:Issuer")??"", ""); // Keep original by default and remove the issuer url if there
+
             product = ProductUpdateRequest.ApplyUpdate(product, productUpdateRequest);
+            product.ImageUrl = finalImageUrl;
 
             // Handle thumbnail logic ---
-            string finalImageUrl = product.ImageUrl; // Keep original by default
-
             if (productUpdateRequest.Thumbnail != null && productUpdateRequest.Thumbnail.Length > 0)
             {
                 // Upload new file and retrieve relative URL path
                 finalImageUrl = await _fileService.UploadThumbnailAsync(productUpdateRequest.Thumbnail, product.Id);
             }
 
-            Product? productToUpdate = new Product()
-            {
-                Id = product.Id,
-                Name = productUpdateRequest.Name??product.Name,
-                Price = productUpdateRequest.Price??product.Price,
-                InStock = productUpdateRequest.InStock??product.InStock,
-                Discount = productUpdateRequest.Discount??product.Discount,
-                Stock = productUpdateRequest.Stock??product.Stock,
-                Description = productUpdateRequest.Description??product.Description,
-                ImageUrl = finalImageUrl,
-                Category = Enum.Parse<ProductCategory>(product.Category),
-                SubCategory = string.IsNullOrEmpty(product.SubCategory) ? ProductSubCategory.Toy_Puzzles : Enum.Parse<ProductSubCategory>(product.SubCategory),
-                IsDeleted = product.IsDeleted
-            };
-
-            Product? UpdatedProduct = await _productRepository.UpdateAsync(productToUpdate);
+            Product? UpdatedProduct = await _productRepository.UpdateAsync(product);
 
             // Cleans updated paths instantly before bubbling up to controller endpoints
             return UpdatedProduct != null ? FormatProductResponseWithUrl(Product.ToProductResponse(UpdatedProduct)) : null;

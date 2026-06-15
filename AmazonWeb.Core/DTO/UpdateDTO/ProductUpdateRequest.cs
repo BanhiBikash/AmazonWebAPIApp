@@ -41,6 +41,7 @@ namespace AmazonWeb.Core.DTO.UpdateDTO
             // Only overwrite if updateRequest field is not null
             existingProduct.Name = updateRequest.Name ?? existingProduct.Name;
             existingProduct.Price = updateRequest.Price ?? existingProduct.Price;
+            existingProduct.Discount = updateRequest.Discount??existingProduct.Discount;
             existingProduct.InStock = updateRequest.InStock ?? existingProduct.InStock;
             existingProduct.Stock = updateRequest.Stock ?? existingProduct.Stock;
             existingProduct.Description = updateRequest.Description ?? existingProduct.Description;
