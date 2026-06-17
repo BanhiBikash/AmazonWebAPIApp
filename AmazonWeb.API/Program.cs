@@ -114,6 +114,7 @@ if (string.IsNullOrEmpty(jwtSettings["SecretKey"]))
     throw new InvalidOperationException("JWT secret key is not configured.");
 }
 
+//adding suthentication method service
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -171,6 +172,7 @@ if (app.Environment.IsDevelopment())
     });
 }
 
+//enablw wwwroot folder for static files like images, css, js, etc. 
 app.UseStaticFiles();
 
 //Sequence: Routing -> CORS -> Auth -> Controllers
