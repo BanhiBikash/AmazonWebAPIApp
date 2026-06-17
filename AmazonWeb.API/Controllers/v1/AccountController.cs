@@ -33,6 +33,11 @@ namespace AmazonWeb.API.Controllers.v1
             _configuration = configuration;
         }
 
+        /// <summary>
+        /// Takes registration details from the client, creates a new user account, assigns the appropriate role, and returns a JWT token for authentication. This endpoint is publicly accessible for new users to sign up.
+        /// </summary>
+        /// <param name="registerDTO"></param>
+        /// <returns>Registered User response</returns>
         [HttpPost]
         [Route("[Action]")]
         [AllowAnonymous]
