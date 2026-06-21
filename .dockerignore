@@ -1,0 +1,7 @@
+.vs/
+.git/
+.github/
+.gitignore
+.AmazonWeb.API/ClientApp/
+**/bin/
+**/obj/
