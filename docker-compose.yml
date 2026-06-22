@@ -5,13 +5,16 @@ services:
   amazon-db:
     image: mcr.microsoft.com/mssql/server:2025-latest
     container_name: amazon-sql-db
+    # Enforce the resource cap directly inside the Compose file
+    mem_limit: 2000m 
     environment:
       - ACCEPT_EULA=Y
-      - MSSQL_SA_PASSWORD=YourSecurePassword123! # Keep this matching across your setup
+      - MSSQL_SA_PASSWORD=YourSecurePassword123!
+      - MSSQL_MEMORY_LIMIT_MB=1500 # Restricts internal SQL buffer pool
     ports:
       - "1433:1433"
     volumes:
-      - sql_data:/var/opt/mssql
+      - amazon_sql_data:/var/opt/mssql
 
   # 2. Your .NET Web API Container
   backend:
@@ -21,17 +24,22 @@ services:
       context: .
       dockerfile: Dockerfile
     ports:
-      - "5000:8080" # Maps your local browser port 5000 to internal container port 8080
+      - "7130:8080" # Maps local browser port 7130 to internal container port 8080
     depends_on:
-      - amazon-db
+      - amazon-db # Fixed the accidental "depends_on:ama" typo here
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       # Target connection string mapping directly to the containerized database
       - ConnectionStrings__DefaultConnection=Server=amazon-db;Database=AmazonDatabase;User Id=sa;Password=YourSecurePassword123!;TrustServerCertificate=True;
       # Environment overrides for CORS and tokens
-      - CorsSettings__AllowedOrigins=http://localhost:3000
-      - JwtSettings__Issuer=http://localhost:5000
-      - JwtSettings__Audience=http://localhost:5000
+      - CorsSettings__AllowedOrigins=https://localhost:5130
+      - JwtSettings__Issuer=https://localhost:7130
+      - JwtSettings__Audience=https://localhost:5130
+
+  #3: Frontend-React
+  amazon-react:
+    image:amazon-react:v1
+    container_name:amazon-frontend-api
 
 volumes:
-  sql_data: # Keeps your restored tuples safe even when the container is stopped
+  amazon_sql_data: # Keeps your restored database safe even when the container is stopped
