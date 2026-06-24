@@ -38,8 +38,10 @@ services:
 
   #3: Frontend-React
   amazon-react:
-    image:amazon-react:v1
-    container_name:amazon-frontend-api
+    image: amazon-react:v1
+    container_name: amazon-frontend-api
+    ports:
+      - "5173:5173"
 
 volumes:
   amazon_sql_data: # Keeps your restored database safe even when the container is stopped
