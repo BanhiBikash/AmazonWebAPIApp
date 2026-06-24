@@ -1,0 +1,203 @@
+2026-06-24T19:17:25.6031750+00:00 Microsoft.Testing.Platform.Builder.TestApplication INFORMATION Version: 1.9.1+cb5afc3bb9bb01ebd75b57f89e8358b914ee2a49
+2026-06-24T19:17:25.6305271+00:00 Microsoft.Testing.Platform.Builder.TestApplication INFORMATION Logging mode: asynchronous
+2026-06-24T19:17:25.6321360+00:00 Microsoft.Testing.Platform.Builder.TestApplication INFORMATION Logging level: Information
+2026-06-24T19:17:25.6321433+00:00 Microsoft.Testing.Platform.Builder.TestApplication INFORMATION CreateBuilderAsync entry time: 19:17:25.548
+2026-06-24T19:17:25.6322605+00:00 Microsoft.Testing.Platform.Builder.TestApplication INFORMATION PID: 8020
+2026-06-24T19:17:25.6323294+00:00 Microsoft.Testing.Platform.Builder.TestApplication INFORMATION Runtime information: win-x64 - .NET 10.0.2
+2026-06-24T19:17:25.6323582+00:00 Microsoft.Testing.Platform.Builder.TestApplication INFORMATION Runtime location: C:\Program Files\dotnet\shared\Microsoft.NETCore.App\10.0.2\System.Private.CoreLib.dll
+2026-06-24T19:17:25.6323736+00:00 Microsoft.Testing.Platform.Builder.TestApplication INFORMATION IsDynamicCodeSupported: True
+2026-06-24T19:17:25.6324819+00:00 Microsoft.Testing.Platform.Builder.TestApplication INFORMATION Test module: C:\Users\Banhi\source\repos\aspnetcore\AmazonWebAPIProject\AmazonWeb.Core.UnitTests\bin\Debug\net10.0\AmazonWeb.Core.UnitTests.dll
+2026-06-24T19:17:25.6326943+00:00 Microsoft.Testing.Platform.Builder.TestApplication INFORMATION Command line arguments: '--server --diagnostic --diagnostic-verbosity Information --diagnostic-output-directory C:\Users\Banhi\source\repos\aspnetcore\AmazonWebAPIProject\AmazonWeb.Core.UnitTests\bin\Debug\net10.0\Log --results-directory C:\Users\Banhi\source\repos\aspnetcore\AmazonWebAPIProject\TestResults --client-port 55026'
+2026-06-24T19:17:25.6338354+00:00 Microsoft.Testing.Platform.Builder.TestApplication INFORMATION TESTINGPLATFORM_DEFAULT_HANG_TIMEOUT: ''
+2026-06-24T19:17:25.6896360+00:00 Microsoft.Testing.Platform.Hosts.TestHostBuilder INFORMATION Setting RegisterEnvironmentVariablesConfigurationSource: 'True'
+2026-06-24T19:17:25.7207616+00:00 Microsoft.Testing.Platform.Hosts.TestHostBuilder INFORMATION Setting PlatformExitProcessOnUnhandledException: 'False', config file: False environment variable: 
+2026-06-24T19:17:26.4208287+00:00 Microsoft.Testing.Platform.Requests.TestHostTestFrameworkInvoker INFORMATION Test framework UID: '30ea7c6e-dd24-4152-a360-1387158cd41d' Version: '3.2.2' DisplayName: 'xUnit.net v3 Microsoft.Testing.Platform test framework' Description: 'xUnit.net v3 Microsoft.Testing.Platform test framework'
+2026-06-24T19:17:26.4525528+00:00 xUnit.net INFORMATION xUnit.net v3 In-Process Runner v3.2.2+728c1dce01 (64-bit .NET 10.0.2)
+2026-06-24T19:17:26.5931733+00:00 xUnit.net INFORMATION   Discovering: AmazonWeb.Core.UnitTests
+2026-06-24T19:17:26.7061195+00:00 xUnit.net INFORMATION   Discovered:  AmazonWeb.Core.UnitTests
+2026-06-24T19:17:26.7733567+00:00 xUnit.net INFORMATION   Starting:    AmazonWeb.Core.UnitTests
+2026-06-24T19:17:28.4058263+00:00 xUnit.net ERROR     AmazonWeb.Core.UnitTests.ProductServiceUnitTests.DeductStock_ShouldThrowInvalidOperation_WhenInsufficientStock [FAIL]
+2026-06-24T19:17:28.4075463+00:00 xUnit.net INFORMATION       System.NotSupportedException : Unsupported expression: c => c.GetValue<string>("JwtSettings:Issuer")
+2026-06-24T19:17:28.4076129+00:00 xUnit.net INFORMATION       Extension methods (here: ConfigurationBinder.GetValue) may not be used in setup / verification expressions.
+2026-06-24T19:17:28.4087260+00:00 xUnit.net INFORMATION       Stack Trace:
+2026-06-24T19:17:28.4120190+00:00 xUnit.net INFORMATION         /_/src/Moq/Guard.cs(87,0): at Moq.Guard.IsOverridable(MethodInfo method, Expression expression)
+2026-06-24T19:17:28.4120765+00:00 xUnit.net INFORMATION         /_/src/Moq/MethodExpectation.cs(87,0): at Moq.MethodExpectation..ctor(LambdaExpression expression, MethodInfo method, IReadOnlyList`1 arguments, Boolean exactGenericTypeArguments, Boolean skipMatcherInitialization, Boolean allowNonOverridable)
+2026-06-24T19:17:28.4121051+00:00 xUnit.net INFORMATION         /_/src/Moq/ExpressionExtensions.cs(235,0): at Moq.ExpressionExtensions.<Split>g__Split|5_0(Expression e, Expression& r, MethodExpectation& p, Boolean assignment, Boolean allowNonOverridableLastProperty)
+2026-06-24T19:17:28.4121246+00:00 xUnit.net INFORMATION         /_/src/Moq/ExpressionExtensions.cs(149,0): at Moq.ExpressionExtensions.Split(LambdaExpression expression, Boolean allowNonOverridableLastProperty)
+2026-06-24T19:17:28.4121443+00:00 xUnit.net INFORMATION         /_/src/Moq/Mock.cs(645,0): at Moq.Mock.SetupRecursive[TSetup](Mock mock, LambdaExpression expression, Func`4 setupLast, Boolean allowNonOverridableLastProperty)
+2026-06-24T19:17:28.4121677+00:00 xUnit.net INFORMATION         /_/src/Moq/Mock.cs(500,0): at Moq.Mock.Setup(Mock mock, LambdaExpression expression, Condition condition)
+2026-06-24T19:17:28.4121840+00:00 xUnit.net INFORMATION         /_/src/Moq/Mock`1.cs(452,0): at Moq.Mock`1.Setup[TResult](Expression`1 expression)
+2026-06-24T19:17:28.4122185+00:00 xUnit.net INFORMATION         C:\Users\Banhi\source\repos\aspnetcore\AmazonWebAPIProject\AmazonWeb.Core.UnitTests\ProductServiceUnitTests.cs(33,0): at AmazonWeb.Core.UnitTests.ProductServiceUnitTests..ctor()
+2026-06-24T19:17:28.4122326+00:00 xUnit.net INFORMATION            at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Constructor(Object obj, IntPtr* args)
+2026-06-24T19:17:28.4122507+00:00 xUnit.net INFORMATION            at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+2026-06-24T19:17:28.4280244+00:00 xUnit.net ERROR     AmazonWeb.Core.UnitTests.ProductServiceUnitTests.UpdateProduct_ShouldReturnUpdatedResponse_WhenValid [FAIL]
+2026-06-24T19:17:28.4280891+00:00 xUnit.net INFORMATION       System.NotSupportedException : Unsupported expression: c => c.GetValue<string>("JwtSettings:Issuer")
+2026-06-24T19:17:28.4280946+00:00 xUnit.net INFORMATION       Extension methods (here: ConfigurationBinder.GetValue) may not be used in setup / verification expressions.
+2026-06-24T19:17:28.4281399+00:00 xUnit.net INFORMATION       Stack Trace:
+2026-06-24T19:17:28.4281979+00:00 xUnit.net INFORMATION         /_/src/Moq/Guard.cs(87,0): at Moq.Guard.IsOverridable(MethodInfo method, Expression expression)
+2026-06-24T19:17:28.4282152+00:00 xUnit.net INFORMATION         /_/src/Moq/MethodExpectation.cs(87,0): at Moq.MethodExpectation..ctor(LambdaExpression expression, MethodInfo method, IReadOnlyList`1 arguments, Boolean exactGenericTypeArguments, Boolean skipMatcherInitialization, Boolean allowNonOverridable)
+2026-06-24T19:17:28.4282371+00:00 xUnit.net INFORMATION         /_/src/Moq/ExpressionExtensions.cs(235,0): at Moq.ExpressionExtensions.<Split>g__Split|5_0(Expression e, Expression& r, MethodExpectation& p, Boolean assignment, Boolean allowNonOverridableLastProperty)
+2026-06-24T19:17:28.4282582+00:00 xUnit.net INFORMATION         /_/src/Moq/ExpressionExtensions.cs(149,0): at Moq.ExpressionExtensions.Split(LambdaExpression expression, Boolean allowNonOverridableLastProperty)
+2026-06-24T19:17:28.4282747+00:00 xUnit.net INFORMATION         /_/src/Moq/Mock.cs(645,0): at Moq.Mock.SetupRecursive[TSetup](Mock mock, LambdaExpression expression, Func`4 setupLast, Boolean allowNonOverridableLastProperty)
+2026-06-24T19:17:28.4282910+00:00 xUnit.net INFORMATION         /_/src/Moq/Mock.cs(500,0): at Moq.Mock.Setup(Mock mock, LambdaExpression expression, Condition condition)
+2026-06-24T19:17:28.4283102+00:00 xUnit.net INFORMATION         /_/src/Moq/Mock`1.cs(452,0): at Moq.Mock`1.Setup[TResult](Expression`1 expression)
+2026-06-24T19:17:28.4283374+00:00 xUnit.net INFORMATION         C:\Users\Banhi\source\repos\aspnetcore\AmazonWebAPIProject\AmazonWeb.Core.UnitTests\ProductServiceUnitTests.cs(33,0): at AmazonWeb.Core.UnitTests.ProductServiceUnitTests..ctor()
+2026-06-24T19:17:28.4283518+00:00 xUnit.net INFORMATION            at InvokeStub_ProductServiceUnitTests..ctor(Object, Object, IntPtr*)
+2026-06-24T19:17:28.4283676+00:00 xUnit.net INFORMATION            at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+2026-06-24T19:17:28.4297600+00:00 xUnit.net ERROR     AmazonWeb.Core.UnitTests.ProductServiceUnitTests.AddProduct_ShouldThrowArgumentNullException_WhenRequestIsNull [FAIL]
+2026-06-24T19:17:28.4298236+00:00 xUnit.net INFORMATION       System.NotSupportedException : Unsupported expression: c => c.GetValue<string>("JwtSettings:Issuer")
+2026-06-24T19:17:28.4298476+00:00 xUnit.net INFORMATION       Extension methods (here: ConfigurationBinder.GetValue) may not be used in setup / verification expressions.
+2026-06-24T19:17:28.4298729+00:00 xUnit.net INFORMATION       Stack Trace:
+2026-06-24T19:17:28.4299068+00:00 xUnit.net INFORMATION         /_/src/Moq/Guard.cs(87,0): at Moq.Guard.IsOverridable(MethodInfo method, Expression expression)
+2026-06-24T19:17:28.4299272+00:00 xUnit.net INFORMATION         /_/src/Moq/MethodExpectation.cs(87,0): at Moq.MethodExpectation..ctor(LambdaExpression expression, MethodInfo method, IReadOnlyList`1 arguments, Boolean exactGenericTypeArguments, Boolean skipMatcherInitialization, Boolean allowNonOverridable)
+2026-06-24T19:17:28.4299469+00:00 xUnit.net INFORMATION         /_/src/Moq/ExpressionExtensions.cs(235,0): at Moq.ExpressionExtensions.<Split>g__Split|5_0(Expression e, Expression& r, MethodExpectation& p, Boolean assignment, Boolean allowNonOverridableLastProperty)
+2026-06-24T19:17:28.4299639+00:00 xUnit.net INFORMATION         /_/src/Moq/ExpressionExtensions.cs(149,0): at Moq.ExpressionExtensions.Split(LambdaExpression expression, Boolean allowNonOverridableLastProperty)
+2026-06-24T19:17:28.4299770+00:00 xUnit.net INFORMATION         /_/src/Moq/Mock.cs(645,0): at Moq.Mock.SetupRecursive[TSetup](Mock mock, LambdaExpression expression, Func`4 setupLast, Boolean allowNonOverridableLastProperty)
+2026-06-24T19:17:28.4299942+00:00 xUnit.net INFORMATION         /_/src/Moq/Mock.cs(500,0): at Moq.Mock.Setup(Mock mock, LambdaExpression expression, Condition condition)
+2026-06-24T19:17:28.4300176+00:00 xUnit.net INFORMATION         /_/src/Moq/Mock`1.cs(452,0): at Moq.Mock`1.Setup[TResult](Expression`1 expression)
+2026-06-24T19:17:28.4300417+00:00 xUnit.net INFORMATION         C:\Users\Banhi\source\repos\aspnetcore\AmazonWebAPIProject\AmazonWeb.Core.UnitTests\ProductServiceUnitTests.cs(33,0): at AmazonWeb.Core.UnitTests.ProductServiceUnitTests..ctor()
+2026-06-24T19:17:28.4300536+00:00 xUnit.net INFORMATION            at InvokeStub_ProductServiceUnitTests..ctor(Object, Object, IntPtr*)
+2026-06-24T19:17:28.4300677+00:00 xUnit.net INFORMATION            at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+2026-06-24T19:17:28.4334641+00:00 xUnit.net ERROR     AmazonWeb.Core.UnitTests.ProductServiceUnitTests.DeleteProduct_ShouldReturnFalse_WhenProductNotFound [FAIL]
+2026-06-24T19:17:28.4335413+00:00 xUnit.net INFORMATION       System.NotSupportedException : Unsupported expression: c => c.GetValue<string>("JwtSettings:Issuer")
+2026-06-24T19:17:28.4335509+00:00 xUnit.net INFORMATION       Extension methods (here: ConfigurationBinder.GetValue) may not be used in setup / verification expressions.
+2026-06-24T19:17:28.4335956+00:00 xUnit.net INFORMATION       Stack Trace:
+2026-06-24T19:17:28.4336834+00:00 xUnit.net INFORMATION         /_/src/Moq/Guard.cs(87,0): at Moq.Guard.IsOverridable(MethodInfo method, Expression expression)
+2026-06-24T19:17:28.4337406+00:00 xUnit.net INFORMATION         /_/src/Moq/MethodExpectation.cs(87,0): at Moq.MethodExpectation..ctor(LambdaExpression expression, MethodInfo method, IReadOnlyList`1 arguments, Boolean exactGenericTypeArguments, Boolean skipMatcherInitialization, Boolean allowNonOverridable)
+2026-06-24T19:17:28.4338023+00:00 xUnit.net INFORMATION         /_/src/Moq/ExpressionExtensions.cs(235,0): at Moq.ExpressionExtensions.<Split>g__Split|5_0(Expression e, Expression& r, MethodExpectation& p, Boolean assignment, Boolean allowNonOverridableLastProperty)
+2026-06-24T19:17:28.4338634+00:00 xUnit.net INFORMATION         /_/src/Moq/ExpressionExtensions.cs(149,0): at Moq.ExpressionExtensions.Split(LambdaExpression expression, Boolean allowNonOverridableLastProperty)
+2026-06-24T19:17:28.4339171+00:00 xUnit.net INFORMATION         /_/src/Moq/Mock.cs(645,0): at Moq.Mock.SetupRecursive[TSetup](Mock mock, LambdaExpression expression, Func`4 setupLast, Boolean allowNonOverridableLastProperty)
+2026-06-24T19:17:28.4339870+00:00 xUnit.net INFORMATION         /_/src/Moq/Mock.cs(500,0): at Moq.Mock.Setup(Mock mock, LambdaExpression expression, Condition condition)
+2026-06-24T19:17:28.4340426+00:00 xUnit.net INFORMATION         /_/src/Moq/Mock`1.cs(452,0): at Moq.Mock`1.Setup[TResult](Expression`1 expression)
+2026-06-24T19:17:28.4341189+00:00 xUnit.net INFORMATION         C:\Users\Banhi\source\repos\aspnetcore\AmazonWebAPIProject\AmazonWeb.Core.UnitTests\ProductServiceUnitTests.cs(33,0): at AmazonWeb.Core.UnitTests.ProductServiceUnitTests..ctor()
+2026-06-24T19:17:28.4341548+00:00 xUnit.net INFORMATION            at InvokeStub_ProductServiceUnitTests..ctor(Object, Object, IntPtr*)
+2026-06-24T19:17:28.4342260+00:00 xUnit.net INFORMATION            at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+2026-06-24T19:17:28.4376545+00:00 xUnit.net ERROR     AmazonWeb.Core.UnitTests.ProductServiceUnitTests.UpdateProduct_ShouldThrowArgumentNullException_WhenRequestIsNull [FAIL]
+2026-06-24T19:17:28.4377192+00:00 xUnit.net INFORMATION       System.NotSupportedException : Unsupported expression: c => c.GetValue<string>("JwtSettings:Issuer")
+2026-06-24T19:17:28.4377279+00:00 xUnit.net INFORMATION       Extension methods (here: ConfigurationBinder.GetValue) may not be used in setup / verification expressions.
+2026-06-24T19:17:28.4377723+00:00 xUnit.net INFORMATION       Stack Trace:
+2026-06-24T19:17:28.4378570+00:00 xUnit.net INFORMATION         /_/src/Moq/Guard.cs(87,0): at Moq.Guard.IsOverridable(MethodInfo method, Expression expression)
+2026-06-24T19:17:28.4379027+00:00 xUnit.net INFORMATION         /_/src/Moq/MethodExpectation.cs(87,0): at Moq.MethodExpectation..ctor(LambdaExpression expression, MethodInfo method, IReadOnlyList`1 arguments, Boolean exactGenericTypeArguments, Boolean skipMatcherInitialization, Boolean allowNonOverridable)
+2026-06-24T19:17:28.4379363+00:00 xUnit.net INFORMATION         /_/src/Moq/ExpressionExtensions.cs(235,0): at Moq.ExpressionExtensions.<Split>g__Split|5_0(Expression e, Expression& r, MethodExpectation& p, Boolean assignment, Boolean allowNonOverridableLastProperty)
+2026-06-24T19:17:28.4379708+00:00 xUnit.net INFORMATION         /_/src/Moq/ExpressionExtensions.cs(149,0): at Moq.ExpressionExtensions.Split(LambdaExpression expression, Boolean allowNonOverridableLastProperty)
+2026-06-24T19:17:28.4380042+00:00 xUnit.net INFORMATION         /_/src/Moq/Mock.cs(645,0): at Moq.Mock.SetupRecursive[TSetup](Mock mock, LambdaExpression expression, Func`4 setupLast, Boolean allowNonOverridableLastProperty)
+2026-06-24T19:17:28.4380359+00:00 xUnit.net INFORMATION         /_/src/Moq/Mock.cs(500,0): at Moq.Mock.Setup(Mock mock, LambdaExpression expression, Condition condition)
+2026-06-24T19:17:28.4380685+00:00 xUnit.net INFORMATION         /_/src/Moq/Mock`1.cs(452,0): at Moq.Mock`1.Setup[TResult](Expression`1 expression)
+2026-06-24T19:17:28.4381686+00:00 xUnit.net INFORMATION         C:\Users\Banhi\source\repos\aspnetcore\AmazonWebAPIProject\AmazonWeb.Core.UnitTests\ProductServiceUnitTests.cs(33,0): at AmazonWeb.Core.UnitTests.ProductServiceUnitTests..ctor()
+2026-06-24T19:17:28.4382123+00:00 xUnit.net INFORMATION            at InvokeStub_ProductServiceUnitTests..ctor(Object, Object, IntPtr*)
+2026-06-24T19:17:28.4382559+00:00 xUnit.net INFORMATION            at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+2026-06-24T19:17:28.4405723+00:00 xUnit.net ERROR     AmazonWeb.Core.UnitTests.ProductServiceUnitTests.GetProductById_ShouldThrowArgumentException_WhenIdIsEmpty [FAIL]
+2026-06-24T19:17:28.4406249+00:00 xUnit.net INFORMATION       System.NotSupportedException : Unsupported expression: c => c.GetValue<string>("JwtSettings:Issuer")
+2026-06-24T19:17:28.4406305+00:00 xUnit.net INFORMATION       Extension methods (here: ConfigurationBinder.GetValue) may not be used in setup / verification expressions.
+2026-06-24T19:17:28.4406556+00:00 xUnit.net INFORMATION       Stack Trace:
+2026-06-24T19:17:28.4407015+00:00 xUnit.net INFORMATION         /_/src/Moq/Guard.cs(87,0): at Moq.Guard.IsOverridable(MethodInfo method, Expression expression)
+2026-06-24T19:17:28.4407290+00:00 xUnit.net INFORMATION         /_/src/Moq/MethodExpectation.cs(87,0): at Moq.MethodExpectation..ctor(LambdaExpression expression, MethodInfo method, IReadOnlyList`1 arguments, Boolean exactGenericTypeArguments, Boolean skipMatcherInitialization, Boolean allowNonOverridable)
+2026-06-24T19:17:28.4407607+00:00 xUnit.net INFORMATION         /_/src/Moq/ExpressionExtensions.cs(235,0): at Moq.ExpressionExtensions.<Split>g__Split|5_0(Expression e, Expression& r, MethodExpectation& p, Boolean assignment, Boolean allowNonOverridableLastProperty)
+2026-06-24T19:17:28.4407869+00:00 xUnit.net INFORMATION         /_/src/Moq/ExpressionExtensions.cs(149,0): at Moq.ExpressionExtensions.Split(LambdaExpression expression, Boolean allowNonOverridableLastProperty)
+2026-06-24T19:17:28.4408104+00:00 xUnit.net INFORMATION         /_/src/Moq/Mock.cs(645,0): at Moq.Mock.SetupRecursive[TSetup](Mock mock, LambdaExpression expression, Func`4 setupLast, Boolean allowNonOverridableLastProperty)
+2026-06-24T19:17:28.4408345+00:00 xUnit.net INFORMATION         /_/src/Moq/Mock.cs(500,0): at Moq.Mock.Setup(Mock mock, LambdaExpression expression, Condition condition)
+2026-06-24T19:17:28.4408586+00:00 xUnit.net INFORMATION         /_/src/Moq/Mock`1.cs(452,0): at Moq.Mock`1.Setup[TResult](Expression`1 expression)
+2026-06-24T19:17:28.4408972+00:00 xUnit.net INFORMATION         C:\Users\Banhi\source\repos\aspnetcore\AmazonWebAPIProject\AmazonWeb.Core.UnitTests\ProductServiceUnitTests.cs(33,0): at AmazonWeb.Core.UnitTests.ProductServiceUnitTests..ctor()
+2026-06-24T19:17:28.4409139+00:00 xUnit.net INFORMATION            at InvokeStub_ProductServiceUnitTests..ctor(Object, Object, IntPtr*)
+2026-06-24T19:17:28.4409341+00:00 xUnit.net INFORMATION            at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+2026-06-24T19:17:28.4428034+00:00 xUnit.net ERROR     AmazonWeb.Core.UnitTests.ProductServiceUnitTests.UpdateProduct_ShouldReturnNull_WhenProductNotFound [FAIL]
+2026-06-24T19:17:28.4428508+00:00 xUnit.net INFORMATION       System.NotSupportedException : Unsupported expression: c => c.GetValue<string>("JwtSettings:Issuer")
+2026-06-24T19:17:28.4428577+00:00 xUnit.net INFORMATION       Extension methods (here: ConfigurationBinder.GetValue) may not be used in setup / verification expressions.
+2026-06-24T19:17:28.4428822+00:00 xUnit.net INFORMATION       Stack Trace:
+2026-06-24T19:17:28.4429243+00:00 xUnit.net INFORMATION         /_/src/Moq/Guard.cs(87,0): at Moq.Guard.IsOverridable(MethodInfo method, Expression expression)
+2026-06-24T19:17:28.4429466+00:00 xUnit.net INFORMATION         /_/src/Moq/MethodExpectation.cs(87,0): at Moq.MethodExpectation..ctor(LambdaExpression expression, MethodInfo method, IReadOnlyList`1 arguments, Boolean exactGenericTypeArguments, Boolean skipMatcherInitialization, Boolean allowNonOverridable)
+2026-06-24T19:17:28.4429714+00:00 xUnit.net INFORMATION         /_/src/Moq/ExpressionExtensions.cs(235,0): at Moq.ExpressionExtensions.<Split>g__Split|5_0(Expression e, Expression& r, MethodExpectation& p, Boolean assignment, Boolean allowNonOverridableLastProperty)
+2026-06-24T19:17:28.4429975+00:00 xUnit.net INFORMATION         /_/src/Moq/ExpressionExtensions.cs(149,0): at Moq.ExpressionExtensions.Split(LambdaExpression expression, Boolean allowNonOverridableLastProperty)
+2026-06-24T19:17:28.4430174+00:00 xUnit.net INFORMATION         /_/src/Moq/Mock.cs(645,0): at Moq.Mock.SetupRecursive[TSetup](Mock mock, LambdaExpression expression, Func`4 setupLast, Boolean allowNonOverridableLastProperty)
+2026-06-24T19:17:28.4430352+00:00 xUnit.net INFORMATION         /_/src/Moq/Mock.cs(500,0): at Moq.Mock.Setup(Mock mock, LambdaExpression expression, Condition condition)
+2026-06-24T19:17:28.4430565+00:00 xUnit.net INFORMATION         /_/src/Moq/Mock`1.cs(452,0): at Moq.Mock`1.Setup[TResult](Expression`1 expression)
+2026-06-24T19:17:28.4430900+00:00 xUnit.net INFORMATION         C:\Users\Banhi\source\repos\aspnetcore\AmazonWebAPIProject\AmazonWeb.Core.UnitTests\ProductServiceUnitTests.cs(33,0): at AmazonWeb.Core.UnitTests.ProductServiceUnitTests..ctor()
+2026-06-24T19:17:28.4431068+00:00 xUnit.net INFORMATION            at InvokeStub_ProductServiceUnitTests..ctor(Object, Object, IntPtr*)
+2026-06-24T19:17:28.4431243+00:00 xUnit.net INFORMATION            at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+2026-06-24T19:17:28.4444794+00:00 xUnit.net ERROR     AmazonWeb.Core.UnitTests.ProductServiceUnitTests.DeleteProduct_ShouldReturnTrue_WhenValid [FAIL]
+2026-06-24T19:17:28.4445137+00:00 xUnit.net INFORMATION       System.NotSupportedException : Unsupported expression: c => c.GetValue<string>("JwtSettings:Issuer")
+2026-06-24T19:17:28.4445173+00:00 xUnit.net INFORMATION       Extension methods (here: ConfigurationBinder.GetValue) may not be used in setup / verification expressions.
+2026-06-24T19:17:28.4445326+00:00 xUnit.net INFORMATION       Stack Trace:
+2026-06-24T19:17:28.4445571+00:00 xUnit.net INFORMATION         /_/src/Moq/Guard.cs(87,0): at Moq.Guard.IsOverridable(MethodInfo method, Expression expression)
+2026-06-24T19:17:28.4445695+00:00 xUnit.net INFORMATION         /_/src/Moq/MethodExpectation.cs(87,0): at Moq.MethodExpectation..ctor(LambdaExpression expression, MethodInfo method, IReadOnlyList`1 arguments, Boolean exactGenericTypeArguments, Boolean skipMatcherInitialization, Boolean allowNonOverridable)
+2026-06-24T19:17:28.4445852+00:00 xUnit.net INFORMATION         /_/src/Moq/ExpressionExtensions.cs(235,0): at Moq.ExpressionExtensions.<Split>g__Split|5_0(Expression e, Expression& r, MethodExpectation& p, Boolean assignment, Boolean allowNonOverridableLastProperty)
+2026-06-24T19:17:28.4446120+00:00 xUnit.net INFORMATION         /_/src/Moq/ExpressionExtensions.cs(149,0): at Moq.ExpressionExtensions.Split(LambdaExpression expression, Boolean allowNonOverridableLastProperty)
+2026-06-24T19:17:28.4446378+00:00 xUnit.net INFORMATION         /_/src/Moq/Mock.cs(645,0): at Moq.Mock.SetupRecursive[TSetup](Mock mock, LambdaExpression expression, Func`4 setupLast, Boolean allowNonOverridableLastProperty)
+2026-06-24T19:17:28.4446518+00:00 xUnit.net INFORMATION         /_/src/Moq/Mock.cs(500,0): at Moq.Mock.Setup(Mock mock, LambdaExpression expression, Condition condition)
+2026-06-24T19:17:28.4446629+00:00 xUnit.net INFORMATION         /_/src/Moq/Mock`1.cs(452,0): at Moq.Mock`1.Setup[TResult](Expression`1 expression)
+2026-06-24T19:17:28.4446842+00:00 xUnit.net INFORMATION         C:\Users\Banhi\source\repos\aspnetcore\AmazonWebAPIProject\AmazonWeb.Core.UnitTests\ProductServiceUnitTests.cs(33,0): at AmazonWeb.Core.UnitTests.ProductServiceUnitTests..ctor()
+2026-06-24T19:17:28.4446965+00:00 xUnit.net INFORMATION            at InvokeStub_ProductServiceUnitTests..ctor(Object, Object, IntPtr*)
+2026-06-24T19:17:28.4447128+00:00 xUnit.net INFORMATION            at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+2026-06-24T19:17:28.4460372+00:00 xUnit.net ERROR     AmazonWeb.Core.UnitTests.ProductServiceUnitTests.GetProductById_ShouldReturnProductResponse_WhenValid [FAIL]
+2026-06-24T19:17:28.4460699+00:00 xUnit.net INFORMATION       System.NotSupportedException : Unsupported expression: c => c.GetValue<string>("JwtSettings:Issuer")
+2026-06-24T19:17:28.4460851+00:00 xUnit.net INFORMATION       Extension methods (here: ConfigurationBinder.GetValue) may not be used in setup / verification expressions.
+2026-06-24T19:17:28.4461128+00:00 xUnit.net INFORMATION       Stack Trace:
+2026-06-24T19:17:28.4461959+00:00 xUnit.net INFORMATION         /_/src/Moq/Guard.cs(87,0): at Moq.Guard.IsOverridable(MethodInfo method, Expression expression)
+2026-06-24T19:17:28.4462215+00:00 xUnit.net INFORMATION         /_/src/Moq/MethodExpectation.cs(87,0): at Moq.MethodExpectation..ctor(LambdaExpression expression, MethodInfo method, IReadOnlyList`1 arguments, Boolean exactGenericTypeArguments, Boolean skipMatcherInitialization, Boolean allowNonOverridable)
+2026-06-24T19:17:28.4462544+00:00 xUnit.net INFORMATION         /_/src/Moq/ExpressionExtensions.cs(235,0): at Moq.ExpressionExtensions.<Split>g__Split|5_0(Expression e, Expression& r, MethodExpectation& p, Boolean assignment, Boolean allowNonOverridableLastProperty)
+2026-06-24T19:17:28.4462734+00:00 xUnit.net INFORMATION         /_/src/Moq/ExpressionExtensions.cs(149,0): at Moq.ExpressionExtensions.Split(LambdaExpression expression, Boolean allowNonOverridableLastProperty)
+2026-06-24T19:17:28.4462865+00:00 xUnit.net INFORMATION         /_/src/Moq/Mock.cs(645,0): at Moq.Mock.SetupRecursive[TSetup](Mock mock, LambdaExpression expression, Func`4 setupLast, Boolean allowNonOverridableLastProperty)
+2026-06-24T19:17:28.4463020+00:00 xUnit.net INFORMATION         /_/src/Moq/Mock.cs(500,0): at Moq.Mock.Setup(Mock mock, LambdaExpression expression, Condition condition)
+2026-06-24T19:17:28.4463149+00:00 xUnit.net INFORMATION         /_/src/Moq/Mock`1.cs(452,0): at Moq.Mock`1.Setup[TResult](Expression`1 expression)
+2026-06-24T19:17:28.4463412+00:00 xUnit.net INFORMATION         C:\Users\Banhi\source\repos\aspnetcore\AmazonWebAPIProject\AmazonWeb.Core.UnitTests\ProductServiceUnitTests.cs(33,0): at AmazonWeb.Core.UnitTests.ProductServiceUnitTests..ctor()
+2026-06-24T19:17:28.4463526+00:00 xUnit.net INFORMATION            at InvokeStub_ProductServiceUnitTests..ctor(Object, Object, IntPtr*)
+2026-06-24T19:17:28.4463681+00:00 xUnit.net INFORMATION            at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+2026-06-24T19:17:28.4476303+00:00 xUnit.net ERROR     AmazonWeb.Core.UnitTests.ProductServiceUnitTests.GetProductById_ShouldReturnNull_WhenProductDeleted [FAIL]
+2026-06-24T19:17:28.4476685+00:00 xUnit.net INFORMATION       System.NotSupportedException : Unsupported expression: c => c.GetValue<string>("JwtSettings:Issuer")
+2026-06-24T19:17:28.4476750+00:00 xUnit.net INFORMATION       Extension methods (here: ConfigurationBinder.GetValue) may not be used in setup / verification expressions.
+2026-06-24T19:17:28.4476966+00:00 xUnit.net INFORMATION       Stack Trace:
+2026-06-24T19:17:28.4477281+00:00 xUnit.net INFORMATION         /_/src/Moq/Guard.cs(87,0): at Moq.Guard.IsOverridable(MethodInfo method, Expression expression)
+2026-06-24T19:17:28.4477456+00:00 xUnit.net INFORMATION         /_/src/Moq/MethodExpectation.cs(87,0): at Moq.MethodExpectation..ctor(LambdaExpression expression, MethodInfo method, IReadOnlyList`1 arguments, Boolean exactGenericTypeArguments, Boolean skipMatcherInitialization, Boolean allowNonOverridable)
+2026-06-24T19:17:28.4477638+00:00 xUnit.net INFORMATION         /_/src/Moq/ExpressionExtensions.cs(235,0): at Moq.ExpressionExtensions.<Split>g__Split|5_0(Expression e, Expression& r, MethodExpectation& p, Boolean assignment, Boolean allowNonOverridableLastProperty)
+2026-06-24T19:17:28.4477807+00:00 xUnit.net INFORMATION         /_/src/Moq/ExpressionExtensions.cs(149,0): at Moq.ExpressionExtensions.Split(LambdaExpression expression, Boolean allowNonOverridableLastProperty)
+2026-06-24T19:17:28.4477980+00:00 xUnit.net INFORMATION         /_/src/Moq/Mock.cs(645,0): at Moq.Mock.SetupRecursive[TSetup](Mock mock, LambdaExpression expression, Func`4 setupLast, Boolean allowNonOverridableLastProperty)
+2026-06-24T19:17:28.4478129+00:00 xUnit.net INFORMATION         /_/src/Moq/Mock.cs(500,0): at Moq.Mock.Setup(Mock mock, LambdaExpression expression, Condition condition)
+2026-06-24T19:17:28.4478275+00:00 xUnit.net INFORMATION         /_/src/Moq/Mock`1.cs(452,0): at Moq.Mock`1.Setup[TResult](Expression`1 expression)
+2026-06-24T19:17:28.4478515+00:00 xUnit.net INFORMATION         C:\Users\Banhi\source\repos\aspnetcore\AmazonWebAPIProject\AmazonWeb.Core.UnitTests\ProductServiceUnitTests.cs(33,0): at AmazonWeb.Core.UnitTests.ProductServiceUnitTests..ctor()
+2026-06-24T19:17:28.4478648+00:00 xUnit.net INFORMATION            at InvokeStub_ProductServiceUnitTests..ctor(Object, Object, IntPtr*)
+2026-06-24T19:17:28.4479409+00:00 xUnit.net INFORMATION            at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+2026-06-24T19:17:28.4490418+00:00 xUnit.net ERROR     AmazonWeb.Core.UnitTests.ProductServiceUnitTests.DeductStock_ShouldUpdateStock_WhenValid [FAIL]
+2026-06-24T19:17:28.4490834+00:00 xUnit.net INFORMATION       System.NotSupportedException : Unsupported expression: c => c.GetValue<string>("JwtSettings:Issuer")
+2026-06-24T19:17:28.4490903+00:00 xUnit.net INFORMATION       Extension methods (here: ConfigurationBinder.GetValue) may not be used in setup / verification expressions.
+2026-06-24T19:17:28.4491089+00:00 xUnit.net INFORMATION       Stack Trace:
+2026-06-24T19:17:28.4491441+00:00 xUnit.net INFORMATION         /_/src/Moq/Guard.cs(87,0): at Moq.Guard.IsOverridable(MethodInfo method, Expression expression)
+2026-06-24T19:17:28.4491610+00:00 xUnit.net INFORMATION         /_/src/Moq/MethodExpectation.cs(87,0): at Moq.MethodExpectation..ctor(LambdaExpression expression, MethodInfo method, IReadOnlyList`1 arguments, Boolean exactGenericTypeArguments, Boolean skipMatcherInitialization, Boolean allowNonOverridable)
+2026-06-24T19:17:28.4491741+00:00 xUnit.net INFORMATION         /_/src/Moq/ExpressionExtensions.cs(235,0): at Moq.ExpressionExtensions.<Split>g__Split|5_0(Expression e, Expression& r, MethodExpectation& p, Boolean assignment, Boolean allowNonOverridableLastProperty)
+2026-06-24T19:17:28.4491859+00:00 xUnit.net INFORMATION         /_/src/Moq/ExpressionExtensions.cs(149,0): at Moq.ExpressionExtensions.Split(LambdaExpression expression, Boolean allowNonOverridableLastProperty)
+2026-06-24T19:17:28.4491987+00:00 xUnit.net INFORMATION         /_/src/Moq/Mock.cs(645,0): at Moq.Mock.SetupRecursive[TSetup](Mock mock, LambdaExpression expression, Func`4 setupLast, Boolean allowNonOverridableLastProperty)
+2026-06-24T19:17:28.4492105+00:00 xUnit.net INFORMATION         /_/src/Moq/Mock.cs(500,0): at Moq.Mock.Setup(Mock mock, LambdaExpression expression, Condition condition)
+2026-06-24T19:17:28.4492225+00:00 xUnit.net INFORMATION         /_/src/Moq/Mock`1.cs(452,0): at Moq.Mock`1.Setup[TResult](Expression`1 expression)
+2026-06-24T19:17:28.4492479+00:00 xUnit.net INFORMATION         C:\Users\Banhi\source\repos\aspnetcore\AmazonWebAPIProject\AmazonWeb.Core.UnitTests\ProductServiceUnitTests.cs(33,0): at AmazonWeb.Core.UnitTests.ProductServiceUnitTests..ctor()
+2026-06-24T19:17:28.4492603+00:00 xUnit.net INFORMATION            at InvokeStub_ProductServiceUnitTests..ctor(Object, Object, IntPtr*)
+2026-06-24T19:17:28.4492745+00:00 xUnit.net INFORMATION            at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+2026-06-24T19:17:28.4539719+00:00 xUnit.net ERROR     AmazonWeb.Core.UnitTests.ProductServiceUnitTests.AddProduct_ShouldReturnProduct_WhenValidRequest [FAIL]
+2026-06-24T19:17:28.4540846+00:00 xUnit.net INFORMATION       System.NotSupportedException : Unsupported expression: c => c.GetValue<string>("JwtSettings:Issuer")
+2026-06-24T19:17:28.4541022+00:00 xUnit.net INFORMATION       Extension methods (here: ConfigurationBinder.GetValue) may not be used in setup / verification expressions.
+2026-06-24T19:17:28.4541896+00:00 xUnit.net INFORMATION       Stack Trace:
+2026-06-24T19:17:28.4542911+00:00 xUnit.net INFORMATION         /_/src/Moq/Guard.cs(87,0): at Moq.Guard.IsOverridable(MethodInfo method, Expression expression)
+2026-06-24T19:17:28.4543386+00:00 xUnit.net INFORMATION         /_/src/Moq/MethodExpectation.cs(87,0): at Moq.MethodExpectation..ctor(LambdaExpression expression, MethodInfo method, IReadOnlyList`1 arguments, Boolean exactGenericTypeArguments, Boolean skipMatcherInitialization, Boolean allowNonOverridable)
+2026-06-24T19:17:28.4543907+00:00 xUnit.net INFORMATION         /_/src/Moq/ExpressionExtensions.cs(235,0): at Moq.ExpressionExtensions.<Split>g__Split|5_0(Expression e, Expression& r, MethodExpectation& p, Boolean assignment, Boolean allowNonOverridableLastProperty)
+2026-06-24T19:17:28.4544458+00:00 xUnit.net INFORMATION         /_/src/Moq/ExpressionExtensions.cs(149,0): at Moq.ExpressionExtensions.Split(LambdaExpression expression, Boolean allowNonOverridableLastProperty)
+2026-06-24T19:17:28.4544872+00:00 xUnit.net INFORMATION         /_/src/Moq/Mock.cs(645,0): at Moq.Mock.SetupRecursive[TSetup](Mock mock, LambdaExpression expression, Func`4 setupLast, Boolean allowNonOverridableLastProperty)
+2026-06-24T19:17:28.4545479+00:00 xUnit.net INFORMATION         /_/src/Moq/Mock.cs(500,0): at Moq.Mock.Setup(Mock mock, LambdaExpression expression, Condition condition)
+2026-06-24T19:17:28.4546170+00:00 xUnit.net INFORMATION         /_/src/Moq/Mock`1.cs(452,0): at Moq.Mock`1.Setup[TResult](Expression`1 expression)
+2026-06-24T19:17:28.4546921+00:00 xUnit.net INFORMATION         C:\Users\Banhi\source\repos\aspnetcore\AmazonWebAPIProject\AmazonWeb.Core.UnitTests\ProductServiceUnitTests.cs(33,0): at AmazonWeb.Core.UnitTests.ProductServiceUnitTests..ctor()
+2026-06-24T19:17:28.4547209+00:00 xUnit.net INFORMATION            at InvokeStub_ProductServiceUnitTests..ctor(Object, Object, IntPtr*)
+2026-06-24T19:17:28.4547580+00:00 xUnit.net INFORMATION            at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+2026-06-24T19:17:28.4583968+00:00 xUnit.net ERROR     AmazonWeb.Core.UnitTests.ProductServiceUnitTests.DeleteProduct_ShouldThrowArgumentException_WhenIdEmpty [FAIL]
+2026-06-24T19:17:28.4584691+00:00 xUnit.net INFORMATION       System.NotSupportedException : Unsupported expression: c => c.GetValue<string>("JwtSettings:Issuer")
+2026-06-24T19:17:28.4584781+00:00 xUnit.net INFORMATION       Extension methods (here: ConfigurationBinder.GetValue) may not be used in setup / verification expressions.
+2026-06-24T19:17:28.4585439+00:00 xUnit.net INFORMATION       Stack Trace:
+2026-06-24T19:17:28.4586135+00:00 xUnit.net INFORMATION         /_/src/Moq/Guard.cs(87,0): at Moq.Guard.IsOverridable(MethodInfo method, Expression expression)
+2026-06-24T19:17:28.4587271+00:00 xUnit.net INFORMATION         /_/src/Moq/MethodExpectation.cs(87,0): at Moq.MethodExpectation..ctor(LambdaExpression expression, MethodInfo method, IReadOnlyList`1 arguments, Boolean exactGenericTypeArguments, Boolean skipMatcherInitialization, Boolean allowNonOverridable)
+2026-06-24T19:17:28.4588141+00:00 xUnit.net INFORMATION         /_/src/Moq/ExpressionExtensions.cs(235,0): at Moq.ExpressionExtensions.<Split>g__Split|5_0(Expression e, Expression& r, MethodExpectation& p, Boolean assignment, Boolean allowNonOverridableLastProperty)
+2026-06-24T19:17:28.4588504+00:00 xUnit.net INFORMATION         /_/src/Moq/ExpressionExtensions.cs(149,0): at Moq.ExpressionExtensions.Split(LambdaExpression expression, Boolean allowNonOverridableLastProperty)
+2026-06-24T19:17:28.4588793+00:00 xUnit.net INFORMATION         /_/src/Moq/Mock.cs(645,0): at Moq.Mock.SetupRecursive[TSetup](Mock mock, LambdaExpression expression, Func`4 setupLast, Boolean allowNonOverridableLastProperty)
+2026-06-24T19:17:28.4589244+00:00 xUnit.net INFORMATION         /_/src/Moq/Mock.cs(500,0): at Moq.Mock.Setup(Mock mock, LambdaExpression expression, Condition condition)
+2026-06-24T19:17:28.4589797+00:00 xUnit.net INFORMATION         /_/src/Moq/Mock`1.cs(452,0): at Moq.Mock`1.Setup[TResult](Expression`1 expression)
+2026-06-24T19:17:28.4590385+00:00 xUnit.net INFORMATION         C:\Users\Banhi\source\repos\aspnetcore\AmazonWebAPIProject\AmazonWeb.Core.UnitTests\ProductServiceUnitTests.cs(33,0): at AmazonWeb.Core.UnitTests.ProductServiceUnitTests..ctor()
+2026-06-24T19:17:28.4590645+00:00 xUnit.net INFORMATION            at InvokeStub_ProductServiceUnitTests..ctor(Object, Object, IntPtr*)
+2026-06-24T19:17:28.4590999+00:00 xUnit.net INFORMATION            at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+2026-06-24T19:17:28.5057345+00:00 xUnit.net INFORMATION   Finished:    AmazonWeb.Core.UnitTests (ID = 'a697f3bf6ad63ddd52529abafcb7cc2244a1724cf8e26625863d5db627d97dd4')
+2026-06-24T19:17:28.5251135+00:00 xUnit.net INFORMATION === TEST EXECUTION SUMMARY ===
+2026-06-24T19:17:28.5404442+00:00 xUnit.net INFORMATION    AmazonWeb.Core.UnitTests  Total: 13, Errors: 0, Failed: 13, Skipped: 0, Not Run: 0, Time: 1.733s

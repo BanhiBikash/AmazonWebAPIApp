@@ -1,5 +1,6 @@
 <Solution>
   <Project Path="AmazonWeb.API/AmazonWeb.API.csproj" />
+  <Project Path="AmazonWeb.Core.UnitTests/AmazonWeb.Core.UnitTests.csproj" Id="729d4842-baea-415b-9aea-e4a872540f53" />
   <Project Path="AmazonWeb.Core/AmazonWeb.Core.csproj" />
   <Project Path="AmazonWeb.Infrastructure/AmazonWeb.Infrastructure.csproj" />
 </Solution>
