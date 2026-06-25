@@ -1,0 +1,94 @@
+2026-06-25T18:52:43.3256019+00:00 Microsoft.Testing.Platform.Builder.TestApplication INFORMATION Version: 1.9.1+cb5afc3bb9bb01ebd75b57f89e8358b914ee2a49
+2026-06-25T18:52:43.3668433+00:00 Microsoft.Testing.Platform.Builder.TestApplication INFORMATION Logging mode: asynchronous
+2026-06-25T18:52:43.3744657+00:00 Microsoft.Testing.Platform.Builder.TestApplication INFORMATION Logging level: Information
+2026-06-25T18:52:43.3745158+00:00 Microsoft.Testing.Platform.Builder.TestApplication INFORMATION CreateBuilderAsync entry time: 18:52:43.235
+2026-06-25T18:52:43.3753041+00:00 Microsoft.Testing.Platform.Builder.TestApplication INFORMATION PID: 17812
+2026-06-25T18:52:43.3755380+00:00 Microsoft.Testing.Platform.Builder.TestApplication INFORMATION Runtime information: win-x64 - .NET 10.0.2
+2026-06-25T18:52:43.3756359+00:00 Microsoft.Testing.Platform.Builder.TestApplication INFORMATION Runtime location: C:\Program Files\dotnet\shared\Microsoft.NETCore.App\10.0.2\System.Private.CoreLib.dll
+2026-06-25T18:52:43.3756848+00:00 Microsoft.Testing.Platform.Builder.TestApplication INFORMATION IsDynamicCodeSupported: True
+2026-06-25T18:52:43.3763655+00:00 Microsoft.Testing.Platform.Builder.TestApplication INFORMATION Test module: C:\Users\Banhi\source\repos\aspnetcore\AmazonWebAPIProject\AmazonWeb.Core.UnitTests\bin\Debug\net10.0\AmazonWeb.Core.UnitTests.dll
+2026-06-25T18:52:43.3785593+00:00 Microsoft.Testing.Platform.Builder.TestApplication INFORMATION Command line arguments: '--server --diagnostic --diagnostic-verbosity Information --diagnostic-output-directory C:\Users\Banhi\source\repos\aspnetcore\AmazonWebAPIProject\AmazonWeb.Core.UnitTests\bin\Debug\net10.0\Log --results-directory C:\Users\Banhi\source\repos\aspnetcore\AmazonWebAPIProject\TestResults --client-port 49373'
+2026-06-25T18:52:43.3815930+00:00 Microsoft.Testing.Platform.Builder.TestApplication INFORMATION TESTINGPLATFORM_DEFAULT_HANG_TIMEOUT: ''
+2026-06-25T18:52:43.4491234+00:00 Microsoft.Testing.Platform.Hosts.TestHostBuilder INFORMATION Setting RegisterEnvironmentVariablesConfigurationSource: 'True'
+2026-06-25T18:52:43.4981279+00:00 Microsoft.Testing.Platform.Hosts.TestHostBuilder INFORMATION Setting PlatformExitProcessOnUnhandledException: 'False', config file: False environment variable: 
+2026-06-25T18:52:44.2883333+00:00 Microsoft.Testing.Platform.Requests.TestHostTestFrameworkInvoker INFORMATION Test framework UID: '30ea7c6e-dd24-4152-a360-1387158cd41d' Version: '3.2.2' DisplayName: 'xUnit.net v3 Microsoft.Testing.Platform test framework' Description: 'xUnit.net v3 Microsoft.Testing.Platform test framework'
+2026-06-25T18:52:44.3144419+00:00 xUnit.net INFORMATION xUnit.net v3 In-Process Runner v3.2.2+728c1dce01 (64-bit .NET 10.0.2)
+2026-06-25T18:52:44.4087490+00:00 xUnit.net INFORMATION   Discovering: AmazonWeb.Core.UnitTests
+2026-06-25T18:52:44.5298620+00:00 xUnit.net INFORMATION   Discovered:  AmazonWeb.Core.UnitTests
+2026-06-25T18:52:44.5957437+00:00 xUnit.net INFORMATION   Starting:    AmazonWeb.Core.UnitTests
+2026-06-25T18:52:45.3743696+00:00 xUnit.net ERROR     AmazonWeb.Tests.ProductServiceTests.AddProduct_ValidRequest_ReturnsProductResponseDTO [FAIL]
+2026-06-25T18:52:45.3773456+00:00 xUnit.net INFORMATION       AutoFixture.ObjectCreationExceptionWithPath : AutoFixture was unable to create an instance from Microsoft.AspNetCore.Http.IFormFile because it's an interface. There's no single, most appropriate way to create an object implementing the interface, but you can help AutoFixture figure it out.
+2026-06-25T18:52:45.3774405+00:00 xUnit.net INFORMATION       
+2026-06-25T18:52:45.3774497+00:00 xUnit.net INFORMATION       If you have a concrete class implementing the interface, you can map the interface to that class:
+2026-06-25T18:52:45.3774571+00:00 xUnit.net INFORMATION       
+2026-06-25T18:52:45.3774641+00:00 xUnit.net INFORMATION       fixture.Customizations.Add(
+2026-06-25T18:52:45.3774713+00:00 xUnit.net INFORMATION           new TypeRelay(
+2026-06-25T18:52:45.3774785+00:00 xUnit.net INFORMATION               typeof(Microsoft.AspNetCore.Http.IFormFile),
+2026-06-25T18:52:45.3775175+00:00 xUnit.net INFORMATION               typeof(YourConcreteImplementation)));
+2026-06-25T18:52:45.3775248+00:00 xUnit.net INFORMATION       
+2026-06-25T18:52:45.3775319+00:00 xUnit.net INFORMATION       Alternatively, you can turn AutoFixture into an Auto-Mocking Container using your favourite dynamic mocking library, such as Moq, FakeItEasy, NSubstitute, and others. As an example, to use Moq, you can customize AutoFixture like this:
+2026-06-25T18:52:45.3775399+00:00 xUnit.net INFORMATION       
+2026-06-25T18:52:45.3775596+00:00 xUnit.net INFORMATION       fixture.Customize(new AutoMoqCustomization());
+2026-06-25T18:52:45.3775673+00:00 xUnit.net INFORMATION       
+2026-06-25T18:52:45.3776982+00:00 xUnit.net INFORMATION       See http://blog.ploeh.dk/2010/08/19/AutoFixtureasanauto-mockingcontainer for more details.
+2026-06-25T18:52:45.3777169+00:00 xUnit.net INFORMATION       
+2026-06-25T18:52:45.3777271+00:00 xUnit.net INFORMATION       Request path:
+2026-06-25T18:52:45.3777412+00:00 xUnit.net INFORMATION       	Microsoft.AspNetCore.Http.IFormFile Thumbnail
+2026-06-25T18:52:45.3777514+00:00 xUnit.net INFORMATION       	  Microsoft.AspNetCore.Http.IFormFile
+2026-06-25T18:52:45.3777616+00:00 xUnit.net INFORMATION       
+2026-06-25T18:52:45.3801081+00:00 xUnit.net INFORMATION       Stack Trace:
+2026-06-25T18:52:45.3839029+00:00 xUnit.net INFORMATION            at AutoFixture.Kernel.TerminatingWithPathSpecimenBuilder.Create(Object request, ISpecimenContext context)
+2026-06-25T18:52:45.3839514+00:00 xUnit.net INFORMATION            at AutoFixture.BehaviorRoot.Create(Object request, ISpecimenContext context)
+2026-06-25T18:52:45.3839699+00:00 xUnit.net INFORMATION            at AutoFixture.Kernel.CompositeSpecimenBuilder.Create(Object request, ISpecimenContext context)
+2026-06-25T18:52:45.3839862+00:00 xUnit.net INFORMATION            at AutoFixture.Kernel.RecursionGuard.Create(Object request, ISpecimenContext context)
+2026-06-25T18:52:45.3840032+00:00 xUnit.net INFORMATION            at AutoFixture.Dsl.CompositeNodeComposer`1.Create(Object request, ISpecimenContext context)
+2026-06-25T18:52:45.3840155+00:00 xUnit.net INFORMATION            at AutoFixture.Kernel.SpecimenContext.Resolve(Object request)
+2026-06-25T18:52:45.3840352+00:00 xUnit.net INFORMATION            at AutoFixture.Kernel.SeedIgnoringRelay.Create(Object request, ISpecimenContext context)
+2026-06-25T18:52:45.3840529+00:00 xUnit.net INFORMATION            at AutoFixture.Kernel.CompositeSpecimenBuilder.Create(Object request, ISpecimenContext context)
+2026-06-25T18:52:45.3840704+00:00 xUnit.net INFORMATION            at AutoFixture.Kernel.CompositeSpecimenBuilder.Create(Object request, ISpecimenContext context)
+2026-06-25T18:52:45.3840864+00:00 xUnit.net INFORMATION            at AutoFixture.Kernel.Postprocessor`1.Create(Object request, ISpecimenContext context)
+2026-06-25T18:52:45.3841020+00:00 xUnit.net INFORMATION            at AutoFixture.AutoPropertiesTarget.Create(Object request, ISpecimenContext context)
+2026-06-25T18:52:45.3841194+00:00 xUnit.net INFORMATION            at AutoFixture.Kernel.CompositeSpecimenBuilder.Create(Object request, ISpecimenContext context)
+2026-06-25T18:52:45.3841382+00:00 xUnit.net INFORMATION            at AutoFixture.Kernel.TerminatingWithPathSpecimenBuilder.Create(Object request, ISpecimenContext context)
+2026-06-25T18:52:45.3841605+00:00 xUnit.net INFORMATION            at AutoFixture.BehaviorRoot.Create(Object request, ISpecimenContext context)
+2026-06-25T18:52:45.3841781+00:00 xUnit.net INFORMATION            at AutoFixture.Kernel.CompositeSpecimenBuilder.Create(Object request, ISpecimenContext context)
+2026-06-25T18:52:45.3841941+00:00 xUnit.net INFORMATION            at AutoFixture.Kernel.RecursionGuard.Create(Object request, ISpecimenContext context)
+2026-06-25T18:52:45.3842108+00:00 xUnit.net INFORMATION            at AutoFixture.Dsl.CompositeNodeComposer`1.Create(Object request, ISpecimenContext context)
+2026-06-25T18:52:45.3842230+00:00 xUnit.net INFORMATION            at AutoFixture.Kernel.SpecimenContext.Resolve(Object request)
+2026-06-25T18:52:45.3842397+00:00 xUnit.net INFORMATION            at AutoFixture.Kernel.PropertyRequestRelay.Create(Object request, ISpecimenContext context)
+2026-06-25T18:52:45.3842804+00:00 xUnit.net INFORMATION            at AutoFixture.Kernel.CompositeSpecimenBuilder.Create(Object request, ISpecimenContext context)
+2026-06-25T18:52:45.3842982+00:00 xUnit.net INFORMATION            at AutoFixture.Kernel.CompositeSpecimenBuilder.Create(Object request, ISpecimenContext context)
+2026-06-25T18:52:45.3843143+00:00 xUnit.net INFORMATION            at AutoFixture.Kernel.Postprocessor`1.Create(Object request, ISpecimenContext context)
+2026-06-25T18:52:45.3843299+00:00 xUnit.net INFORMATION            at AutoFixture.AutoPropertiesTarget.Create(Object request, ISpecimenContext context)
+2026-06-25T18:52:45.3843474+00:00 xUnit.net INFORMATION            at AutoFixture.Kernel.CompositeSpecimenBuilder.Create(Object request, ISpecimenContext context)
+2026-06-25T18:52:45.3843662+00:00 xUnit.net INFORMATION            at AutoFixture.Kernel.TerminatingWithPathSpecimenBuilder.Create(Object request, ISpecimenContext context)
+2026-06-25T18:52:45.3843808+00:00 xUnit.net INFORMATION            at AutoFixture.BehaviorRoot.Create(Object request, ISpecimenContext context)
+2026-06-25T18:52:45.3843983+00:00 xUnit.net INFORMATION            at AutoFixture.Kernel.CompositeSpecimenBuilder.Create(Object request, ISpecimenContext context)
+2026-06-25T18:52:45.3844141+00:00 xUnit.net INFORMATION            at AutoFixture.Kernel.RecursionGuard.Create(Object request, ISpecimenContext context)
+2026-06-25T18:52:45.3844309+00:00 xUnit.net INFORMATION            at AutoFixture.Dsl.CompositeNodeComposer`1.Create(Object request, ISpecimenContext context)
+2026-06-25T18:52:45.3844431+00:00 xUnit.net INFORMATION            at AutoFixture.Kernel.SpecimenContext.Resolve(Object request)
+2026-06-25T18:52:45.3844606+00:00 xUnit.net INFORMATION            at AutoFixture.Kernel.AutoPropertiesCommand`1.Execute(Object specimen, ISpecimenContext context)
+2026-06-25T18:52:45.3844932+00:00 xUnit.net INFORMATION            at AutoFixture.Kernel.Postprocessor`1.Create(Object request, ISpecimenContext context)
+2026-06-25T18:52:45.3845286+00:00 xUnit.net INFORMATION            at AutoFixture.Kernel.CompositeSpecimenBuilder.Create(Object request, ISpecimenContext context)
+2026-06-25T18:52:45.3845622+00:00 xUnit.net INFORMATION            at AutoFixture.Kernel.FilteringSpecimenBuilder.Create(Object request, ISpecimenContext context)
+2026-06-25T18:52:45.3845849+00:00 xUnit.net INFORMATION            at AutoFixture.Dsl.NodeComposer`1.Create(Object request, ISpecimenContext context)
+2026-06-25T18:52:45.3846048+00:00 xUnit.net INFORMATION            at AutoFixture.Kernel.CompositeSpecimenBuilder.Create(Object request, ISpecimenContext context)
+2026-06-25T18:52:45.3846316+00:00 xUnit.net INFORMATION            at AutoFixture.Kernel.RecursionGuard.Create(Object request, ISpecimenContext context)
+2026-06-25T18:52:45.3846611+00:00 xUnit.net INFORMATION            at AutoFixture.Dsl.CompositeNodeComposer`1.Create(Object request, ISpecimenContext context)
+2026-06-25T18:52:45.3846755+00:00 xUnit.net INFORMATION            at AutoFixture.Kernel.SpecimenContext.Resolve(Object request)
+2026-06-25T18:52:45.3846920+00:00 xUnit.net INFORMATION            at AutoFixture.Kernel.SeedIgnoringRelay.Create(Object request, ISpecimenContext context)
+2026-06-25T18:52:45.3847095+00:00 xUnit.net INFORMATION            at AutoFixture.Kernel.CompositeSpecimenBuilder.Create(Object request, ISpecimenContext context)
+2026-06-25T18:52:45.3847269+00:00 xUnit.net INFORMATION            at AutoFixture.Kernel.FilteringSpecimenBuilder.Create(Object request, ISpecimenContext context)
+2026-06-25T18:52:45.3847425+00:00 xUnit.net INFORMATION            at AutoFixture.Dsl.NodeComposer`1.Create(Object request, ISpecimenContext context)
+2026-06-25T18:52:45.3847632+00:00 xUnit.net INFORMATION            at AutoFixture.Kernel.CompositeSpecimenBuilder.Create(Object request, ISpecimenContext context)
+2026-06-25T18:52:45.3847793+00:00 xUnit.net INFORMATION            at AutoFixture.Kernel.RecursionGuard.Create(Object request, ISpecimenContext context)
+2026-06-25T18:52:45.3847963+00:00 xUnit.net INFORMATION            at AutoFixture.Dsl.CompositeNodeComposer`1.Create(Object request, ISpecimenContext context)
+2026-06-25T18:52:45.3848085+00:00 xUnit.net INFORMATION            at AutoFixture.Kernel.SpecimenContext.Resolve(Object request)
+2026-06-25T18:52:45.3848264+00:00 xUnit.net INFORMATION            at AutoFixture.SpecimenFactory.Create[T](ISpecimenContext context)
+2026-06-25T18:52:45.3848588+00:00 xUnit.net INFORMATION            at AutoFixture.SpecimenFactory.Create[T](ISpecimenBuilder builder)
+2026-06-25T18:52:45.3848735+00:00 xUnit.net INFORMATION            at AutoFixture.SpecimenFactory.Create[T](IPostprocessComposer`1 composer)
+2026-06-25T18:52:45.3849336+00:00 xUnit.net INFORMATION         C:\Users\Banhi\source\repos\aspnetcore\AmazonWebAPIProject\AmazonWeb.Core.UnitTests\ProductServiceUnitTests.cs(65,0): at AmazonWeb.Tests.ProductServiceTests.AddProduct_ValidRequest_ReturnsProductResponseDTO()
+2026-06-25T18:52:45.3849434+00:00 xUnit.net INFORMATION         --- End of stack trace from previous location ---
+2026-06-25T18:52:45.4012389+00:00 xUnit.net INFORMATION   Finished:    AmazonWeb.Core.UnitTests (ID = 'a697f3bf6ad63ddd52529abafcb7cc2244a1724cf8e26625863d5db627d97dd4')
+2026-06-25T18:52:45.4206407+00:00 xUnit.net INFORMATION === TEST EXECUTION SUMMARY ===
+2026-06-25T18:52:45.4294466+00:00 xUnit.net INFORMATION    AmazonWeb.Core.UnitTests  Total: 2, Errors: 0, Failed: 1, Skipped: 0, Not Run: 0, Time: 0.823s

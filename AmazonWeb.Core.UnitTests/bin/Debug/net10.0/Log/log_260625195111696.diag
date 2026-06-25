@@ -1,0 +1,31 @@
+2026-06-25T19:51:11.7199916+00:00 Microsoft.Testing.Platform.Builder.TestApplication INFORMATION Version: 1.9.1+cb5afc3bb9bb01ebd75b57f89e8358b914ee2a49
+2026-06-25T19:51:11.7558983+00:00 Microsoft.Testing.Platform.Builder.TestApplication INFORMATION Logging mode: asynchronous
+2026-06-25T19:51:11.7641915+00:00 Microsoft.Testing.Platform.Builder.TestApplication INFORMATION Logging level: Information
+2026-06-25T19:51:11.7642155+00:00 Microsoft.Testing.Platform.Builder.TestApplication INFORMATION CreateBuilderAsync entry time: 19:51:11.656
+2026-06-25T19:51:11.7645616+00:00 Microsoft.Testing.Platform.Builder.TestApplication INFORMATION PID: 19476
+2026-06-25T19:51:11.7646348+00:00 Microsoft.Testing.Platform.Builder.TestApplication INFORMATION Runtime information: win-x64 - .NET 10.0.2
+2026-06-25T19:51:11.7646926+00:00 Microsoft.Testing.Platform.Builder.TestApplication INFORMATION Runtime location: C:\Program Files\dotnet\shared\Microsoft.NETCore.App\10.0.2\System.Private.CoreLib.dll
+2026-06-25T19:51:11.7647405+00:00 Microsoft.Testing.Platform.Builder.TestApplication INFORMATION IsDynamicCodeSupported: True
+2026-06-25T19:51:11.7650184+00:00 Microsoft.Testing.Platform.Builder.TestApplication INFORMATION Test module: C:\Users\Banhi\source\repos\aspnetcore\AmazonWebAPIProject\AmazonWeb.Core.UnitTests\bin\Debug\net10.0\AmazonWeb.Core.UnitTests.dll
+2026-06-25T19:51:11.7653640+00:00 Microsoft.Testing.Platform.Builder.TestApplication INFORMATION Command line arguments: '--server --diagnostic --diagnostic-verbosity Information --diagnostic-output-directory C:\Users\Banhi\source\repos\aspnetcore\AmazonWebAPIProject\AmazonWeb.Core.UnitTests\bin\Debug\net10.0\Log --results-directory C:\Users\Banhi\source\repos\aspnetcore\AmazonWebAPIProject\TestResults --client-port 58084'
+2026-06-25T19:51:11.7672968+00:00 Microsoft.Testing.Platform.Builder.TestApplication INFORMATION TESTINGPLATFORM_DEFAULT_HANG_TIMEOUT: ''
+2026-06-25T19:51:11.8415512+00:00 Microsoft.Testing.Platform.Hosts.TestHostBuilder INFORMATION Setting RegisterEnvironmentVariablesConfigurationSource: 'True'
+2026-06-25T19:51:11.9007567+00:00 Microsoft.Testing.Platform.Hosts.TestHostBuilder INFORMATION Setting PlatformExitProcessOnUnhandledException: 'False', config file: False environment variable: 
+2026-06-25T19:51:12.8667261+00:00 Microsoft.Testing.Platform.Requests.TestHostTestFrameworkInvoker INFORMATION Test framework UID: '30ea7c6e-dd24-4152-a360-1387158cd41d' Version: '3.2.2' DisplayName: 'xUnit.net v3 Microsoft.Testing.Platform test framework' Description: 'xUnit.net v3 Microsoft.Testing.Platform test framework'
+2026-06-25T19:51:12.8920400+00:00 xUnit.net INFORMATION xUnit.net v3 In-Process Runner v3.2.2+728c1dce01 (64-bit .NET 10.0.2)
+2026-06-25T19:51:13.0286987+00:00 xUnit.net INFORMATION   Discovering: AmazonWeb.Core.UnitTests
+2026-06-25T19:51:13.1573924+00:00 xUnit.net INFORMATION   Discovered:  AmazonWeb.Core.UnitTests
+2026-06-25T19:51:13.2238106+00:00 xUnit.net INFORMATION   Starting:    AmazonWeb.Core.UnitTests
+2026-06-25T19:51:14.0024599+00:00 xUnit.net ERROR     AmazonWeb.Tests.ProductServiceTests.GetProductById_ValidProduct_ReturnsProductResponse [FAIL]
+2026-06-25T19:51:14.0062470+00:00 xUnit.net INFORMATION       System.NullReferenceException : Object reference not set to an instance of an object.
+2026-06-25T19:51:14.0081381+00:00 xUnit.net INFORMATION       Stack Trace:
+2026-06-25T19:51:14.0116720+00:00 xUnit.net INFORMATION            at Microsoft.Extensions.Configuration.ConfigurationBinder.GetValue(IConfiguration configuration, Type type, String key, Object defaultValue)
+2026-06-25T19:51:14.0117306+00:00 xUnit.net INFORMATION            at Microsoft.Extensions.Configuration.ConfigurationBinder.GetValue[T](IConfiguration configuration, String key, T defaultValue)
+2026-06-25T19:51:14.0117545+00:00 xUnit.net INFORMATION            at Microsoft.Extensions.Configuration.ConfigurationBinder.GetValue[T](IConfiguration configuration, String key)
+2026-06-25T19:51:14.0118128+00:00 xUnit.net INFORMATION         C:\Users\Banhi\source\repos\aspnetcore\AmazonWebAPIProject\AmazonWeb.Core\Services\ProductsService.cs(220,0): at AmazonWeb.Core.Services.ProductService.FormatProductResponseWithUrl(ProductResponse response)
+2026-06-25T19:51:14.0118658+00:00 xUnit.net INFORMATION         C:\Users\Banhi\source\repos\aspnetcore\AmazonWebAPIProject\AmazonWeb.Core\Services\ProductsService.cs(45,0): at AmazonWeb.Core.Services.ProductService.GetProductByIdAsync(Guid id)
+2026-06-25T19:51:14.0119039+00:00 xUnit.net INFORMATION         C:\Users\Banhi\source\repos\aspnetcore\AmazonWebAPIProject\AmazonWeb.Core.UnitTests\ProductServiceUnitTests.cs(111,0): at AmazonWeb.Tests.ProductServiceTests.GetProductById_ValidProduct_ReturnsProductResponse()
+2026-06-25T19:51:14.0119085+00:00 xUnit.net INFORMATION         --- End of stack trace from previous location ---
+2026-06-25T19:51:14.0745687+00:00 xUnit.net INFORMATION   Finished:    AmazonWeb.Core.UnitTests (ID = 'a697f3bf6ad63ddd52529abafcb7cc2244a1724cf8e26625863d5db627d97dd4')
+2026-06-25T19:51:14.0916119+00:00 xUnit.net INFORMATION === TEST EXECUTION SUMMARY ===
+2026-06-25T19:51:14.1063181+00:00 xUnit.net INFORMATION    AmazonWeb.Core.UnitTests  Total: 1, Errors: 0, Failed: 1, Skipped: 0, Not Run: 0, Time: 0.876s
