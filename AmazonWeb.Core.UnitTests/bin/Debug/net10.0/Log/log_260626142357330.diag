@@ -1,0 +1,34 @@
+2026-06-26T14:23:57.3543462+00:00 Microsoft.Testing.Platform.Builder.TestApplication INFORMATION Version: 1.9.1+cb5afc3bb9bb01ebd75b57f89e8358b914ee2a49
+2026-06-26T14:23:57.3822571+00:00 Microsoft.Testing.Platform.Builder.TestApplication INFORMATION Logging mode: asynchronous
+2026-06-26T14:23:57.3839185+00:00 Microsoft.Testing.Platform.Builder.TestApplication INFORMATION Logging level: Information
+2026-06-26T14:23:57.3839295+00:00 Microsoft.Testing.Platform.Builder.TestApplication INFORMATION CreateBuilderAsync entry time: 14:23:57.301
+2026-06-26T14:23:57.3841170+00:00 Microsoft.Testing.Platform.Builder.TestApplication INFORMATION PID: 13100
+2026-06-26T14:23:57.3841579+00:00 Microsoft.Testing.Platform.Builder.TestApplication INFORMATION Runtime information: win-x64 - .NET 10.0.2
+2026-06-26T14:23:57.3841830+00:00 Microsoft.Testing.Platform.Builder.TestApplication INFORMATION Runtime location: C:\Program Files\dotnet\shared\Microsoft.NETCore.App\10.0.2\System.Private.CoreLib.dll
+2026-06-26T14:23:57.3842034+00:00 Microsoft.Testing.Platform.Builder.TestApplication INFORMATION IsDynamicCodeSupported: True
+2026-06-26T14:23:57.3843098+00:00 Microsoft.Testing.Platform.Builder.TestApplication INFORMATION Test module: C:\Users\Banhi\source\repos\aspnetcore\AmazonWebAPIProject\AmazonWeb.Core.UnitTests\bin\Debug\net10.0\AmazonWeb.Core.UnitTests.dll
+2026-06-26T14:23:57.3845562+00:00 Microsoft.Testing.Platform.Builder.TestApplication INFORMATION Command line arguments: '--server --diagnostic --diagnostic-verbosity Information --diagnostic-output-directory C:\Users\Banhi\source\repos\aspnetcore\AmazonWebAPIProject\AmazonWeb.Core.UnitTests\bin\Debug\net10.0\Log --results-directory C:\Users\Banhi\source\repos\aspnetcore\AmazonWebAPIProject\TestResults --client-port 63208'
+2026-06-26T14:23:57.3858618+00:00 Microsoft.Testing.Platform.Builder.TestApplication INFORMATION TESTINGPLATFORM_DEFAULT_HANG_TIMEOUT: ''
+2026-06-26T14:23:57.4182967+00:00 Microsoft.Testing.Platform.Hosts.TestHostBuilder INFORMATION Setting RegisterEnvironmentVariablesConfigurationSource: 'True'
+2026-06-26T14:23:57.4425763+00:00 Microsoft.Testing.Platform.Hosts.TestHostBuilder INFORMATION Setting PlatformExitProcessOnUnhandledException: 'False', config file: False environment variable: 
+2026-06-26T14:23:58.0907570+00:00 Microsoft.Testing.Platform.Requests.TestHostTestFrameworkInvoker INFORMATION Test framework UID: '30ea7c6e-dd24-4152-a360-1387158cd41d' Version: '3.2.2' DisplayName: 'xUnit.net v3 Microsoft.Testing.Platform test framework' Description: 'xUnit.net v3 Microsoft.Testing.Platform test framework'
+2026-06-26T14:23:58.1126486+00:00 xUnit.net INFORMATION xUnit.net v3 In-Process Runner v3.2.2+728c1dce01 (64-bit .NET 10.0.2)
+2026-06-26T14:23:58.2220428+00:00 xUnit.net INFORMATION   Discovering: AmazonWeb.Core.UnitTests
+2026-06-26T14:23:58.2957059+00:00 xUnit.net INFORMATION   Discovered:  AmazonWeb.Core.UnitTests
+2026-06-26T14:23:58.3540091+00:00 xUnit.net INFORMATION   Starting:    AmazonWeb.Core.UnitTests
+2026-06-26T14:23:58.9311271+00:00 xUnit.net ERROR     AmazonWeb.Tests.ProductServiceTests.GetProductById_ValidProduct_ReturnsProductResponse [FAIL]
+2026-06-26T14:23:58.9317774+00:00 xUnit.net INFORMATION       System.NotSupportedException : Unsupported expression: c => c.GetValue<string>("JwtSettings:Issuer")
+2026-06-26T14:23:58.9317901+00:00 xUnit.net INFORMATION       Extension methods (here: ConfigurationBinder.GetValue) may not be used in setup / verification expressions.
+2026-06-26T14:23:58.9323694+00:00 xUnit.net INFORMATION       Stack Trace:
+2026-06-26T14:23:58.9340509+00:00 xUnit.net INFORMATION         /_/src/Moq/Guard.cs(87,0): at Moq.Guard.IsOverridable(MethodInfo method, Expression expression)
+2026-06-26T14:23:58.9340763+00:00 xUnit.net INFORMATION         /_/src/Moq/MethodExpectation.cs(87,0): at Moq.MethodExpectation..ctor(LambdaExpression expression, MethodInfo method, IReadOnlyList`1 arguments, Boolean exactGenericTypeArguments, Boolean skipMatcherInitialization, Boolean allowNonOverridable)
+2026-06-26T14:23:58.9340877+00:00 xUnit.net INFORMATION         /_/src/Moq/ExpressionExtensions.cs(235,0): at Moq.ExpressionExtensions.<Split>g__Split|5_0(Expression e, Expression& r, MethodExpectation& p, Boolean assignment, Boolean allowNonOverridableLastProperty)
+2026-06-26T14:23:58.9340963+00:00 xUnit.net INFORMATION         /_/src/Moq/ExpressionExtensions.cs(149,0): at Moq.ExpressionExtensions.Split(LambdaExpression expression, Boolean allowNonOverridableLastProperty)
+2026-06-26T14:23:58.9341021+00:00 xUnit.net INFORMATION         /_/src/Moq/Mock.cs(645,0): at Moq.Mock.SetupRecursive[TSetup](Mock mock, LambdaExpression expression, Func`4 setupLast, Boolean allowNonOverridableLastProperty)
+2026-06-26T14:23:58.9341097+00:00 xUnit.net INFORMATION         /_/src/Moq/Mock.cs(500,0): at Moq.Mock.Setup(Mock mock, LambdaExpression expression, Condition condition)
+2026-06-26T14:23:58.9341182+00:00 xUnit.net INFORMATION         /_/src/Moq/Mock`1.cs(452,0): at Moq.Mock`1.Setup[TResult](Expression`1 expression)
+2026-06-26T14:23:58.9341314+00:00 xUnit.net INFORMATION         C:\Users\Banhi\source\repos\aspnetcore\AmazonWebAPIProject\AmazonWeb.Core.UnitTests\ProductServiceUnitTests.cs(123,0): at AmazonWeb.Tests.ProductServiceTests.GetProductById_ValidProduct_ReturnsProductResponse()
+2026-06-26T14:23:58.9341340+00:00 xUnit.net INFORMATION         --- End of stack trace from previous location ---
+2026-06-26T14:23:58.9776569+00:00 xUnit.net INFORMATION   Finished:    AmazonWeb.Core.UnitTests (ID = 'a697f3bf6ad63ddd52529abafcb7cc2244a1724cf8e26625863d5db627d97dd4')
+2026-06-26T14:23:58.9892680+00:00 xUnit.net INFORMATION === TEST EXECUTION SUMMARY ===
+2026-06-26T14:23:58.9957793+00:00 xUnit.net INFORMATION    AmazonWeb.Core.UnitTests  Total: 1, Errors: 0, Failed: 1, Skipped: 0, Not Run: 0, Time: 0.630s

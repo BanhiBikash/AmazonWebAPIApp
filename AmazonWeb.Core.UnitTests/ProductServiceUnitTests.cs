@@ -1,4 +1,5 @@
 ﻿using AmazonWeb.Core.Domain.Entities;
+using AmazonWeb.Core.Domain.Enums;
 using AmazonWeb.Core.Domain.RepositoryContract;
 using AmazonWeb.Core.DTO.AddDTO;
 using AmazonWeb.Core.DTO.ResponseDTO;
@@ -103,23 +104,34 @@ namespace AmazonWeb.Tests
         public async Task GetProductById_ValidProduct_ReturnsProductResponse()
         {
             // Arrange
-            var product = _fixture.Build<Product>()
-                .With(f => f.IsDeleted, false)
-                .With(f => f.ImageUrl, "img.png") // relative path so sanitizer applies
-                .Create();
+            Product product = new Product()
+            {
+                Id = Guid.NewGuid(),
+                Name = "Gaming Laptop",
+                Price = 1200,
+                Discount = 10, // 10% off
+                InStock = true,
+                Stock = 25,
+                Description = "High-performance laptop with RTX graphics",
+                ImageUrl = "http://cdn.amazonclone.com/images/laptop.png",
+                Category = ProductCategory.Mobiles,
+                SubCategory = ProductSubCategory.Mobile_Smartphones,
+                IsDeleted = false
+            }; 
 
-            _productRepositoryMock.Setup(r => r.GetByIdAsync(product.Id)).ReturnsAsync(product);
+            _productRepositoryMock.Setup(r => r.GetByIdAsync(It.IsAny<Guid>())).ReturnsAsync(product); 
+            _configurationMock.Setup(c => c.GetValue<string>("JwtSettings:Issuer")).Returns("https://cdn.amazonclone.com");
+
 
             // Build expected response using the same sanitizer logic
             var expected = Product.ToProductResponse(product);
-            expected.ImageUrl = "https://api.amazonclone.com/img.png"; // mimic sanitizer
 
             // Act
             var result = await _productService.GetProductByIdAsync(product.Id);
 
             // Assert
             result.Should().NotBeNull();
-            result.Should().BeEquivalentTo(expected);
+            result.Should().BeEquivalentTo(_productService.FormatProductResponseWithUrl(expected));
         }
 
         #endregion

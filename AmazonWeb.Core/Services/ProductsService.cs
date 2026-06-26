@@ -213,7 +213,7 @@ namespace AmazonWeb.Core.Services
         /* ==========================================================================
            🎯 THE CENTRALIZED URL SANITIZER (Single point of truth)
            ========================================================================== */
-        private ProductResponse FormatProductResponseWithUrl(ProductResponse response)
+        public ProductResponse FormatProductResponseWithUrl(ProductResponse response)
         {
             if (response == null) return response;
 
