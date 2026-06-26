@@ -145,35 +145,35 @@ namespace AmazonWeb.Tests
             await action.Should().ThrowAsync<ArgumentNullException>();
         }
 
-        //[Fact]
-        //public async Task UpdateProduct_ProductNotFound_ReturnsNull()
-        //{
-        //    var request = _fixture.Build<ProductUpdateRequest>().Create();
+        [Fact]
+        public async Task UpdateProduct_ProductNotFound_ReturnsNull()
+        {
+            var request = _fixture.Build<ProductUpdateRequest>().With(f=>f.Thumbnail, CreateFakeFormFile()).Create();
 
-        //    _productRepositoryMock.Setup(r => r.GetByIdAsync(request.Id)).ReturnsAsync((Product)null);
+            _productRepositoryMock.Setup(r => r.GetByIdAsync(It.IsAny<Guid>())).ReturnsAsync((Product)null);
 
-        //    var result = await _productService.UpdateProductAsync(request);
+            var result = await _productService.UpdateProductAsync(request);
 
-        //    result.Should().BeNull();
-        //}
+            result.Should().BeNull();
+        }
 
-        //[Fact]
-        //public async Task UpdateProduct_ValidRequest_ReturnsUpdatedResponse()
-        //{
-        //    var product = _fixture.Build<Product>()
-        //        .With(p => p.ImageUrl, "img.png")
-        //        .Create();
+        [Fact]
+        public async Task UpdateProduct_ValidRequest_ReturnsUpdatedResponse()
+        {
+            var product = _fixture.Build<Product>()
+                .With(p => p.ImageUrl, "img.png")
+                .Create();
 
-        //    var request = new ProductUpdateRequest { Id = product.Id, Name = "UpdatedName" };
+            var request = new ProductUpdateRequest { Id = product.Id, Name = "UpdatedName" };
 
-        //    _productRepositoryMock.Setup(r => r.GetByIdAsync(product.Id)).ReturnsAsync(product);
-        //    _productRepositoryMock.Setup(r => r.UpdateAsync(It.IsAny<Product>())).ReturnsAsync(product);
+            _productRepositoryMock.Setup(r => r.GetByIdAsync(product.Id)).ReturnsAsync(product);
+            _productRepositoryMock.Setup(r => r.UpdateAsync(It.IsAny<Product>())).ReturnsAsync(product);
 
-        //    var result = await _productService.UpdateProductAsync(request);
+            var result = await _productService.UpdateProductAsync(request);
 
-        //    result.Should().NotBeNull();
-        //    result.Name.Should().Be(product.Name); // ApplyUpdate logic preserves mapping
-        //}
+            result.Should().NotBeNull();
+            result.Name.Should().Be(product.Name); // ApplyUpdate logic preserves mapping
+        }
         #endregion
 
         #region DeleteProduct
