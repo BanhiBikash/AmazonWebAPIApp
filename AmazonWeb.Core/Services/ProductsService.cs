@@ -217,7 +217,7 @@ namespace AmazonWeb.Core.Services
         {
             if (response == null) return response;
 
-            string? baseUrl = _configuration.GetValue<string>("JwtSettings:Issuer");
+            string? baseUrl = _configuration["JwtSettings:Issuer"];
 
             if (!string.IsNullOrEmpty(baseUrl) &&
                 !string.IsNullOrEmpty(response.ImageUrl) &&

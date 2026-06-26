@@ -119,9 +119,9 @@ namespace AmazonWeb.Tests
                 IsDeleted = false
             }; 
 
-            _productRepositoryMock.Setup(r => r.GetByIdAsync(It.IsAny<Guid>())).ReturnsAsync(product); 
-            _configurationMock.Setup(c => c.GetValue<string>("JwtSettings:Issuer")).Returns("https://cdn.amazonclone.com");
-
+            _productRepositoryMock.Setup(r => r.GetByIdAsync(It.IsAny<Guid>())).ReturnsAsync(product);
+            _configurationMock.Setup(c => c["JwtSettings:Issuer"])
+                  .Returns("https://cdn.amazonclone.com");
 
             // Build expected response using the same sanitizer logic
             var expected = Product.ToProductResponse(product);
