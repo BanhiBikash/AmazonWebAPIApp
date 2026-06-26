@@ -164,15 +164,15 @@ namespace AmazonWeb.Tests
                 .With(p => p.ImageUrl, "img.png")
                 .Create();
 
-            var request = new ProductUpdateRequest { Id = product.Id, Name = "UpdatedName" };
+            var request = _fixture.Build<ProductUpdateRequest>().With(f=>f.Id, product.Id).With(f=>f.Thumbnail, CreateFakeFormFile()).With(f=>f.ImageUrl, "img.png").Create();
 
-            _productRepositoryMock.Setup(r => r.GetByIdAsync(product.Id)).ReturnsAsync(product);
+            _productRepositoryMock.Setup(r => r.GetByIdAsync(It.IsAny<Guid>())).ReturnsAsync(product);
             _productRepositoryMock.Setup(r => r.UpdateAsync(It.IsAny<Product>())).ReturnsAsync(product);
 
             var result = await _productService.UpdateProductAsync(request);
-
-            result.Should().NotBeNull();
-            result.Name.Should().Be(product.Name); // ApplyUpdate logic preserves mapping
+            ProductResponse expected = Product.ToProductResponse(product);
+            expected.Should().NotBeNull();
+            expected.Should().BeEquivalentTo(Product.ToProductResponse(product)); // ApplyUpdate logic preserves mapping
         }
         #endregion
 

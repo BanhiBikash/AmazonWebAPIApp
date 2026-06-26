@@ -104,7 +104,7 @@ namespace AmazonWeb.Core.Services
             }
 
             //set imageurl as initial
-            string finalImageUrl = product.ImageUrl.Replace(_configuration.GetValue<string>("JwtSettings:Issuer")??"", ""); // Keep original by default and remove the issuer url if there
+            string finalImageUrl = product.ImageUrl.Replace(_configuration["JwtSettings:Issuer"] ?? "", ""); // Keep original by default and remove the issuer url if there
 
             product = ProductUpdateRequest.ApplyUpdate(product, productUpdateRequest);
             product.ImageUrl = finalImageUrl;
