@@ -158,8 +158,8 @@ namespace AmazonWeb.Core.Services
                                     : ProductSubCategory.Common // fallback
             };
 
-            await _productRepository.UpdateAsync(productToDelete);
-            return true;
+            Product deletedProduct= await _productRepository.UpdateAsync(productToDelete);
+            return deletedProduct.IsDeleted;
         }
 
         // Get products by price range

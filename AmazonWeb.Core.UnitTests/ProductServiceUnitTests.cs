@@ -195,20 +195,27 @@ namespace AmazonWeb.Tests
             result.Should().BeFalse();
         }
 
-        //[Fact]
-        //public async Task DeleteProduct_ValidProduct_ReturnsTrue()
-        //{
-        //    var product = _fixture.Build<Product>()
-        //        .With(p => p.IsDeleted, false)
-        //        .Create();
+        [Fact]
+        public async Task DeleteProduct_ValidProduct_ReturnsTrue()
+        {
+            //arrange
+            var product = _fixture.Build<Product>()
+                .With(p => p.IsDeleted, false)
+                .Create();
 
-        //    _productRepositoryMock.Setup(r => r.GetByIdAsync(product.Id)).ReturnsAsync(product);
-        //    _productRepositoryMock.Setup(r => r.UpdateAsync(It.IsAny<Product>())).ReturnsAsync(product);
+            var deletedProduct = _fixture.Build<Product>()
+                .With(p => p.IsDeleted, true)
+                .Create();
 
-        //    var result = await _productService.DeleteProductAsync(product.Id);
+            _productRepositoryMock.Setup(r => r.GetByIdAsync(It.IsAny<Guid>())).ReturnsAsync(product);
+            _productRepositoryMock.Setup(r => r.UpdateAsync(It.IsAny<Product>())).ReturnsAsync(deletedProduct);
 
-        //    result.Should().BeTrue();
-        //}
+            //act
+            var result = await _productService.DeleteProductAsync(product.Id);
+
+            //assert
+            result.Should().BeTrue();
+        }
         #endregion
 
         #region DeductStock
