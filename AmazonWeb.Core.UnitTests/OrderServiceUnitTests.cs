@@ -177,12 +177,12 @@ namespace AmazonWeb.Core.UnitTests
         }
         #endregion
 
-        //#region UpdateOrder
-        //[Fact]
-        //public async Task UpdateOrder_NullRequest_ThrowsArgumentNullException()
-        //{
-        //    await Assert.ThrowsAsync<ArgumentNullException>(() => _orderService.UpdateOrder(null!));
-        //}
+        #region UpdateOrder
+        [Fact]
+        public async Task UpdateOrder_NullRequest_ThrowsArgumentNullException()
+        {
+            await Assert.ThrowsAsync<ArgumentNullException>(() => _orderService.UpdateOrder(null!));
+        }
 
         //[Fact]
         //public async Task UpdateOrder_RequestWithNullProperty_ThrowsArgumentNullException()
@@ -251,6 +251,6 @@ namespace AmazonWeb.Core.UnitTests
         //    result.Should().NotBeNull();
         //    result!.Id.Should().Be(request.Id);
         //}
-        //#endregion
+        #endregion
     }
 }
