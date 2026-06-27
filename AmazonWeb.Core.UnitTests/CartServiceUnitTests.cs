@@ -190,6 +190,7 @@ namespace AmazonWeb.Core.UnitTests
         [Fact]
         public async Task MergeCartAsync_ValidGuestItems_AddsToCart()
         {
+            // Arrange
             var userId = Guid.NewGuid();
             var productId = Guid.NewGuid();
 
@@ -198,23 +199,33 @@ namespace AmazonWeb.Core.UnitTests
                 new CartRequest { ProductId = productId, Quantity = 2 }
             };
 
+            var updatedItems = new List<CartItem>
+            {
+                new CartItem
+                {
+                    ProductId = productId,
+                    Quantity = 2,
+                    Product = new Product { Name = "Test", Price = 100, ImageUrl = "img.png" }
+                }
+            };
+
             _cartRepositoryMock.Setup(r => r.GetCartByUserIdAsync(userId))
-                               .ReturnsAsync(new List<CartItem>());
+                               .ReturnsAsync(updatedItems); // <-- important
 
             _userManagerMock.Setup(m => m.FindByIdAsync(userId.ToString()))
                             .ReturnsAsync(new ApplicationUser { Id = userId });
 
             _cartRepositoryMock.Setup(r => r.UpdateQuantityAsync(userId, productId, 2))
-                               .ReturnsAsync(new List<CartItem>
-                               {
-                                   new CartItem { ProductId = productId, Quantity = 2, Product = new Product { Name = "Test", Price = 100, ImageUrl = "img.png" } }
-                               });
+                               .ReturnsAsync(updatedItems);
 
+            // Act
             var result = await _cartService.MergeCartAsync(userId, guestItems);
 
+            // Assert
             result.Should().NotBeNull();
             result!.Items.Should().ContainSingle(i => i.ProductId == productId && i.Quantity == 2);
         }
+
         #endregion
     }
 }
