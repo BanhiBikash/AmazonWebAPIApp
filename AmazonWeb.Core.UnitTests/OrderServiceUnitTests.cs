@@ -80,7 +80,7 @@ namespace AmazonWeb.Core.UnitTests
             var orderId = Guid.NewGuid();
             var order = new Order { Id = orderId, UserId = Guid.NewGuid(), Status = OrderStatus.Pending };
 
-            _orderRepositoryMock.Setup(r => r.GetByIdAsync(orderId)).ReturnsAsync(order);
+            _orderRepositoryMock.Setup(r => r.GetByIdAsync(It.IsAny<Guid>())).ReturnsAsync(order);
 
             var result = await _orderService.GetOrdersByOrderID(orderId);
 

@@ -74,7 +74,7 @@ namespace AmazonWeb.Core.Services.OrderService
 
             OrderResponse? orderResponse = (await _orderRepository.GetByIdAsync(OrderID)).ToOrderResponse();
 
-            string? baseurl  = _configuration.GetValue<string>("JwtSettings:Issuer");
+            string? baseurl  = _configuration["JwtSettings:Issuer"];
 
             if (orderResponse.Items != null && !string.IsNullOrEmpty(baseurl))
             {
