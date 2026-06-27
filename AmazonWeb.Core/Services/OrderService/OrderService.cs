@@ -42,7 +42,7 @@ namespace AmazonWeb.Core.Services.OrderService
             List<OrderResponse>? orderResponses = new List<OrderResponse>();
 
             //ftech the base url from configuration to prepend to the image urls in the order items
-            string? baseurl = _configuration.GetValue<string>("JwtSettings:Issuer");
+            string? baseurl = _configuration["JwtSettings:Issuer"];
 
             //go through each order and each item
             foreach (var order in orderResponses)

@@ -57,7 +57,7 @@ namespace AmazonWeb.Core.UnitTests
                 new Order { Id = Guid.NewGuid(), UserId = userId, Status = OrderStatus.Pending }
             };
 
-            _orderRepositoryMock.Setup(r => r.GetByUserIdAsync(userId)).ReturnsAsync(orders);
+            _orderRepositoryMock.Setup(r => r.GetByUserIdAsync(It.IsAny<Guid>())).ReturnsAsync(orders);
 
             var result = await _orderService.GetOrdersByUserID(userId);
 
