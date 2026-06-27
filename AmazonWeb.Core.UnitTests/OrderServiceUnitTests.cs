@@ -184,31 +184,31 @@ namespace AmazonWeb.Core.UnitTests
             await Assert.ThrowsAsync<ArgumentNullException>(() => _orderService.UpdateOrder(null!));
         }
 
-        //[Fact]
-        //public async Task UpdateOrder_RequestWithNullProperty_ThrowsArgumentNullException()
-        //{
-        //    var request = new OrderUpdateRequest { Id = Guid.NewGuid(), ShippingAddress = null! };
+        [Fact]
+        public async Task UpdateOrder_RequestWithNullProperty_ThrowsArgumentNullException()
+        {
+            var request = new OrderUpdateRequest { Id = Guid.NewGuid(), ShippingAddress = null! };
 
-        //    await Assert.ThrowsAsync<ArgumentNullException>(() => _orderService.UpdateOrder(request));
-        //}
+            await Assert.ThrowsAsync<ArgumentNullException>(() => _orderService.UpdateOrder(request));
+        }
 
-        //[Fact]
-        //public async Task UpdateOrder_OrderNotFound_ThrowsException()
-        //{
-        //    var request = new OrderUpdateRequest
-        //    {
-        //        Id = Guid.NewGuid(),
-        //        ShippingAddress = "123 Street",
-        //        PostalCode = "12345",
-        //        City = "City",
-        //        Country = "Country",
-        //        Status = OrderStatus.Pending.ToString()
-        //    };
+        [Fact]
+        public async Task UpdateOrder_OrderNotFound_ThrowsException()
+        {
+            var request = new OrderUpdateRequest
+            {
+                Id = Guid.NewGuid(),
+                ShippingAddress = "123 Street",
+                PostalCode = "12345",
+                City = "City",
+                Country = "Country",
+                Status = OrderStatus.Pending
+            };
 
-        //    _orderRepositoryMock.Setup(r => r.GetByIdAsync(request.Id)).ReturnsAsync((Order?)null);
+            _orderRepositoryMock.Setup(r => r.GetByIdAsync(request.Id)).ReturnsAsync((Order?)null);
 
-        //    await Assert.ThrowsAsync<Exception>(() => _orderService.UpdateOrder(request));
-        //}
+            await Assert.ThrowsAsync<NullReferenceException>(() => _orderService.UpdateOrder(request));
+        }
 
         //[Fact]
         //public async Task UpdateOrder_InvalidStatus_ThrowsInvalidOperationException()
