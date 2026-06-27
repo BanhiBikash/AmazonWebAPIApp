@@ -229,28 +229,28 @@ namespace AmazonWeb.Core.UnitTests
             await Assert.ThrowsAsync<InvalidOperationException>(() => _orderService.UpdateOrder(request));
         }
 
-        //[Fact]
-        //public async Task UpdateOrder_ValidRequest_ReturnsUpdatedOrderResponse()
-        //{
-        //    var request = new OrderUpdateRequest
-        //    {
-        //        Id = Guid.NewGuid(),
-        //        ShippingAddress = "123 Street",
-        //        PostalCode = "12345",
-        //        City = "City",
-        //        Country = "Country",
-        //        Status = OrderStatus.Pending.ToString()
-        //    };
+        [Fact]
+        public async Task UpdateOrder_ValidRequest_ReturnsUpdatedOrderResponse()
+        {
+            var request = new OrderUpdateRequest
+            {
+                Id = Guid.NewGuid(),
+                ShippingAddress = "123 Street",
+                PostalCode = "12345",
+                City = "City",
+                Country = "Country",
+                Status = OrderStatus.Pending
+            };
 
-        //    var order = new Order { Id = request.Id, UserId = Guid.NewGuid(), Status = OrderStatus.Pending };
-        //    _orderRepositoryMock.Setup(r => r.GetByIdAsync(request.Id)).ReturnsAsync(order);
-        //    _orderRepositoryMock.Setup(r => r.UpdateAsync(It.IsAny<Order>())).ReturnsAsync(order);
+            var order = new Order { Id = request.Id, UserId = Guid.NewGuid(), Status = OrderStatus.Pending };
+            _orderRepositoryMock.Setup(r => r.GetByIdAsync(request.Id)).ReturnsAsync(order);
+            _orderRepositoryMock.Setup(r => r.UpdateAsync(It.IsAny<Order>())).ReturnsAsync(order);
 
-        //    var result = await _orderService.UpdateOrder(request);
+            var result = await _orderService.UpdateOrder(request);
 
-        //    result.Should().NotBeNull();
-        //    result!.Id.Should().Be(request.Id);
-        //}
+            result.Should().NotBeNull();
+            result!.Id.Should().Be(request.Id);
+        }
         #endregion
     }
 }
