@@ -125,28 +125,27 @@ namespace AmazonWeb.Core.UnitTests
             await Assert.ThrowsAsync<ArgumentException>(() => _orderService.ReceiveOrder(request));
         }
 
-        //[Fact]
-        //public async Task ReceiveOrder_InvalidItemData_ThrowsInvalidOperationException()
-        //{
-        //    var request = new OrderAddRequest
-        //    {
-        //        Id = Guid.NewGuid(),
-        //        UserId = Guid.NewGuid(),
-        //        Items = new List<OrderItemAddRequest>
-        //        {
-        //            new OrderItemAddRequest { ProductId = Guid.NewGuid(), ProductName = "Test", UnitPrice = 100, Quantity = 1 }
-        //        },
-        //        ShippingAddress = "123 Street",
-        //        PostalCode = "12345",
-        //        City = "City",
-        //        Country = "Country"
-        //    };
+        [Fact]
+        public async Task ReceiveOrder_InvalidItemData_ThrowsInvalidOperationException()
+        {
+            var request = new OrderAddRequest
+            {
+                UserId = Guid.NewGuid(),
+                Items = new List<OrderItem>
+                {
+                    new OrderItem { ProductId = Guid.NewGuid(), ProductName = "Test", UnitPrice = 100, Quantity = 1 }
+                },
+                ShippingAddress = "123 Street",
+                PostalCode = "12345",
+                City = "City",
+                Country = "Country"
+            };
 
-        //    _userManagerMock.Setup(u => u.FindByIdAsync(request.UserId.ToString())).ReturnsAsync(new ApplicationUser { Id = request.UserId.ToString() });
-        //    _productServiceMock.Setup(p => p.CheckItemDataSanctity(It.IsAny<List<ItemData>>())).ReturnsAsync(false);
+            _userManagerMock.Setup(u => u.FindByIdAsync(It.IsAny<Guid>().ToString())).ReturnsAsync(new ApplicationUser { Id = request.UserId });
+            _productServiceMock.Setup(p => p.CheckItemDataSanctity(It.IsAny<List<ItemData>>())).ReturnsAsync(false);
 
-        //    await Assert.ThrowsAsync<InvalidOperationException>(() => _orderService.ReceiveOrder(request));
-        //}
+            await Assert.ThrowsAsync<ArgumentException>(() => _orderService.ReceiveOrder(request));
+        }
 
         //[Fact]
         //public async Task ReceiveOrder_ValidRequest_ReturnsOrderResponse()
