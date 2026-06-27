@@ -1,6 +1,7 @@
 ﻿using AmazonWeb.Core.Domain.Entities;
 using AmazonWeb.Core.Domain.Identities;
 using AmazonWeb.Core.Domain.RepositoryContract;
+using AmazonWeb.Core.DTO.AddDTO;
 using AmazonWeb.Core.DTO.ResponseDTO;
 using AmazonWeb.Core.ServiceContracts.CartContracts;
 using AmazonWeb.Core.ServiceContracts.ProductContracts;
@@ -72,7 +73,25 @@ namespace AmazonWeb.Core.UnitTests
             //Assert
             result.Should().BeEquivalentTo(new CartResponse());
         }
+        #endregion
 
+        #region AddOrUpdateItemAsync_InvalidUserID_Returns null
+        [Fact]
+        public async Task AddOrUpdateItemAsync()
+        {
+            //Arrange
+            CartRequest? randomCartRequest = new CartRequest();
+            Guid randomID = Guid.NewGuid();
+
+            //_cartRepositoryMock.Setup(m => m.GetCartByUserIdAsync(It.IsAny<Guid>())).ReturnsAsync(Application);
+            _userManagerMock.Setup(m => m.FindByIdAsync(It.IsAny<Guid>().ToString())).ReturnsAsync((ApplicationUser)null);
+
+            //Act
+            var result = await _cartService.AddOrUpdateItemAsync(randomID, randomCartRequest);
+
+            //Assert
+            result.Should().BeNull();
+        }
         #endregion
     }
 }

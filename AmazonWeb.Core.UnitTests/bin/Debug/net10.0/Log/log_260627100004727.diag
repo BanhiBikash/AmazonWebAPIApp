@@ -1,0 +1,18 @@
+2026-06-27T10:00:04.7627073+00:00 Microsoft.Testing.Platform.Builder.TestApplication INFORMATION Version: 1.9.1+cb5afc3bb9bb01ebd75b57f89e8358b914ee2a49
+2026-06-27T10:00:04.7966257+00:00 Microsoft.Testing.Platform.Builder.TestApplication INFORMATION Logging mode: asynchronous
+2026-06-27T10:00:04.8030773+00:00 Microsoft.Testing.Platform.Builder.TestApplication INFORMATION Logging level: Information
+2026-06-27T10:00:04.8031088+00:00 Microsoft.Testing.Platform.Builder.TestApplication INFORMATION CreateBuilderAsync entry time: 10:00:04.635
+2026-06-27T10:00:04.8035870+00:00 Microsoft.Testing.Platform.Builder.TestApplication INFORMATION PID: 19504
+2026-06-27T10:00:04.8037515+00:00 Microsoft.Testing.Platform.Builder.TestApplication INFORMATION Runtime information: win-x64 - .NET 10.0.2
+2026-06-27T10:00:04.8038695+00:00 Microsoft.Testing.Platform.Builder.TestApplication INFORMATION Runtime location: C:\Program Files\dotnet\shared\Microsoft.NETCore.App\10.0.2\System.Private.CoreLib.dll
+2026-06-27T10:00:04.8039794+00:00 Microsoft.Testing.Platform.Builder.TestApplication INFORMATION IsDynamicCodeSupported: True
+2026-06-27T10:00:04.8044440+00:00 Microsoft.Testing.Platform.Builder.TestApplication INFORMATION Test module: C:\Users\Banhi\source\repos\aspnetcore\AmazonWebAPIProject\AmazonWeb.Core.UnitTests\bin\Debug\net10.0\AmazonWeb.Core.UnitTests.dll
+2026-06-27T10:00:04.8053300+00:00 Microsoft.Testing.Platform.Builder.TestApplication INFORMATION Command line arguments: '--server --diagnostic --diagnostic-verbosity Information --diagnostic-output-directory C:\Users\Banhi\source\repos\aspnetcore\AmazonWebAPIProject\AmazonWeb.Core.UnitTests\bin\Debug\net10.0\Log --results-directory C:\Users\Banhi\source\repos\aspnetcore\AmazonWebAPIProject\TestResults --client-port 57858'
+2026-06-27T10:00:04.8153868+00:00 Microsoft.Testing.Platform.Builder.TestApplication INFORMATION TESTINGPLATFORM_DEFAULT_HANG_TIMEOUT: ''
+2026-06-27T10:00:04.8604345+00:00 Microsoft.Testing.Platform.Hosts.TestHostBuilder INFORMATION Setting RegisterEnvironmentVariablesConfigurationSource: 'True'
+2026-06-27T10:00:04.9160016+00:00 Microsoft.Testing.Platform.Hosts.TestHostBuilder INFORMATION Setting PlatformExitProcessOnUnhandledException: 'False', config file: False environment variable: 
+2026-06-27T10:00:06.2329457+00:00 Microsoft.Testing.Platform.Requests.TestHostTestFrameworkInvoker INFORMATION Test framework UID: '30ea7c6e-dd24-4152-a360-1387158cd41d' Version: '3.2.2' DisplayName: 'xUnit.net v3 Microsoft.Testing.Platform test framework' Description: 'xUnit.net v3 Microsoft.Testing.Platform test framework'
+2026-06-27T10:00:06.3776906+00:00 xUnit.net INFORMATION xUnit.net v3 In-Process Runner v3.2.2+728c1dce01 (64-bit .NET 10.0.2)
+2026-06-27T10:00:06.7675634+00:00 xUnit.net INFORMATION   Discovering: AmazonWeb.Core.UnitTests
+2026-06-27T10:00:06.9176496+00:00 xUnit.net INFORMATION   Discovered:  AmazonWeb.Core.UnitTests
+2026-06-27T10:00:07.0073037+00:00 xUnit.net INFORMATION   Starting:    AmazonWeb.Core.UnitTests
