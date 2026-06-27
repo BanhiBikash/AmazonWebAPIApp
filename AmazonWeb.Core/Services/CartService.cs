@@ -30,6 +30,8 @@ namespace AmazonWeb.Core.Services
         /// </summary>
         public async Task<CartResponse?> GetCartByUserIdAsync(Guid userId)
         {
+            if(userId == Guid.Empty ) return null;
+
             var rawCartItems = await _cartRepository.GetCartByUserIdAsync(userId);
             if (rawCartItems == null) return new CartResponse();
 
