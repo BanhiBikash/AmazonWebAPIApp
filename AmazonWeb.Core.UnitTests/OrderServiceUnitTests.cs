@@ -89,7 +89,7 @@ namespace AmazonWeb.Core.UnitTests
         }
         #endregion
 
-        //#region ReceiveOrder
+        #region ReceiveOrder
         [Fact]
         public async Task ReceiveOrder_NullRequest_ThrowsArgumentNullException()
         {
@@ -147,35 +147,35 @@ namespace AmazonWeb.Core.UnitTests
             await Assert.ThrowsAsync<ArgumentException>(() => _orderService.ReceiveOrder(request));
         }
 
-        //[Fact]
-        //public async Task ReceiveOrder_ValidRequest_ReturnsOrderResponse()
-        //{
-        //    var request = new OrderAddRequest
-        //    {
-        //        Id = Guid.NewGuid(),
-        //        UserId = Guid.NewGuid(),
-        //        Items = new List<OrderItemAddRequest>
-        //        {
-        //            new OrderItemAddRequest { ProductId = Guid.NewGuid(), ProductName = "Test", UnitPrice = 100, Quantity = 1 }
-        //        },
-        //        ShippingAddress = "123 Street",
-        //        PostalCode = "12345",
-        //        City = "City",
-        //        Country = "Country"
-        //    };
+        [Fact]
+        public async Task ReceiveOrder_ValidRequest_ReturnsOrderResponse()
+        {
 
-        //    _userManagerMock.Setup(u => u.FindByIdAsync(request.UserId.ToString())).ReturnsAsync(new ApplicationUser { Id = request.UserId.ToString() });
-        //    _productServiceMock.Setup(p => p.CheckItemDataSanctity(It.IsAny<List<ItemData>>())).ReturnsAsync(true);
+            var request = new OrderAddRequest
+            {
+                UserId = Guid.NewGuid(),
+                Items = new List<OrderItem>
+                {
+                    new OrderItem { ProductId = Guid.NewGuid(), ProductName = "Test", UnitPrice = 100, Quantity = 1 }
+                },
+                ShippingAddress = "123 Street",
+                PostalCode = "12345",
+                City = "City",
+                Country = "Country"
+            };
 
-        //    var order = request.ToOrderEntity();
-        //    _orderRepositoryMock.Setup(r => r.AddAsync(It.IsAny<Order>())).ReturnsAsync(order);
+            _userManagerMock.Setup(u => u.FindByIdAsync(It.IsAny<string>())).ReturnsAsync(new ApplicationUser { Id = request.UserId });
+            _productServiceMock.Setup(p => p.CheckItemDataSanctity(It.IsAny<List<ItemData>>())).ReturnsAsync(true);
 
-        //    var result = await _orderService.ReceiveOrder(request);
+            var order = request.ToOrderEntity();
+            _orderRepositoryMock.Setup(r => r.AddAsync(It.IsAny<Order>())).ReturnsAsync(order);
 
-        //    result.Should().NotBeNull();
-        //    result!.Status.Should().Be(OrderStatus.Pending.ToString());
-        //}
-        //#endregion
+            var result = await _orderService.ReceiveOrder(request);
+
+            result.Should().NotBeNull();
+            result!.Status.Should().Be(OrderStatus.Pending.ToString());
+        }
+        #endregion
 
         //#region UpdateOrder
         //[Fact]

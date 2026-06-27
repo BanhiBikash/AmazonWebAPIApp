@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("AmazonWeb.Core.UnitTests")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+1ad62ffbfed0ea3eb4bc3c6a4ddaa9da553129e8")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+98956d634bf061322bfcdbc2f8db43acf048c5c5")]
 [assembly: System.Reflection.AssemblyProductAttribute("AmazonWeb.Core.UnitTests")]
 [assembly: System.Reflection.AssemblyTitleAttribute("AmazonWeb.Core.UnitTests")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
