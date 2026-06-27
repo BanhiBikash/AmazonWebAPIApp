@@ -130,7 +130,7 @@ namespace AmazonWeb.Core.Services
         private async Task<CartResponse> MapCartItemsToResponseAsync(IEnumerable<CartItem> cartItems)
         {
             var response = new CartResponse();
-            string? baseUrl = _configuration.GetValue<string>("JwtSettings:Issuer");
+            string? baseUrl = _configuration["JwtSettings:Issuer"];
 
             foreach (CartItem item in cartItems)
             {
