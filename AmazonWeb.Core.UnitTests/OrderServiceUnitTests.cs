@@ -210,24 +210,24 @@ namespace AmazonWeb.Core.UnitTests
             await Assert.ThrowsAsync<NullReferenceException>(() => _orderService.UpdateOrder(request));
         }
 
-        //[Fact]
-        //public async Task UpdateOrder_InvalidStatus_ThrowsInvalidOperationException()
-        //{
-        //    var request = new OrderUpdateRequest
-        //    {
-        //        Id = Guid.NewGuid(),
-        //        ShippingAddress = "123 Street",
-        //        PostalCode = "12345",
-        //        City = "City",
-        //        Country = "Country",
-        //        Status = OrderStatus.Completed.ToString()
-        //    };
+        [Fact]
+        public async Task UpdateOrder_InvalidStatus_ThrowsInvalidOperationException()
+        {
+            var request = new OrderUpdateRequest
+            {
+                Id = Guid.NewGuid(),
+                ShippingAddress = "123 Street",
+                PostalCode = "12345",
+                City = "City",
+                Country = "Country",
+                Status = OrderStatus.Delivered
+            };
 
-        //    var order = new Order { Id = request.Id, Status = OrderStatus.Completed };
-        //    _orderRepositoryMock.Setup(r => r.GetByIdAsync(request.Id)).ReturnsAsync(order);
+            var order = new Order { Id = request.Id, Status = OrderStatus.Delivered };
+            _orderRepositoryMock.Setup(r => r.GetByIdAsync(request.Id)).ReturnsAsync(order);
 
-        //    await Assert.ThrowsAsync<InvalidOperationException>(() => _orderService.UpdateOrder(request));
-        //}
+            await Assert.ThrowsAsync<InvalidOperationException>(() => _orderService.UpdateOrder(request));
+        }
 
         //[Fact]
         //public async Task UpdateOrder_ValidRequest_ReturnsUpdatedOrderResponse()
