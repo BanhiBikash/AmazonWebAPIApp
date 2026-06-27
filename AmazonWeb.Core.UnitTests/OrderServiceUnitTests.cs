@@ -104,27 +104,26 @@ namespace AmazonWeb.Core.UnitTests
             await Assert.ThrowsAsync<ArgumentNullException>(() => _orderService.ReceiveOrder(request));
         }
 
-        //[Fact]
-        //public async Task ReceiveOrder_UserNotFound_ThrowsArgumentException()
-        //{
-        //    var request = new OrderAddRequest
-        //    {
-        //        Id = Guid.NewGuid(),
-        //        UserId = Guid.NewGuid(),
-        //        Items = new List<OrderItemAddRequest>
-        //        {
-        //            new OrderItemAddRequest { ProductId = Guid.NewGuid(), ProductName = "Test", UnitPrice = 100, Quantity = 1 }
-        //        },
-        //        ShippingAddress = "123 Street",
-        //        PostalCode = "12345",
-        //        City = "City",
-        //        Country = "Country"
-        //    };
+        [Fact]
+        public async Task ReceiveOrder_UserNotFound_ThrowsArgumentException()
+        {
+            var request = new OrderAddRequest
+            {
+                UserId = Guid.NewGuid(),
+                Items = new List<OrderItem>
+                {
+                    new OrderItem { ProductId = Guid.NewGuid(), ProductName = "Test", UnitPrice = 100, Quantity = 1 }
+                },
+                ShippingAddress = "123 Street",
+                PostalCode = "12345",
+                City = "City",
+                Country = "Country"
+            };
 
-        //    _userManagerMock.Setup(u => u.FindByIdAsync(request.UserId.ToString())).ReturnsAsync((ApplicationUser?)null);
+            _userManagerMock.Setup(u => u.FindByIdAsync(It.IsAny<string>())).ReturnsAsync((ApplicationUser?)null);
 
-        //    await Assert.ThrowsAsync<ArgumentException>(() => _orderService.ReceiveOrder(request));
-        //}
+            await Assert.ThrowsAsync<ArgumentException>(() => _orderService.ReceiveOrder(request));
+        }
 
         //[Fact]
         //public async Task ReceiveOrder_InvalidItemData_ThrowsInvalidOperationException()
