@@ -29,6 +29,9 @@ using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
+//check-for env data
+Console.WriteLine($"!!! DOCKER ISSUER TRUTH: {builder.Configuration["JwtSettings:Issuer"]}");
+
 // 1. Fetch Razorpay keys from appsettings.json
 string razorpayKey = builder.Configuration["Razorpay:KeyId"] ?? string.Empty;
 string razorpaySecret = builder.Configuration["Razorpay:KeySecret"] ?? string.Empty;

@@ -1,0 +1,84 @@
+name: AmazonWeb Azure CI/CD
+
+on:
+  push:
+    branches: [ "main", "master" ]
+  pull_request:
+    branches: [ "main", "master" ]
+
+# Permissions needed for logging into Azure securely
+permissions:
+  id-token: write
+  contents: read
+
+env:
+  AZURE_CONTAINER_REGISTRY: amazonregistryyourname # 👈 Replace with your exact unique ACR name
+  BACKEND_IMAGE_NAME: amazon-backend
+  RESOURCE_GROUP: AmazonWeb_RG
+  ENVIRONMENT_NAME: AmazonWeb_Env
+
+jobs:
+  build-test-deploy:
+    name: Build, Test, and Deploy to Azure
+    runs-on: ubuntu-latest
+
+    steps:
+    # 1. Checkout the source code from your repository
+    - name: Checkout Repository
+      uses: actions/checkout@v4
+
+    # 2. Set up the .NET 10 Environment for native CLI steps
+    - name: Setup .NET 10 SDK
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: '10.0.x'
+
+    # 3. Cache NuGet packages to speed up consecutive workflow runs
+    - name: Cache NuGet Packages
+      uses: actions/cache@v4
+      with:
+        path: ~/.nuget/packages
+        key: ${{ runner.os }}-nuget-${{ hashFiles('**/*.csproj') }}
+        restore-keys: |
+          ${{ runner.os }}-nuget-
+
+    # 4. Explicitly run your test suite outside the container first for detailed GitHub logging
+    - name: Run xUnit Unit Tests
+      run: dotnet test AmazonWeb.Core.UnitTests/AmazonWeb.Core.UnitTests.csproj -c Release
+
+    # 5. Log into Azure securely using your saved GitHub Secret JSON
+    - name: Azure Login
+      uses: azure/login@v2
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+    # 6. Log into your private Azure Container Registry (ACR)
+    - name: Log in to Azure Container Registry
+      run: az acr login --name ${{ env.AZURE_CONTAINER_REGISTRY }}
+
+    # 7. Set up Docker Buildx for advanced layer caching
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v3
+
+    # 8. Build the .NET Web API image and push it straight to Azure ACR
+    - name: Build and Push Backend Image to ACR
+      uses: docker/build-push-action@v5
+      with:
+        context: .
+        file: ./Dockerfile
+        push: true
+        tags: |
+          ${{ env.AZURE_CONTAINER_REGISTRY }}.azurecr.io/${{ env.BACKEND_IMAGE_NAME }}:${{ github.sha }}
+          ${{ env.AZURE_CONTAINER_REGISTRY }}.azurecr.io/${{ env.BACKEND_IMAGE_NAME }}:latest
+        cache-from: type=gha
+        cache-to: type=gha,mode=max
+
+    # 9. Deploy the fresh image directly onto Azure Container Apps
+    - name: Deploy Backend to Azure Container Apps
+      uses: azure/container-apps-deploy-action@v1
+      with:
+        appSource: ${{ github.workspace }}
+        resourceGroup: ${{ env.RESOURCE_GROUP }}
+        containerAppName: amazon-backend-api
+        containerAppEnvironment: ${{ env.ENVIRONMENT_NAME }}
+        imageToDeploy: ${{ env.AZURE_CONTAINER_REGISTRY }}.azurecr.io/${{ env.BACKEND_IMAGE_NAME }}:${{ github.sha }}
