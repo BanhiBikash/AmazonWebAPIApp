@@ -28,7 +28,6 @@ C:\Users\Banhi\source\repos\aspnetcore\AmazonWebAPIProject\AmazonWeb.API\obj\Deb
 C:\Users\Banhi\source\repos\aspnetcore\AmazonWebAPIProject\AmazonWeb.API\obj\Debug\net10.0\staticwebassets.development.json
 C:\Users\Banhi\source\repos\aspnetcore\AmazonWebAPIProject\AmazonWeb.API\obj\Debug\net10.0\staticwebassets.build.endpoints.json
 C:\Users\Banhi\source\repos\aspnetcore\AmazonWebAPIProject\AmazonWeb.API\obj\Debug\net10.0\swae.build.ex.cache
-C:\Users\Banhi\source\repos\aspnetcore\AmazonWebAPIProject\AmazonWeb.API\obj\Debug\net10.0\staticwebassets.upToDateCheck.txt
 C:\Users\Banhi\source\repos\aspnetcore\AmazonWebAPIProject\AmazonWeb.API\obj\Debug\net10.0\AmazonWe.B59D8FDA.Up2Date
 C:\Users\Banhi\source\repos\aspnetcore\AmazonWebAPIProject\AmazonWeb.API\obj\Debug\net10.0\AmazonWeb.API.dll
 C:\Users\Banhi\source\repos\aspnetcore\AmazonWebAPIProject\AmazonWeb.API\obj\Debug\net10.0\refint\AmazonWeb.API.dll
@@ -176,3 +175,4 @@ C:\Users\Banhi\source\repos\aspnetcore\AmazonWebAPIProject\AmazonWeb.API\bin\Deb
 C:\Users\Banhi\source\repos\aspnetcore\AmazonWebAPIProject\AmazonWeb.API\bin\Debug\net10.0\Razorpay.dll
 C:\Users\Banhi\source\repos\aspnetcore\AmazonWebAPIProject\AmazonWeb.API\bin\Debug\net10.0\ClientApp\Amazon\package-lock.json
 C:\Users\Banhi\source\repos\aspnetcore\AmazonWebAPIProject\AmazonWeb.API\bin\Debug\net10.0\ClientApp\Amazon\package.json
+C:\Users\Banhi\source\repos\aspnetcore\AmazonWebAPIProject\AmazonWeb.API\obj\Debug\net10.0\staticwebassets.upToDateCheck.txt

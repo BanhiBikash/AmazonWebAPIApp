@@ -18,7 +18,7 @@ services:
 
   # 2. Your .NET Web API Container
   backend:
-    image: amazon-backend:v1
+    image: amazon-backend:with-unitTesting
     container_name: amazon-backend-api
     build:
       context: .
@@ -32,7 +32,7 @@ services:
       # Target connection string mapping directly to the containerized database
       - ConnectionStrings__DefaultConnection=Server=amazon-db;Database=AmazonDatabase;User Id=sa;Password=YourSecurePassword123!;TrustServerCertificate=True;
       # Environment overrides for CORS and tokens
-      - CorsSettings__AllowedOrigins=https://localhost:5130
+      - CorsData__AllowedOrigins=https://localhost:5130
       - JwtSettings__Issuer=https://localhost:7130
       - JwtSettings__Audience=https://localhost:5130
 

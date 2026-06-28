@@ -6,12 +6,17 @@ WORKDIR /src
 COPY ["AmazonWeb.API/AmazonWeb.API.csproj", "AmazonWeb.API/"]
 COPY ["AmazonWeb.Core/AmazonWeb.Core.csproj", "AmazonWeb.Core/"]
 COPY ["AmazonWeb.Infrastructure/AmazonWeb.Infrastructure.csproj", "AmazonWeb.Infrastructure/"]
+COPY ["AmazonWeb.Core.UnitTests/AmazonWeb.Core.UnitTests.csproj", "AmazonWeb.Core.UnitTests/"]
 
 # Restore NuGet dependencies across the solution context
 RUN dotnet restore "AmazonWeb.API/AmazonWeb.API.csproj"
+RUN dotnet restore "AmazonWeb.Core.UnitTests/AmazonWeb.Core.UnitTests.csproj"
 
 # Copy the rest of your clean source code (automatically filtering out .git, .vs, and clientapp)
 COPY . .
+
+#running the tests
+RUN dotnet test "AmazonWeb.Core.UnitTests/AmazonWeb.Core.UnitTests.csproj" -c Release
 
 # Move into the executable project directory and publish the optimized production binaries
 WORKDIR "/src/AmazonWeb.API"
