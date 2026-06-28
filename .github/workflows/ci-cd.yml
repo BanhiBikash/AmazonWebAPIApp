@@ -77,7 +77,7 @@ jobs:
     - name: Deploy Backend to Azure Container Apps
       uses: azure/container-apps-deploy-action@v1
       with:
-        appSource: ${{ github.workspace }}
+        appSourcePath: ${{ github.workspace }}
         resourceGroup: ${{ env.RESOURCE_GROUP }}
         containerAppName: amazon-backend-api
         containerAppEnvironment: ${{ env.ENVIRONMENT_NAME }}
