@@ -12,7 +12,7 @@ permissions:
   contents: read
 
 env:
-  AZURE_CONTAINER_REGISTRY: amazonregistryyourname # 👈 Replace with your exact unique ACR name
+  AZURE_CONTAINER_REGISTRY: amazonregistryyourname # exact unique ACR name
   BACKEND_IMAGE_NAME: amazon-backend
   RESOURCE_GROUP: AmazonWeb_RG
   ENVIRONMENT_NAME: AmazonWeb_Env

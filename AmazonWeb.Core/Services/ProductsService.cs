@@ -219,6 +219,10 @@ namespace AmazonWeb.Core.Services
 
             string? baseUrl = _configuration["JwtSettings:Issuer"];
 
+            //setting abse url as blob base url
+            if (!string.IsNullOrEmpty(_configuration["BlobBaseUrl"]))
+                baseUrl = _configuration["BlobBaseUrl"];
+
             if (!string.IsNullOrEmpty(baseUrl) &&
                 !string.IsNullOrEmpty(response.ImageUrl) &&
                 !response.ImageUrl.StartsWith("http", StringComparison.OrdinalIgnoreCase))
