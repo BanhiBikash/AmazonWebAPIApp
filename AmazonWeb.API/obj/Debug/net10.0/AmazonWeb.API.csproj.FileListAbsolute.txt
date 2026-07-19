@@ -176,3 +176,6 @@ C:\Users\Banhi\source\repos\aspnetcore\AmazonWebAPIProject\AmazonWeb.API\bin\Deb
 C:\Users\Banhi\source\repos\aspnetcore\AmazonWebAPIProject\AmazonWeb.API\bin\Debug\net10.0\ClientApp\Amazon\package-lock.json
 C:\Users\Banhi\source\repos\aspnetcore\AmazonWebAPIProject\AmazonWeb.API\bin\Debug\net10.0\ClientApp\Amazon\package.json
 C:\Users\Banhi\source\repos\aspnetcore\AmazonWebAPIProject\AmazonWeb.API\obj\Debug\net10.0\staticwebassets.upToDateCheck.txt
+C:\Users\Banhi\source\repos\aspnetcore\AmazonWebAPIProject\AmazonWeb.API\bin\Debug\net10.0\Azure.Storage.Blobs.dll
+C:\Users\Banhi\source\repos\aspnetcore\AmazonWebAPIProject\AmazonWeb.API\bin\Debug\net10.0\Azure.Storage.Common.dll
+C:\Users\Banhi\source\repos\aspnetcore\AmazonWebAPIProject\AmazonWeb.API\bin\Debug\net10.0\System.IO.Hashing.dll

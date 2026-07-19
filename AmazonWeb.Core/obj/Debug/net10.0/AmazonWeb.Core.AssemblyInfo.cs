@@ -11,10 +11,11 @@
 using System;
 using System.Reflection;
 
+[assembly: Microsoft.Extensions.Configuration.UserSecrets.UserSecretsIdAttribute("e523e341-6d6e-4632-8847-e4d62f6cea5d")]
 [assembly: System.Reflection.AssemblyCompanyAttribute("AmazonWeb.Core")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+45c1a26c4795674841fcd6da49abd6185f657a5f")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+55dcdd184b7dd86ec5f287db7652200760eaf9e7")]
 [assembly: System.Reflection.AssemblyProductAttribute("AmazonWeb.Core")]
 [assembly: System.Reflection.AssemblyTitleAttribute("AmazonWeb.Core")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

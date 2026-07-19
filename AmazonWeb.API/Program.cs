@@ -71,6 +71,7 @@ builder.Services.AddScoped<IOrderRepository,OrderRepository>();
 builder.Services.AddScoped<IOrderService, OrderService>();
 builder.Services.AddScoped<ITransactionService, TransactionService>();
 builder.Services.AddScoped<ITransactionRepository, TransactionRepository>();
+builder.Services.AddTransient<IBlobService, BlobService>();
 
 //automated-service
 builder.Services.AddHostedService<OrderCleanupBackgroundService>();

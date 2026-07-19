@@ -15,12 +15,14 @@ namespace AmazonWeb.Core.Services
     {
         private readonly IProductRepository _productRepository;
         private readonly IFileService _fileService;
+        private readonly IBlobService _blobService;
         private readonly IConfiguration _configuration; // 🎯 ADDED: To pull your Centralized Identity Server Issuer URL
 
-        public ProductService(IProductRepository productRepository, IFileService fileService, IConfiguration configuration)
+        public ProductService(IProductRepository productRepository, IFileService fileService, IBlobService blobService, IConfiguration configuration)
         {
             _productRepository = productRepository;
             _fileService = fileService;
+            _blobService = blobService;
             _configuration = configuration;
         }
 
@@ -69,7 +71,8 @@ namespace AmazonWeb.Core.Services
             Guid productId = Guid.NewGuid();
 
             //Takes the file and name and saves it also Build relative URL for client access
-            var relativeUrl = await _fileService.UploadThumbnailAsync(productAddRequest.Thumbnail, productId);
+            //var relativeUrl = await _fileService.UploadThumbnailAsync(productAddRequest.Thumbnail, productId);
+            var relativeUrl = await _blobService.UploadThumbnailAsync(productAddRequest.Thumbnail, productId);
 
             // Map to Product entity
             var product = new Product
